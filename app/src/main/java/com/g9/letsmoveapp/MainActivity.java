@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
     }
 
     @Override
@@ -87,17 +87,19 @@ public class MainActivity extends AppCompatActivity
         FragmentManager fragmentManager = getSupportFragmentManager();
 
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_inicio) {
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
+        } else if (id == R.id.nav_perfil) {
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new ProfileFragment()).commit();
+        } else if (id == R.id.nav_trayecto) {
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new NewRidesFragment()).commit();
+        } else if (id == R.id.nav_viajes) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_notificacion) {
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_puntuacion) {
 
-        } else if (id == R.id.nav_manage) {
-
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
+        } else if (id == R.id.nav_configuracion) {
 
         }
 
@@ -106,5 +108,4 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // PROBANDO PUSH Y COMMIT
 }

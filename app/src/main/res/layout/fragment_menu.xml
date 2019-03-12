@@ -14,14 +14,15 @@
         android:textStyle="bold"
         android:textSize="30sp"/>
 
-
     <Button
+        android:id="@+id/button_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/profile" />
     <!--   android:onClick="launchSecondActivity"-->
 
     <Button
+        android:id="@+id/button_myrides"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/my_rides" />
@@ -29,6 +30,7 @@
 
 
     <Button
+        android:id="@+id/button_newrides"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/new_rides" />
