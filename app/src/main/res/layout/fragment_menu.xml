@@ -6,35 +6,32 @@
     android:orientation="vertical"
     tools:context=".MenuFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/menu"
         android:textAlignment="center"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textSize="30sp"/>
 
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mi perfil"/>
-     <!--   android:onClick="launchSecondActivity"-->
+        android:text="@string/profile" />
+    <!--   android:onClick="launchSecondActivity"-->
 
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Mis viajes"
-        />
+        android:text="@string/my_rides" />
     <!--   android:onClick="launchSecondActivity"-->
 
 
-
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Nuevo trayecto"
-        />
+        android:text="@string/new_rides" />
     <!--   android:onClick="launchSecondActivity"-->
 
 

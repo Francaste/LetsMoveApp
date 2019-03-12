@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
+        fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
     }
 
     @Override
@@ -88,7 +88,7 @@ public class MainActivity extends AppCompatActivity
 
 
         if (id == R.id.nav_camera) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {

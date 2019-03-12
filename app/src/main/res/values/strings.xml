@@ -7,7 +7,9 @@
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu">Menú</string>
+    <string name="my_rides">Mis Viajes</string>
+    <string name="new_rides">Nuevo Viaje</string>
+    <string name="profile">Mi perfil</string>
 </resources>
