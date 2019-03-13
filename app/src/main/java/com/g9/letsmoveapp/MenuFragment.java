@@ -17,7 +17,7 @@ public class MenuFragment extends Fragment {
 
         Button button_profile = view.findViewById(R.id.button_profile);
         Button button_myrides = view.findViewById(R.id.button_myrides);
-        Button button_newrides = view.findViewById(R.id.button_myrides);
+        Button button_newrides = view.findViewById(R.id.button_newrides);
 
         //------------BOTON: MI PERFIL----------------
         //Aquí se establece el escuchador OnCLick para el boton
