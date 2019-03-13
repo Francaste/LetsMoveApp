@@ -1,5 +1,6 @@
 package com.g9.letsmoveapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -108,4 +109,12 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void newActivity(View view) {
+        Intent intent = new Intent(this, testActivity.class);
+        startActivity(intent);
+    }
+    public void otherActivity(View view) {
+        Intent intent = new Intent(this, testActivity.class);
+        startActivity(intent);
+    }
 }
