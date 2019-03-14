@@ -1,13 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".MyRidesFragment">
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="@string/my_rides" />
 
-</FrameLayout>
+    <Button
+        android:id="@+id/rides_actuales"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:text="Actuales"
+        android:onClick="actuales"
+        />
+    <Button
+        android:id="@+id/rides_anteriores"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:text="Anteriores"
+        android:onClick="anteriores"
+        />
+    <Button
+        android:id="@+id/rides_gastos"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:text="Gastos"
+        android:onClick="gastos"
+        />
+
+
+
+</LinearLayout>
