@@ -113,15 +113,15 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, testActivity.class);
         startActivity(intent);
     }
-    public void viajesActuales(View view) {
+    public void actuales(View view) {
         Intent intent = new Intent(this, ViajesActuales.class);
         startActivity(intent);
     }
-    public void viajesAnteriores(View view) {
+    public void anteriores(View view) {
         Intent intent = new Intent(this, ViajesAnteriores.class);
         startActivity(intent);
     }
-    public void gastosViajes(View view) {
+    public void gastos(View view) {
         Intent intent = new Intent(this, GastosViajes.class);
         startActivity(intent);
     }

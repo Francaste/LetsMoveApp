@@ -10,6 +10,16 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".testActivity"
+            android:label="TEST ACTIVITY"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".ViajesActuales"
+            android:label="ViajesActuales"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".ViajesAnteriores"
+            android:label="ViajesAnteriores"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".GastosViajes"
+            android:label="GastosViajes"
             android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".MainActivity"
