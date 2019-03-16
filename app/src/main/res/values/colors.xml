@@ -3,4 +3,19 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <item name="verde1" type="color">#4DF19C</item>
+    <item name="verde2" type="color">#20E47F</item>
+    <item name="verde3" type="color">#1DBB69</item>
+    <item name="verde4" type="color">#1AA25B</item>
+    <item name="verde5" type="color">#D3FCE6</item>
+
+    <integer-array name="initial_colors">
+    <item>@color/verde1</item>
+    <item>@color/verde2</item>
+    <item>@color/verde3</item>
+    <item>@color/verde4</item>
+    <item>@color/verde5</item>
+    </integer-array>
+
 </resources>

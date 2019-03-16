@@ -13,13 +13,13 @@
             android:label="TEST ACTIVITY"
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".ViajesActuales"
-            android:label="ViajesActuales"
+            android:label="Viajes Actuales"
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".ViajesAnteriores"
-            android:label="ViajesAnteriores"
+            android:label="Viajes Anteriores"
             android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".GastosViajes"
-            android:label="GastosViajes"
+            android:label="Gastos de tus viajes"
             android:parentActivityName=".MainActivity"></activity>
         <activity
             android:name=".MainActivity"
