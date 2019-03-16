@@ -12,22 +12,24 @@
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:onClick="actuales"
         android:text="Actuales"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/rides_anteriores"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="actuales"
+        />
 
     <Button
         android:id="@+id/rides_anteriores"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:onClick="anteriores"
         android:text="Anteriores"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        android:onClick="anteriores"
+        />
 
     <Button
         android:id="@+id/rides_gastos"
@@ -35,12 +37,13 @@
         android:layout_height="200dp"
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
-        android:onClick="gastos"
         android:text="Gastos"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rides_anteriores" />
+        app:layout_constraintTop_toBottomOf="@+id/rides_anteriores"
+        android:onClick="gastos"
+        />
 
 
 

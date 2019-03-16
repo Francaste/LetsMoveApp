@@ -18,14 +18,16 @@
         android:id="@+id/button_profile"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/profile" />
+        android:text="@string/profile"
+        android:layout_weight="1"/>
     <!--   android:onClick="launchSecondActivity"-->
 
     <Button
         android:id="@+id/button_myrides"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/my_rides" />
+        android:text="@string/my_rides"
+        android:layout_weight="1"/>
     <!--   android:onClick="launchSecondActivity"-->
 
 
@@ -33,13 +35,10 @@
         android:id="@+id/button_newrides"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/new_rides" />
+        android:text="@string/new_rides"
+        android:layout_weight="1"
+        android:layout_marginBottom="4dp"/>
     <!--   android:onClick="launchSecondActivity"-->
-    <Button
-        android:id="@+id/button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="test"
-        android:onClick="newActivity"/>
+
 
 </LinearLayout>

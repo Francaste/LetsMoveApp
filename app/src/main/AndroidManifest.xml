@@ -9,9 +9,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".testActivity"
-            android:label="TEST ACTIVITY"
-            android:parentActivityName=".MainActivity"></activity>
         <activity android:name=".ViajesActuales"
             android:label="Viajes Actuales"
             android:parentActivityName=".MainActivity"></activity>
@@ -21,6 +18,12 @@
         <activity android:name=".GastosViajes"
             android:label="Gastos de tus viajes"
             android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".MisCoches"
+            android:label="MisCoches"
+            android:parentActivityName=".MainActivity"></activity>
+        <activity android:name=".NuevoCoche"
+            android:label="NuevoCoche"
+            android:parentActivityName=".MisCoches"></activity>
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

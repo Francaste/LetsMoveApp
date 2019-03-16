@@ -5,8 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,16 +15,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
-
-    //Array de myRides
-    ArrayList<VisualViajes> listaViajes;
-    RecyclerView recyclerViajes;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +48,6 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
 
 
-        //Cosas de listas MyRides
-        listaViajes=new ArrayList<>();
-        recyclerViajes=(RecyclerView)findViewById(R.id.recycler);
-        recyclerViajes.setLayoutManager(new LinearLayoutManager(this));
-        llenarViajesActuales();
-        adaptadorDatos adapter = new adaptadorDatos(listaViajes);
-        recyclerViajes.setAdapter(adapter);
     }
 
     @Override
@@ -128,16 +112,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void newActivity(View view) {
-        Intent intent = new Intent(this, testActivity.class);
-        startActivity(intent);
-    }
     public void actuales(View view) {
         Intent intent = new Intent(this, ViajesActuales.class);
         startActivity(intent);
     }
-
-
     public void anteriores(View view) {
         Intent intent = new Intent(this, ViajesAnteriores.class);
         startActivity(intent);
@@ -146,16 +124,12 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, GastosViajes.class);
         startActivity(intent);
     }
-
-//Con esto relleno la lista de MisViajesActuales
-private void llenarViajesActuales(){
-        listaViajes.add(new VisualViajes("Universidad","Illescas-Leganés | 15/3/19 | 8:00-9:00 | 15'",R.drawable.delorean));
-        listaViajes.add(new VisualViajes("Sede Microsoft","Leganés-Pozuelo | 14/3/19 | 15:00-19:00 | 5'",R.drawable.cochefantastico));
-        listaViajes.add(new VisualViajes("Carreras Toretto","Leganés-Circuito Jarama 16/3/19| 9:00-14:00 | 10'",R.drawable.cochetoretto));
-        listaViajes.add(new VisualViajes("Visita yaya","Illescas-Toledo | 22/3/19 | 11:00-12:00 | 10'",R.drawable.herbie));
-        listaViajes.add(new VisualViajes("Quedada supers","Illescas-Plaza España | 23/3/19 | 17:00-17:30 | 15'",R.drawable.batmobile));
-
-}
-
-
+    public void misCoches(View view) {
+        Intent intent = new Intent(this, MisCoches.class);
+        startActivity(intent);
+    }
+    public void nuevoCoche(View view) {
+        Intent intent = new Intent(this, NuevoCoche.class);
+        startActivity(intent);
+    }
 }
