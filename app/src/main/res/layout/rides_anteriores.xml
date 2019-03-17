@@ -8,8 +8,6 @@
     android:layout_marginBottom="15dp"
     tools:context=".ViajesAnteriores">
 
-
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerAnt"
         android:layout_height="match_parent"

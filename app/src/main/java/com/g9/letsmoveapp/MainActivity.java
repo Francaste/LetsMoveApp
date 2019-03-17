@@ -106,12 +106,19 @@ public class MainActivity extends AppCompatActivity
             } else if (id == R.id.nav_viajes) {
                 fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
             } else if (id == R.id.nav_notificacion) {
-
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new NotificationFragment()).commit();
             } else if (id == R.id.nav_puntuacion) {
-
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new PuntuaFragment()).commit();
             } else if (id == R.id.nav_configuracion) {
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new SettingsFragment()).commit();
+            } else if (id == R.id.nav_compartir) {
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new ShareFragment()).commit();
+            } else if (id == R.id.nav_faq){
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new FaqFragment()).commit();
 
             }
+
+
 
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
             drawer.closeDrawer(GravityCompat.START);
