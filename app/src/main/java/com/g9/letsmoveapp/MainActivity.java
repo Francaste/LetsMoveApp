@@ -60,116 +60,81 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
-
-
-        //Cosas de codelabs
-        recyclerViajes = findViewById(R.id.recyclerview);
-        // Create an adapter and supply the data to be displayed.
-        miAdapter = new adaptadorDatos(this,listaViajes);
-        // Connect the adapter with the recycler view.
-        recyclerViajes.setAdapter(miAdapter);
-        // Give the recycler view a default layout manager.
-        recyclerViajes.setLayoutManager(new LinearLayoutManager(this));
-
-
-        //Cosas de listas MyRides
-/*
-        listaViajes=new ArrayList<>();
-        recyclerViajes=(RecyclerView)findViewById(R.id.recycler);
-        recyclerViajes.setLayoutManager(new LinearLayoutManager(this));
-        llenarViajesActuales();
-        adaptadorDatos adapter = new adaptadorDatos(listaViajes);
-        recyclerViajes.setAdapter(adapter);
-*/
     }
-
-    @Override
-    public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
+        @Override
+        public void onBackPressed() {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
         }
-    }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        @Override
+        public boolean onCreateOptionsMenu (Menu menu){
+            // Inflate the menu; this adds items to the action bar if it is present.
+            getMenuInflater().inflate(R.menu.main, menu);
             return true;
         }
 
-        return super.onOptionsItemSelected(item);
-    }
+        @Override
+        public boolean onOptionsItemSelected (MenuItem item){
+            // Handle action bar item clicks here. The action bar will
+            // automatically handle clicks on the Home/Up button, so long
+            // as you specify a parent activity in AndroidManifest.xml.
+            int id = item.getItemId();
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
+            //noinspection SimplifiableIfStatement
+            if (id == R.id.action_settings) {
+                return true;
+            }
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-
-
-        if (id == R.id.nav_inicio) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
-        } else if (id == R.id.nav_perfil) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new ProfileFragment()).commit();
-        } else if (id == R.id.nav_trayecto) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new NewRidesFragment()).commit();
-        } else if (id == R.id.nav_viajes) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
-        } else if (id == R.id.nav_notificacion) {
-
-        } else if (id == R.id.nav_puntuacion) {
-
-        } else if (id == R.id.nav_configuracion) {
-
+            return super.onOptionsItemSelected(item);
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
+        @SuppressWarnings("StatementWithEmptyBody")
+        @Override
+        public boolean onNavigationItemSelected (MenuItem item){
+            // Handle navigation view item clicks here.
+            int id = item.getItemId();
+
+            FragmentManager fragmentManager = getSupportFragmentManager();
+
+
+            if (id == R.id.nav_inicio) {
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
+            } else if (id == R.id.nav_perfil) {
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new ProfileFragment()).commit();
+            } else if (id == R.id.nav_trayecto) {
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new NewRidesFragment()).commit();
+            } else if (id == R.id.nav_viajes) {
+                fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
+            } else if (id == R.id.nav_notificacion) {
+
+            } else if (id == R.id.nav_puntuacion) {
+
+            } else if (id == R.id.nav_configuracion) {
+
+            }
+
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+            return true;
+        }
+
+
+        public void actuales (View view){
+            Intent intent = new Intent(this, ViajesActuales.class);
+            startActivity(intent);
+        }
+
+        public void anteriores (View view){
+            Intent intent = new Intent(this, ViajesAnteriores.class);
+            startActivity(intent);
+        }
+        public void gastos (View view){
+            Intent intent = new Intent(this, GastosViajes.class);
+            startActivity(intent);
+        }
     }
-
-
-    public void actuales(View view) {
-        Intent intent = new Intent(this, ViajesActuales.class);
-        startActivity(intent);
-    }
-
-    public void anteriores(View view) {
-        Intent intent = new Intent(this, ViajesAnteriores.class);
-        startActivity(intent);
-    }
-    public void gastos(View view) {
-        Intent intent = new Intent(this, GastosViajes.class);
-        startActivity(intent);
-    }
-
-//Con esto relleno la lista de MisViajesActuales
-/*
-    private void llenarViajesActuales(){
-        listaViajes.add(new VisualViajes("Universidad","Illescas-Leganés | 15/3/19 | 8:00-9:00 | 15'",R.drawable.delorean));
-        listaViajes.add(new VisualViajes("Sede Microsoft","Leganés-Pozuelo | 14/3/19 | 15:00-19:00 | 5'",R.drawable.cochefantastico));
-        listaViajes.add(new VisualViajes("Carreras Toretto","Leganés-Circuito Jarama 16/3/19| 9:00-14:00 | 10'",R.drawable.cochetoretto));
-        listaViajes.add(new VisualViajes("Visita yaya","Illescas-Toledo | 22/3/19 | 11:00-12:00 | 10'",R.drawable.herbie));
-        listaViajes.add(new VisualViajes("Quedada supers","Illescas-Plaza España | 23/3/19 | 17:00-17:30 | 15'",R.drawable.batmobile));
-
-}
-*/
-
-}

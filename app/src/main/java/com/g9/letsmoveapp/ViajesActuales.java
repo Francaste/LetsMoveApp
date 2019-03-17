@@ -20,20 +20,18 @@ public class ViajesActuales extends Activity {
 
         //Cosas de listas MyRides
 
-        // llenarViajesActuales();
 
-      /*  listaViajes=new ArrayList<>();
-        recyclerViajes=(RecyclerView)findViewById(R.id.recycler);
+        listaViajes=new ArrayList<>();
+        llenarViajesActuales(listaViajes);
+        recyclerViajes=(RecyclerView)findViewById(R.id.recyclerAct);
         recyclerViajes.setLayoutManager(new LinearLayoutManager(this));
-        llenarViajesActuales();
-        adaptadorDatos adapter = new adaptadorDatos(listaViajes);
+        adaptadorDatos adapter = new adaptadorDatos(this,listaViajes);
         recyclerViajes.setAdapter(adapter);
-*/
     }
 
     //Esto es de lo nuevo
-    /*
-    private void llenarViajesActuales(){
+
+    private void llenarViajesActuales( ArrayList<VisualViajes> listaViajes){
         listaViajes.add(new VisualViajes("Universidad","Illescas-Leganés | 15/3/19 | 8:00-9:00 | 15'",R.drawable.delorean));
         listaViajes.add(new VisualViajes("Sede Microsoft","Leganés-Pozuelo | 14/3/19 | 15:00-19:00 | 5'",R.drawable.cochefantastico));
         listaViajes.add(new VisualViajes("Carreras Toretto","Leganés-Circuito Jarama 16/3/19| 9:00-14:00 | 10'",R.drawable.cochetoretto));
@@ -41,5 +39,5 @@ public class ViajesActuales extends Activity {
         listaViajes.add(new VisualViajes("Quedada supers","Illescas-Plaza España | 23/3/19 | 17:00-17:30 | 15'",R.drawable.batmobile));
 
     }
-*/
+
 }
