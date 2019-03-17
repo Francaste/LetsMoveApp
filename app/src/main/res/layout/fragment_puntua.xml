@@ -4,13 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".NotificationFragment">
+    tools:context=".PuntuaFragment">
 
     <TextView
-        android:id="@+id/notificaciones"
+        android:id="@+id/puntuacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notificaciones"
+        android:text="Puntúa la app"
         android:textSize="30sp"
         android:textAlignment="center"
        />
