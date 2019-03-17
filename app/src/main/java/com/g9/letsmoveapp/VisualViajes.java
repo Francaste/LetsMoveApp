@@ -7,7 +7,6 @@ public class VisualViajes {
     private String info;
     private int foto;
 
-
     public VisualViajes(String nombre, String info, int foto) {
         this.nombre = nombre;
         this.info = info;
