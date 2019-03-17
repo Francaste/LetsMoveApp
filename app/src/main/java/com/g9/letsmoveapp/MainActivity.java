@@ -28,11 +28,6 @@ public class MainActivity extends AppCompatActivity
     private adaptadorDatos miAdapter;
 
 
-    //Array de myRides
-   /* ArrayList<VisualViajes> listaViajes;
-    RecyclerView recyclerViajes;
-*/
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

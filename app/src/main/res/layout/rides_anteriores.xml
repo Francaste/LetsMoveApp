@@ -5,18 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:layout_marginBottom="15dp"
     tools:context=".ViajesAnteriores">
 
-    <TextView
+
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/recyclerAnt"
+        android:layout_height="match_parent"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Viajes anteriores"
-        android:textAlignment="center"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-
+        />
 
 </LinearLayout>

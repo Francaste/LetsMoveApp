@@ -10,13 +10,13 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class adaptadorDatos extends RecyclerView.Adapter<adaptadorDatos.ViewHolderViajes> {
+public class adaptadorDatosAnt extends RecyclerView.Adapter<adaptadorDatosAnt.ViewHolderViajes> {
 
-    ArrayList<VisualViajes> listaViajes;
+    ArrayList<VisualViajes> listaViajesAnt;
 
 
-    public adaptadorDatos(ViajesActuales viajesActuales, ArrayList<VisualViajes> listaViajes) {
-        this.listaViajes = listaViajes;
+    public adaptadorDatosAnt(ViajesAnteriores viajesAnteriores, ArrayList<VisualViajes> listaViajesAnt) {
+        this.listaViajesAnt = listaViajesAnt;
     }
 
 
@@ -32,15 +32,15 @@ public class adaptadorDatos extends RecyclerView.Adapter<adaptadorDatos.ViewHold
     public void onBindViewHolder(@NonNull ViewHolderViajes viewHolderDatos, int i) {
 
         //Aquí es donde vamos a ir llenando la lista
-        viewHolderDatos.etiquetaNombre.setText(listaViajes.get(i).getNombre());
-        viewHolderDatos.etiquetaInformacion.setText(listaViajes.get(i).getInfo());
-        viewHolderDatos.etiquetaFoto.setImageResource(listaViajes.get(i).getFoto());
+        viewHolderDatos.etiquetaNombre.setText(listaViajesAnt.get(i).getNombre());
+        viewHolderDatos.etiquetaInformacion.setText(listaViajesAnt.get(i).getInfo());
+        viewHolderDatos.etiquetaFoto.setImageResource(listaViajesAnt.get(i).getFoto());
 
     }
 
     @Override
     public int getItemCount() {
-        return listaViajes.size();
+        return listaViajesAnt.size();
     }
 
 
