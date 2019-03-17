@@ -145,10 +145,7 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void newActivity(View view) {
-        Intent intent = new Intent(this, testActivity.class);
-        startActivity(intent);
-    }
+
     public void actuales(View view) {
         Intent intent = new Intent(this, ViajesActuales.class);
         startActivity(intent);

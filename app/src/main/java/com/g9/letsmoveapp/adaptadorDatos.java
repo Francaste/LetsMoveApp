@@ -23,8 +23,8 @@ public class adaptadorDatos extends RecyclerView.Adapter<adaptadorDatos.ViewHold
     @Override
     public ViewHolderViajes onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         //Esto es lo que me ha autorellenado para que se calle
-        //AlertDialog.Builder parent = null;
-        RecyclerView recyclerViajes = findViewById(R.id.recyclerAct);
+        AlertDialog.Builder parent = null;
+       // RecyclerView recyclerViajes = findViewById(R.id.recyclerAct);
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_list, null,false);
         return new ViewHolderViajes(view);
     }

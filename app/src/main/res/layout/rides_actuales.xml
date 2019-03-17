@@ -17,10 +17,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerAct"
         android:layout_height="200dp"
         android:layout_width="match_parent"
         />
+
 </LinearLayout>
