@@ -28,6 +28,7 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.contenedor, new ProfileFragment());
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -40,6 +41,8 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.contenedor, new MyRidesFragment());
+                //Con esto vamos hacia el fragment anterior
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
@@ -52,9 +55,14 @@ public class MenuFragment extends Fragment {
             public void onClick(View view) {
                 fragmentManager.beginTransaction();
                 fragmentTransaction.replace(R.id.contenedor, new NewRidesFragment());
+                fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }
         });
+
+
+
+
 
         return view;
     }
