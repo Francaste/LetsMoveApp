@@ -140,10 +140,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
 
-        public void nuevoCoche (View view){
-            Intent intent = new Intent(this, NuevoCoche.class);
-            startActivity(intent);
-         }
 
         public void misCoches (View view){
             Intent intent = new Intent(this, MisCoches.class);
