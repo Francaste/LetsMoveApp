@@ -140,7 +140,6 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
 
-
         public void misCoches (View view){
             Intent intent = new Intent(this, MisCoches.class);
             startActivity(intent);
