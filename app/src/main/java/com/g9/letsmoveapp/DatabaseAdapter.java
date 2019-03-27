@@ -20,8 +20,8 @@ public class DatabaseAdapter {
     private static final int DB_VERSION = 1;
 
     //campos de la tabla de la base de datos DE COCHES
-    public static final String KEY_C_ID_PK = "ID";
-    public static final String KEY_C_NAME = "NAME";
+    public static final String KEY_C_ID_PK = "ID_C";
+    public static final String KEY_C_NAME = "NAME_C";
     public static final String KEY_MODELO = "MODELO";
     public static final String KEY_PLAZAS = "PLAZAS";
     public static final String KEY_COLOR = "COLOR";
@@ -30,8 +30,8 @@ public class DatabaseAdapter {
     public static final String KEY_ANTIG = "ANTIG";
 
     //campos de la tabla de la base de datos DE RIDES
-    public static final String KEY_R_ID_PK = "ID";
-    public static final String KEY_R_NAME = "NAME";
+    public static final String KEY_R_ID_PK = "ID_R";
+    public static final String KEY_R_NAME = "NAME_R";
     public static final String KEY_ORIGEN = "ORIGEN";
     public static final String KEY_LAT_ORIG = "LAT_ORIGEN"; //REZAMOS POR TENERLOS EN DECIMAL
     public static final String KEY_LNG_ORIG = "LNG_ORIGEN";
@@ -76,11 +76,11 @@ public class DatabaseAdapter {
             KEY_PROGRAM + " text not null);";
 
 
-    //Aquí se está creando la tabla, añadiendo ala tabla cada campo, idiciéndole que esta tabla con este nombre
+    //Aquí se está creando la tabla, añadiendo a la tabla cada campo, y diciéndole que esta tabla con este nombre
     //Tendrá estos campos de aquí
 
     //Cada uno de los parámetros tine que tener su tipo, en el caso del id será un primary key autoincrement porque
-    //tien que tener un número único que será incrementado con la creación de otros elementos
+    //tiene que tener un número único que será incrementado con la creación de otros elementos
     // título es de tipo text, no puede ser nulo y body igual
 
     private DatabaseHelper mDBHelper;
@@ -98,6 +98,7 @@ public class DatabaseAdapter {
 
         @Override
         public void onCreate(SQLiteDatabase db) {
+            //Creamos lsas dos tablas que tenemos ahora mismo, que son CARS y RIDES
             db.execSQL(DB_CREATE_CARS);
             db.execSQL(DB_CREATE_RIDES);
 
@@ -107,6 +108,8 @@ public class DatabaseAdapter {
         public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
             Log.w(TAG, "Upgrading database from version " + oldVersion + " to "
                     + newVersion + ", which will destroy all old data");
+
+            //PREGUNTA: No sé dónde pasa la newVersion a ser oldVersion, se cambia sola?
             db.execSQL("DROP TABLE IF EXISTS " + DB_CARS);
             db.execSQL("DROP TABLE IF EXISTS " + DB_RIDES);
 
@@ -145,51 +148,112 @@ public class DatabaseAdapter {
     }
 
 //Comentao
-   /*
-    public long createNote(String title, String body) {
-        ContentValues initialValues = new ContentValues();
-        initialValues.put(KEY_TITLE, title);
-        initialValues.put(KEY_BODY, body);
+    //Creamos la tabla de los viajes
+    public long createRIDES(String NAME_R, String ORIGEN, String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_LLEGADA,
+                           String TIPO, String FECHA_LIMITE, String PRECIO, String PERIODICIDAD, String PROGRAMACION) {
 
-        return mDb.insert(DATABASE_TABLE, null, initialValues);
-    }  fhdgfh
+        ContentValues initialValues_R = new ContentValues();
+        initialValues_R.put(KEY_R_NAME, NAME_R);
+        initialValues_R.put(KEY_ORIGEN, ORIGEN);
+        initialValues_R.put(KEY_LAT_ORIG, LAT_ORIGEN);
+        initialValues_R.put(KEY_LNG_DEST, LNG_ORIGEN);
+        initialValues_R.put(KEY_FECHA_LLEGADA, FECHA_LLEGADA);
+        initialValues_R.put(KEY_TIPO, TIPO);
+        initialValues_R.put(KEY_FECHA_LIMITE, FECHA_LIMITE);
+        initialValues_R.put(KEY_PRECIO, PRECIO);
+        initialValues_R.put(KEY_PERIOD, PERIODICIDAD);
+        initialValues_R.put(KEY_PROGRAM, PROGRAMACION);
 
-    *//**
-     * Delete the note with the given rowId
-     *
-     * @param rowId id of note to delete
-     * @return true if deleted, false otherwise
-     *//*
-    public boolean deleteNote(long rowId) {
-
-        return mDb.delete(DATABASE_TABLE, KEY_ROWID + "=" + rowId, null) > 0;
+        return mDB.insert(DB_RIDES, null, initialValues_R);
     }
 
-    *//**
+    //Creamos la tabla de los viajes
+    public long createCARS(String NAME_C, String MODELO, String PLAZAS, String COLOR, String SIZE,
+                           String CONSUMO, String ANTIG) {
+
+        ContentValues initialValues_C = new ContentValues();
+        initialValues_C.put(KEY_C_NAME, NAME_C);
+        initialValues_C.put(KEY_MODELO, MODELO);
+        initialValues_C.put(KEY_PLAZAS, PLAZAS);
+        initialValues_C.put(KEY_COLOR, COLOR);
+        initialValues_C.put(KEY_SIZE, SIZE);
+        initialValues_C.put(KEY_CONSUMO, CONSUMO);
+        initialValues_C.put(KEY_ANTIG, ANTIG);
+
+        return mDB.insert(DB_CARS, null, initialValues_C);
+    }
+
+     /** Delete the note with the given rowId
+     *
+     * @param rowId_R id of note to delete
+     * @return true if deleted, false otherwise
+     */
+    public boolean deleteRIDES(long rowId_R) {
+
+        return mDB.delete(DB_RIDES, KEY_R_ID_PK + "=" + rowId_R, null) > 0;
+    }
+
+    public boolean deleteCARS(long rowId_C) {
+
+        return mDB.delete(DB_CARS, KEY_C_ID_PK + "=" + rowId_C, null) > 0;
+    }
+
+
+    /**
      * Return a Cursor over the list of all notes in the database
      *
      * @return Cursor over all notes
-     *//*
-    public Cursor fetchAllNotes() {
+     */
 
-        return mDb.query(DATABASE_TABLE, new String[] {KEY_ROWID, KEY_TITLE,
-                KEY_BODY}, null, null, null, null, null);
+    public Cursor fetchALLRIDES() {
+
+        return mDB.query(DB_RIDES, new String[] {KEY_R_ID_PK, KEY_R_NAME, KEY_ORIGEN, KEY_LAT_ORIG,
+                KEY_LNG_ORIG, KEY_FECHA_LLEGADA, KEY_TIPO, KEY_FECHA_LIMITE, KEY_PRECIO, KEY_PERIOD,
+                KEY_PROGRAM}, null, null, null, null, null);
     }
 
-    *//**
+    public Cursor fetchALLCARS() {
+
+        return mDB.query(DB_CARS, new String[] {KEY_C_ID_PK, KEY_C_NAME, KEY_MODELO, KEY_PLAZAS,
+                KEY_COLOR, KEY_SIZE, KEY_CONSUMO, KEY_ANTIG}, null, null,
+                null, null, null);
+    }
+
+    /**
      * Return a Cursor positioned at the note that matches the given rowId
      *
-     * @param rowId id of note to retrieve
+     * @param rowId_R id of note to retrieve
      * @return Cursor positioned to matching note, if found
      * @throws SQLException if note could not be found/retrieved
-     *//*
-    public Cursor fetchNote(long rowId) throws SQLException {
+     */
+
+
+
+    public Cursor fetchRIDES(long rowId_R) throws SQLException {
 
         Cursor mCursor =
 
-                mDb.query(true, DATABASE_TABLE, new String[] {KEY_ROWID,
-                                KEY_TITLE, KEY_BODY}, KEY_ROWID + "=" + rowId, null,
+                mDB.query(true, DB_RIDES, new String[] {KEY_R_ID_PK, KEY_R_NAME, KEY_ORIGEN,
+                                KEY_LAT_ORIG, KEY_LNG_ORIG, KEY_FECHA_LLEGADA, KEY_TIPO,
+                                KEY_FECHA_LIMITE, KEY_PRECIO, KEY_PERIOD, KEY_PROGRAM},
+                        KEY_R_ID_PK + "=" + rowId_R, null,
                         null, null, null, null);
+
+        if (mCursor != null) {
+            mCursor.moveToFirst();
+        }
+        return mCursor;
+
+    }
+    public Cursor fetchCARS(long rowId_C) throws SQLException {
+
+        Cursor mCursor =
+
+                mDB.query(true, DB_RIDES, new String[] {KEY_C_ID_PK, KEY_C_NAME, KEY_MODELO,
+                                KEY_PLAZAS, KEY_COLOR, KEY_SIZE, KEY_CONSUMO, KEY_ANTIG},
+                        KEY_C_ID_PK + "=" + rowId_C, null,
+                        null, null, null, null);
+
         if (mCursor != null) {
             mCursor.moveToFirst();
         }
@@ -197,25 +261,50 @@ public class DatabaseAdapter {
 
     }
 
-    *//**
+    /**
      * Update the note using the details provided. The note to be updated is
      * specified using the rowId, and it is altered to use the title and body
      * values passed in
      *
-     * @param rowId id of note to update
-     * @param title value to set note title to
-     * @param body value to set note body to
+     * @param rowId_R o rowId_C id of note to update
+     * @param //title value to set note title to
+     * @param //body value to set note body to
      * @return true if the note was successfully updated, false otherwise
-     *//*
-    public boolean updateNote(long rowId, String title, String body) {
-        ContentValues args = new ContentValues();
-        args.put(KEY_TITLE, title);
-        args.put(KEY_BODY, body);
+     */
 
-        return mDb.update(DATABASE_TABLE, args, KEY_ROWID + "=" + rowId, null) > 0;
+    public boolean updateRIDES(long rowId_R, String ID_R, String NAME_R, String ORIGEN,
+                               String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_LLEGADA,
+                               String TIPO, String FECHA_LIMITE, String PRECIO, String PERIODICIDAD,
+                               String PROGRAMACION) {
+
+        ContentValues args = new ContentValues();
+        args.put(KEY_R_ID_PK, ID_R);
+        args.put(KEY_R_NAME, NAME_R);
+        args.put(KEY_ORIGEN, ORIGEN);
+        args.put(KEY_LAT_ORIG, LAT_ORIGEN);
+        args.put(KEY_LNG_ORIG, LNG_ORIGEN);
+        args.put(KEY_FECHA_LLEGADA, FECHA_LLEGADA);
+        args.put(KEY_TIPO, TIPO);
+        args.put(KEY_FECHA_LIMITE, FECHA_LIMITE);
+        args.put(KEY_PRECIO, PRECIO);
+        args.put(KEY_PERIOD, PERIODICIDAD);
+        args.put(KEY_PROGRAM, PROGRAMACION);
+
+        return mDB.update(DB_RIDES, args, KEY_R_ID_PK + "=" + rowId_R, null) > 0;
     }
 
+    public boolean updateCARS(long rowId_C, String NAME_C, String MODELO, String PLAZAS, String COLOR, String SIZE,
+                              String CONSUMO, String ANTIG) {
 
-    */
+        ContentValues args = new ContentValues();
+        args.put(KEY_C_NAME, NAME_C);
+        args.put(KEY_MODELO, MODELO);
+        args.put(KEY_PLAZAS, PLAZAS);
+        args.put(KEY_COLOR, COLOR);
+        args.put(KEY_SIZE, SIZE);
+        args.put(KEY_CONSUMO, CONSUMO);
+        args.put(KEY_ANTIG, ANTIG);
 
+        return mDB.update(DB_CARS, args, KEY_C_ID_PK + "=" + rowId_C, null) > 0;
+    }
 }
