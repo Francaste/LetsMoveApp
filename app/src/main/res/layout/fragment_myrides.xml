@@ -9,43 +9,52 @@
     <Button
         android:id="@+id/rides_actuales"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="0dp"
+        android:onClick="actuales"
         android:text="Actuales"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/rides_anteriores"
         app:layout_constraintTop_toTopOf="parent"
-        android:onClick="actuales"
-        />
+        tools:layout_editor_absoluteX="0dp" />
 
     <Button
         android:id="@+id/rides_anteriores"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
+        android:layout_height="0dp"
+        android:onClick="anteriores"
         android:text="Anteriores"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:onClick="anteriores"
-        />
+        app:layout_constraintBottom_toTopOf="@+id/rides_gastos"
+        app:layout_constraintTop_toBottomOf="@+id/rides_actuales"
+        tools:layout_editor_absoluteX="16dp" />
 
     <Button
         android:id="@+id/rides_gastos"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+        android:layout_height="0dp"
+        android:onClick="gastos"
         android:text="Gastos"
         android:textSize="30sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/test_weather"
         app:layout_constraintTop_toBottomOf="@+id/rides_anteriores"
-        android:onClick="gastos"
+        tools:layout_editor_absoluteX="16dp" />
+
+
+    <!--Es un boton para testear la API de AEMET. Lanza el metodo testWeather en MainActivity-->
+    <!--CUIDADO: Al borrar este boton hay que cambiar el atributo
+    layout_constraintBottom_toBottomOf del boton GASTOS a "parent"-->
+    <Button
+        android:id="@+id/test_weather"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:text="*test weather*"
+        app:layout_constraintTop_toBottomOf="@+id/rides_gastos"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="30sp"
+        android:textStyle="italic"
+        android:onClick="testWeather"
+        android:textColor="@android:color/holo_red_light"
         />
-
-
 
 
 </android.support.constraint.ConstraintLayout>

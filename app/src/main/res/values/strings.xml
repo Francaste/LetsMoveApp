@@ -14,10 +14,10 @@
     <string name="profile">Mi perfil</string>
 
     <string-array name="names_array">
-    <item>Viaje actual</item>
-    <item>Viaje actual</item>
-    <item>Viaje actual</item>
-    <item>Viaje actual</item>
+        <item>Viaje actual</item>
+        <item>Viaje actual</item>
+        <item>Viaje actual</item>
+        <item>Viaje actual</item>
 
 
     </string-array>

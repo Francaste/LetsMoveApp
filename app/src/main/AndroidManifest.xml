@@ -9,21 +9,27 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ViajesActuales"
+        <activity android:name=".TestWeatherActivity"></activity>
+        <activity
+            android:name=".ViajesActuales"
             android:label="Viajes Actuales"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".ViajesAnteriores"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ViajesAnteriores"
             android:label="Viajes Anteriores"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".GastosViajes"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".GastosViajes"
             android:label="Gastos de tus viajes"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".MisCoches"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".MisCoches"
             android:label="MisCoches"
-            android:parentActivityName=".MainActivity"></activity>
-        <activity android:name=".NuevoCoche"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".NuevoCoche"
             android:label="NuevoCoche"
-            android:parentActivityName=".MisCoches"></activity>
+            android:parentActivityName=".MisCoches" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

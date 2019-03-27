@@ -145,4 +145,12 @@ public class MainActivity extends AppCompatActivity
             startActivity(intent);
         }
 
+
+
+// Este metodo lanza una actividad para testear la API AEMET
+// al pulsar el boton TEST WEATHER que esta en Mis Viajes
+    public void testWeather(View view) {
+        Intent intent = new Intent(this, TestWeatherActivity.class);
+        startActivity(intent);
     }
+}
