@@ -2,6 +2,8 @@ package com.g9.letsmoveapp;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.JsonReader;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,58 +18,58 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+
+import javax.net.ssl.HttpsURLConnection;
+
 public class TestWeatherActivity extends AppCompatActivity {
 
     TextView tv_1, tv_2, tv_3;
+    final String AEMET_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIxMDAzNDYzMjNAYWx1bW5vcy51YzNtL" +
+            "mVzIiwianRpIjoiN2VmNjBlNGMtMzk3ZS00NDJkLWIzZjQtODY0ZDcxODk5NzIyIiwiaXNzIjoiQUVN" +
+            "RVQiLCJpYXQiOjE1NTE3Nzg2MjIsInVzZXJJZCI6IjdlZjYwZTRjLTM5N2UtNDQyZC1iM2Y0LTg2NGQ" +
+            "3MTg5OTcyMiIsInJvbGUiOiIifQ.jWl4VQIzvLxsrWWVO5Dy2-h-70Mw_zbdpeMvYnPwFg8\n";
+    public static final String LOG_TAG = "TestWeatherActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_test_weather);
 
-        tv_1 = findViewById(R.id.tv_1);
-        tv_2 = findViewById(R.id.tv_2);
-        tv_3 = findViewById(R.id.tv_3);
-
-        weather();
-    }
-
-    private void weather() {
-
-        // el esqueleto de este codigo en: https://developer.android.com/training/volley/request
-
-        String url = "https://opendata.aemet.es/opendata/sh/a17b3c1a"; // url de hacer una peticion con el codigo postal 28109
-
-        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
-                (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
-
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        try {
-                            Toast.makeText(getApplicationContext(), "WEATHER", Toast.LENGTH_SHORT).show();
-                            // TODO: set text a los text view
-                            JSONArray jsonArray = response.getJSONArray("");
-                            JSONObject object = jsonArray.getJSONObject(2);
-                            String nombre = object.getString("nombre");
+        tv_1 = (TextView) findViewById(R.id.tv_1);
+        tv_2 = (TextView) findViewById(R.id.tv_2);
+        tv_3 = (TextView) findViewById(R.id.tv_3);
 
 
+        String CP = "28109";
+        String stringURL = "https://opendata.aemet.es/opendata/api/prediccion/especifica/" +
+                "municipio/diaria/"+CP;
 
-                            tv_1.setText(nombre);
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                }, new Response.ErrorListener() {
+        URL url = null;
+        BufferedInputStream is = null;
+        JsonReader jsonReader;
 
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // TODO: Handle error
+        try {
+            url = new URL(stringURL);
+        } catch (Exception ex) {
+            System.out.println("Malformed URL");
+        }
 
-                    }
-                });
-        RequestQueue queue = Volley.newRequestQueue(this);
-        queue.add(jsonObjectRequest);
+        try {
+            if (url != null) {
+                HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
+                is = new BufferedInputStream(urlConnection.getInputStream());
+                Log.d(LOG_TAG,is.toString());
+            }
+        } catch (IOException ioe) {
+            System.out.println("IOException");
+        }
 
     }
+
+
 }
