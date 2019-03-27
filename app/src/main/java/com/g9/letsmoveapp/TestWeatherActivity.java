@@ -38,19 +38,23 @@ public class TestWeatherActivity extends AppCompatActivity {
 
         String url = "https://opendata.aemet.es/opendata/sh/a17b3c1a"; // url de hacer una peticion con el codigo postal 28109
 
-        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
+        final JsonObjectRequest jsonObjectRequest = new JsonObjectRequest
                 (Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
 
                     @Override
                     public void onResponse(JSONObject response) {
-                        try{
-                            Toast.makeText(getApplicationContext(),"WEATHER",Toast.LENGTH_SHORT).show();
+                        try {
+                            Toast.makeText(getApplicationContext(), "WEATHER", Toast.LENGTH_SHORT).show();
                             // TODO: set text a los text view
-                            JSONObject nombre_object = response.getJSONObject("nombre");
-                            String nombre = nombre_object.getString("nombre");
+                            JSONArray jsonArray = response.getJSONArray("");
+                            JSONObject object = jsonArray.getJSONObject(2);
+                            String nombre = object.getString("nombre");
+
+
+
                             tv_1.setText(nombre);
 
-                        }catch(JSONException e){
+                        } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
