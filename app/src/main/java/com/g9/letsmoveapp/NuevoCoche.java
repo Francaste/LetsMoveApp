@@ -16,11 +16,14 @@ public class NuevoCoche extends Activity {
     }
 
     public void add_car(View view) {
-        EditText editText=(EditText)findViewById(R.id.nombre_nuevo_coche);
-        String message="Coche: "+editText.getText().toString()+" añadido correctamente";
+        EditText editText = (EditText) findViewById(R.id.nombre_nuevo_coche);
+        String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
         Toast.makeText(getApplicationContext(),message,Toast.LENGTH_SHORT).show();
         finish();
-        Intent intent = new Intent(this, MisCoches.class);
-        startActivity(intent);
+
+        // Cuando acaba una actividad vuelve a la actividad padre. No hace falta hacer un intent
+
+        //Intent intent = new Intent(this, MisCoches.class);
+        //startActivity(intent);
     }
 }
