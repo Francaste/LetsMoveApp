@@ -44,9 +44,12 @@ public class TestWeatherActivity extends AppCompatActivity {
         tv_3 = (TextView) findViewById(R.id.tv_3);
 
 
-        String CP = "28109";
-        String stringURL = "https://opendata.aemet.es/opendata/api/prediccion/especifica/" +
-                "municipio/diaria/"+CP;
+        String CP = "28109"; // Codigo postal de Pelayos de la Presa
+        String stringURL = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/" +
+                CP + "/?apikey=" + AEMET_KEY;
+
+       tv_1.setText(stringURL);
+       Log.d(LOG_TAG,stringURL);
 
 
         URL url = null;
@@ -62,8 +65,8 @@ public class TestWeatherActivity extends AppCompatActivity {
         try {
             if (url != null) {
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-                is = new BufferedInputStream(urlConnection.getInputStream());
-                Log.d(LOG_TAG,is.toString());
+                //is = new BufferedInputStream(urlConnection.getInputStream());
+                //Log.d(LOG_TAG,is.toString());
             }
         } catch (IOException ioe) {
             System.out.println("IOException");

@@ -12,21 +12,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="TV1"
-        android:textSize="25sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tv_2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="TV2"
-        android:textSize="25sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/tv_3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="TV3"
-        android:textSize="25sp" />
+        android:textSize="18sp" />
 
 
 </LinearLayout>
