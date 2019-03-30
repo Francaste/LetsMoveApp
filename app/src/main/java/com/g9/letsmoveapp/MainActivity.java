@@ -55,7 +55,13 @@ public class MainActivity extends AppCompatActivity
 
         FragmentManager fragmentManager = getSupportFragmentManager();
         fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
+
+        //Triplecito para el context del adaptador
     }
+
+    //Triple unido al a anterior línea del context del adaptador
+
+
         @Override
         public void onBackPressed() {
             DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -39,9 +39,9 @@ public class NewRidesFragment extends Fragment {
 
         return view;
     }
-/*
-HAY QUE RESOLVER EL PROBLEMA DEL ADAPTADOOR PORQUE NO DEJA METER EL THIS DE LA LECHE
 
+//HAY QUE RESOLVER EL PROBLEMA DEL ADAPTADOOR PORQUE NO DEJA METER EL THIS DE LA LECHE
+/*
     public void addNewRide(View view){
         //ET no es el extraterrestre, es EditText
         EditText nameET = view.findViewById(R.id.name_ride);
@@ -80,13 +80,13 @@ HAY QUE RESOLVER EL PROBLEMA DEL ADAPTADOOR PORQUE NO DEJA METER EL THIS DE LA L
         DBadapter.createRIDES(String name, String orig, String lat_origen, String lng_origen,
                 String hora_llegada, String dest, String lat_dest, String lng_dest,
                 String hora_salida,String tipo, String limite, String precio, String period, String program);
-*/
 
-        /*      name_ride / origen / destino / button_horasalida / button_horallegada
-                /lat_orig /lng_orig /lat_dest /lng_dest /tipo_ride / hora_limite
-                /precio / period / programacion --- add_button
-        */
+
+              //  name_ride / origen / destino / button_horasalida / button_horallegada
+              // /lat_orig /lng_orig /lat_dest /lng_dest /tipo_ride / hora_limite
+              //  /precio / period / programacion --- add_button
+
 
     }
-
+    */
 }
