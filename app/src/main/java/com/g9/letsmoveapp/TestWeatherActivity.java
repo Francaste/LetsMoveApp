@@ -20,6 +20,8 @@ import org.json.JSONObject;
 
 import java.io.BufferedInputStream;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -46,10 +48,10 @@ public class TestWeatherActivity extends AppCompatActivity {
 
         String CP = "28109"; // Codigo postal de Pelayos de la Presa
         String stringURL = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/" +
-                CP + "/?apikey=" + AEMET_KEY;
+                CP + "/?api_key=" + AEMET_KEY;
 
-       tv_1.setText(stringURL);
-       Log.d(LOG_TAG,stringURL);
+        tv_1.setText(stringURL);
+        Log.d(LOG_TAG, stringURL);
 
 
         URL url = null;
@@ -65,11 +67,21 @@ public class TestWeatherActivity extends AppCompatActivity {
         try {
             if (url != null) {
                 HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
-                //is = new BufferedInputStream(urlConnection.getInputStream());
-                //Log.d(LOG_TAG,is.toString());
+                // Peta en esta linea ->
+                is = new BufferedInputStream(urlConnection.getInputStream());
+                Log.d(LOG_TAG, is.toString());
             }
         } catch (IOException ioe) {
             System.out.println("IOException");
+        }
+
+
+        if (is != null) {
+            try {
+                jsonReader = new JsonReader(new InputStreamReader(is, "UTF-8"));
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
 
     }
