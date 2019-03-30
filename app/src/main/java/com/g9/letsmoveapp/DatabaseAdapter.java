@@ -118,7 +118,7 @@ public class DatabaseAdapter {
     }
 
     /**
-     * Constructor - takes the context to allow the database to be
+     * Constructor - takes the context to allow the daatabase to be
      * opened/created
      *
      * @param ctx the Context within which to work
@@ -150,7 +150,8 @@ public class DatabaseAdapter {
 //Comentao
     //Creamos la tabla de los viajes
     public long createRIDES(String NAME_R, String ORIGEN, String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_LLEGADA,
-                           String TIPO, String FECHA_LIMITE, String PRECIO, String PERIODICIDAD, String PROGRAMACION) {
+                           String DESTINO, String LAT_DEST, String LNG_DEST, String FECHA_SALIDA,String TIPO,
+                            String FECHA_LIMITE, String PRECIO, String PERIODICIDAD, String PROGRAMACION) {
 
         ContentValues initialValues_R = new ContentValues();
         initialValues_R.put(KEY_R_NAME, NAME_R);
@@ -158,6 +159,10 @@ public class DatabaseAdapter {
         initialValues_R.put(KEY_LAT_ORIG, LAT_ORIGEN);
         initialValues_R.put(KEY_LNG_DEST, LNG_ORIGEN);
         initialValues_R.put(KEY_FECHA_LLEGADA, FECHA_LLEGADA);
+        initialValues_R.put(KEY_DESTINO, DESTINO);
+        initialValues_R.put(KEY_LAT_DEST, LAT_DEST);
+        initialValues_R.put(KEY_LNG_DEST, LNG_DEST);
+        initialValues_R.put(KEY_FECHA_SALIDA, FECHA_SALIDA);
         initialValues_R.put(KEY_TIPO, TIPO);
         initialValues_R.put(KEY_FECHA_LIMITE, FECHA_LIMITE);
         initialValues_R.put(KEY_PRECIO, PRECIO);
@@ -208,8 +213,9 @@ public class DatabaseAdapter {
     public Cursor fetchALLRIDES() {
 
         return mDB.query(DB_RIDES, new String[] {KEY_R_ID_PK, KEY_R_NAME, KEY_ORIGEN, KEY_LAT_ORIG,
-                KEY_LNG_ORIG, KEY_FECHA_LLEGADA, KEY_TIPO, KEY_FECHA_LIMITE, KEY_PRECIO, KEY_PERIOD,
-                KEY_PROGRAM}, null, null, null, null, null);
+                KEY_LNG_ORIG, KEY_FECHA_SALIDA, KEY_DESTINO, KEY_LAT_DEST, KEY_LNG_DEST, KEY_FECHA_LLEGADA,
+                KEY_TIPO, KEY_FECHA_LIMITE, KEY_PRECIO, KEY_PERIOD, KEY_PROGRAM}, null,
+                null, null, null, null);
     }
 
     public Cursor fetchALLCARS() {
@@ -233,9 +239,9 @@ public class DatabaseAdapter {
 
         Cursor mCursor =
 
-                mDB.query(true, DB_RIDES, new String[] {KEY_R_ID_PK, KEY_R_NAME, KEY_ORIGEN,
-                                KEY_LAT_ORIG, KEY_LNG_ORIG, KEY_FECHA_LLEGADA, KEY_TIPO,
-                                KEY_FECHA_LIMITE, KEY_PRECIO, KEY_PERIOD, KEY_PROGRAM},
+                mDB.query(true, DB_RIDES, new String[] {KEY_R_ID_PK, KEY_R_NAME, KEY_ORIGEN, KEY_LAT_ORIG,
+                                KEY_LNG_ORIG, KEY_FECHA_SALIDA, KEY_DESTINO, KEY_LAT_DEST, KEY_LNG_DEST, KEY_FECHA_LLEGADA,
+                                KEY_TIPO, KEY_FECHA_LIMITE, KEY_PRECIO, KEY_PERIOD, KEY_PROGRAM},
                         KEY_R_ID_PK + "=" + rowId_R, null,
                         null, null, null, null);
 
@@ -273,7 +279,8 @@ public class DatabaseAdapter {
      */
 
     public boolean updateRIDES(long rowId_R, String ID_R, String NAME_R, String ORIGEN,
-                               String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_LLEGADA,
+                               String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_SALIDA, String DESTINO,
+                               String LAT_DESTINO, String LNG_DESTINO, String FECHA_LLEGADA,
                                String TIPO, String FECHA_LIMITE, String PRECIO, String PERIODICIDAD,
                                String PROGRAMACION) {
 
@@ -283,6 +290,10 @@ public class DatabaseAdapter {
         args.put(KEY_ORIGEN, ORIGEN);
         args.put(KEY_LAT_ORIG, LAT_ORIGEN);
         args.put(KEY_LNG_ORIG, LNG_ORIGEN);
+        args.put(KEY_FECHA_SALIDA, FECHA_SALIDA);
+        args.put(KEY_DESTINO, DESTINO);
+        args.put(KEY_LAT_DEST, LAT_DESTINO);
+        args.put(KEY_LNG_DEST, LNG_DESTINO);
         args.put(KEY_FECHA_LLEGADA, FECHA_LLEGADA);
         args.put(KEY_TIPO, TIPO);
         args.put(KEY_FECHA_LIMITE, FECHA_LIMITE);
