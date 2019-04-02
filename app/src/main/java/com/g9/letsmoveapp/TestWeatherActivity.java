@@ -8,7 +8,6 @@ import android.util.Log;
 import android.widget.TextView;
 
 
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -47,10 +46,16 @@ public class TestWeatherActivity extends AppCompatActivity {
 
     }
 
+
     public class AemetWeather extends AsyncTask<Object, Void, Object> {
+
 
         @Override
         protected String doInBackground(Object[] objects) {
+
+            InputStream inAemetURL, inData = null;
+
+
             //desarrollar metodo para buscar código del pueblo dado el nombre del pueblo en el editText de google maps buscan do en base de datos id nombre cp-pueblo
             String CP = "28109"; // Codigo pueblo de Pelayos de la Presa
             String stringURL = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/" +
@@ -59,10 +64,13 @@ public class TestWeatherActivity extends AppCompatActivity {
             tv_1.setText(stringURL);
             Log.d(LOG_TAG, stringURL);
             //Cogemos la respuesta de la primera consulta a aemet
-            String dataUrl = getJSONResponse(stringURL);
+            inAemetURL = getJSONResponse(stringURL);
 
-            //Log.d(LOG_TAG, "URL is: " + dataUrl);
+            String dataUrl = readAemetJson(inAemetURL);
 
+            inData = getJSONResponse(dataUrl);
+
+            //readWeatherDataJson(inData);
 
             //conseguimos respuesta https con los datos de aemet a partir de url datos
 
@@ -70,26 +78,22 @@ public class TestWeatherActivity extends AppCompatActivity {
             return null;
         }
 
-        public String getJSONResponse(String stringURL) {
-            Log.d("","HOLA");
+
+        public InputStream getJSONResponse(String stringURL) {
             URL url = null;
-            InputStream is = null;
-            JSONObject jObj = null;
-            JsonReader jsonReader = null;
-            String dataUrl="";
+            String dataUrl = "";
+            InputStream in = null;
             try {
                 url = new URL(stringURL);
             } catch (Exception ex) {
                 System.out.println("Malformed URL");
             }
-
             try {
                 if (url != null) {
                     //Abrimos conexión HTTPS, con método GET y nos conectamos
                     HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
                     urlConnection.connect();
-                    InputStream in = null;
                     //Sacamos el código de respuesta
                     int responseCode = urlConnection.getResponseCode();
                     Log.d(LOG_TAG, "The response is: " + responseCode);
@@ -104,12 +108,14 @@ public class TestWeatherActivity extends AppCompatActivity {
                     // TODO: Cambiar streamToString para que lea el nuevo  tipo de dato InputStream
                     //streamToString(in);
                     //Leer campo datos del json, coger url y repetir el proceso
-                    dataUrl=readAemetJson(in);
+
+
+                    return in;
+
 
                     //////////////////////////////////////////
-
+                    // COMENZAMOS SEGUNA CONEXION HTTPS para conseguir los datos del tiempo
                     //////////////////////////////////////////
-
 
 
                 }
@@ -119,7 +125,7 @@ public class TestWeatherActivity extends AppCompatActivity {
 
             Log.d(LOG_TAG, "FIN getJSONResponse, dataURL: " + dataUrl);
             // Si hay algun error devuelve dataURL = "";
-            return dataUrl;
+            return in;
         }
         //DESARROLLAR METODO PARA LEER CAMPOS DE JSON
         //PRIMERO PARA SACAR DEL CAMPO DATOS LA URL Y LUEGO PARA LOS CAMPOS ÚTILES DE LA PETICION AEMET
@@ -154,18 +160,17 @@ public class TestWeatherActivity extends AppCompatActivity {
             //COMIENZO DE LECTURA DEL PRIMER JSON PARA OBTENER URL DE DATOS DE TIEMPO
             int responseCodeJSON = 0;
             String dataURL = "";
-            JsonReader reader;
+            JsonReader reader = null;
 
 
             try {
                 reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
-
                 reader.beginObject();
                 //Se inicia un objeto por cada llave
                 while (reader.hasNext()) {
                     String name = reader.nextName();
                     // Busca la cadena "results"
-                    Log.d(LOG_TAG, "JSON NAME: "+name);
+                    Log.d(LOG_TAG, "JSON NAME: " + name);
                     switch (name) {
                         case "descripcion":
                             String descripcion = reader.nextString();
@@ -176,8 +181,8 @@ public class TestWeatherActivity extends AppCompatActivity {
                             responseCodeJSON = reader.nextInt();
                             if (responseCodeJSON != 200) {
                                 // TODO: Si codigo de respuesta no OK...
-                                Log.d(LOG_TAG,"JSON Estado: " + responseCodeJSON);
-                                return "";
+                                Log.d(LOG_TAG, "JSON Estado: " + responseCodeJSON);
+                                return null;
                             }
                             break;
                         case "datos":
@@ -195,85 +200,95 @@ public class TestWeatherActivity extends AppCompatActivity {
             } catch (Exception e) {
                 System.out.println("Exception");
                 e.printStackTrace();
-                return "";
+                return null;
             }
         }
-        /* *************
-        public String readWeatherDataJson(JsonReader jsonReader){
 
-                try {
-                    jsonReader.beginObject();
-                    while (jsonReader.hasNext()) {
-                        String name = jsonReader.nextName();
-                        // Busca la cadena "results"
-                        if (name.equals("estado")) {
-                            // comienza un array de objetos
-                            jsonReader.beginArray();
+        /*
+        * Recibe el inputstream que contiene el json con los datos del tiempo
+        * Lee el json y guarda los datos de interes en BBDD
+        *
+        * */
+        public String readWeatherDataJson(InputStream in) {
+
+            int responseCodeJSON = 0;
+            String dataURL = "";
+            JsonReader jsonReader = null;
+
+            try {
+                jsonReader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+                jsonReader.beginObject();
+                while (jsonReader.hasNext()) {
+                    String name = jsonReader.nextName();
+                    // Busca la cadena "results"
+                    if (name.equals("estado")) {
+                        // comienza un array de objetos
+                        jsonReader.beginArray();
+                        while (jsonReader.hasNext()) {
+                            String descr = "";
+                            jsonReader.beginObject();
+                            // comienza un objeto
                             while (jsonReader.hasNext()) {
-                                String descr="";
-                                jsonReader.beginObject();
-                                // comienza un objeto
-                                while (jsonReader.hasNext()) {
-                                    name = jsonReader.nextName();
-                                    if (name.equals("name")) {
-                                        // si clave "name" guarda el valor
-                                        poi.setName(jsonReader.nextString());
-                                        System.out.println("PLACE NAME:" + poi.getName());
-                                    } else if (name.equals("geometry")) {
-                                        // Si clave "geometry" empieza un objeto
-                                        jsonReader.beginObject();
-                                        while (jsonReader.hasNext()) {
-                                            name = jsonReader.nextName();
-                                            if (name.equals("location")) {
-                                                // dentro de "geometry", si clave "location" empieza un objeto
-                                                jsonReader.beginObject();
-                                                while (jsonReader.hasNext()) {
-                                                    name = jsonReader.nextName();
-                                                    // se queda con los valores de "lat" y "long" de ese objeto
-                                                    if (name.equals("lat")) {
-                                                        poi.setLatitude(jsonReader.nextString());
-                                                        System.out.println("PLACE LATITUDE:" + poi.getLatitude());
-                                                    } else if (name.equals("lng")) {
-                                                        poi.setLongitude(jsonReader.nextString());
-                                                        System.out.println("PLACE LONGITUDE:" + poi.getLongitude());
-                                                    } else {
-                                                        jsonReader.skipValue();
-                                                    }
-                                                }
-                                                jsonReader.endObject();
-                                            } else {
-                                                jsonReader.skipValue();
-                                            }
-                                        }
-                                        jsonReader.endObject();
-                                    } else{
-                                        jsonReader.skipValue();
-                                    }
-                                }
-                                jsonReader.endObject();
-                                temp.add(poi);
-                            }
-                            jsonReader.endArray();
-                        } else {
-                            jsonReader.skipValue();
-                        }
-                    }
-                    jsonReader.endObject();
-                }
-                catch (Exception e) {
-                    System.out.println("Exception");
-                    return new ArrayList<GooglePlace>();
-                }
-                ********************** */
-            @Override
-            protected void onPreExecute () {
-                super.onPreExecute();
-            }
+                                name = jsonReader.nextName();
+                                if (name.equals("name")) {
+                                    // si clave "name" guarda el valor
 
-            @Override
-            protected void onPostExecute (Object o){
-                super.onPostExecute(o);
+                                } else if (name.equals("geometry")) {
+                                    // Si clave "geometry" empieza un objeto
+                                    jsonReader.beginObject();
+                                    while (jsonReader.hasNext()) {
+                                        name = jsonReader.nextName();
+                                        if (name.equals("location")) {
+                                            // dentro de "geometry", si clave "location" empieza un objeto
+                                            jsonReader.beginObject();
+                                            while (jsonReader.hasNext()) {
+                                                name = jsonReader.nextName();
+                                                // se queda con los valores de "lat" y "long" de ese objeto
+                                                if (name.equals("lat")) {
+                                                   // poi.setLatitude(jsonReader.nextString());
+                                                    //System.out.println("PLACE LATITUDE:" + poi.getLatitude());
+                                                } else if (name.equals("lng")) {
+                                                    //poi.setLongitude(jsonReader.nextString());
+                                                    //System.out.println("PLACE LONGITUDE:" + poi.getLongitude());
+                                                } else {
+                                                    jsonReader.skipValue();
+                                                }
+                                            }
+                                            jsonReader.endObject();
+                                        } else {
+                                            jsonReader.skipValue();
+                                        }
+                                    }
+                                    jsonReader.endObject();
+                                } else {
+                                    jsonReader.skipValue();
+                                }
+                            }
+                            jsonReader.endObject();
+                        }
+                        jsonReader.endArray();
+                    } else {
+                        jsonReader.skipValue();
+                    }
+                }
+                jsonReader.endObject();
+            } catch (
+                    Exception e) {
+                System.out.println("Exception");
+                return null;
             }
+            return null;
         }
 
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+        }
+
+        @Override
+        protected void onPostExecute(Object o) {
+            super.onPostExecute(o);
+        }
     }
+
+}
