@@ -61,7 +61,7 @@ public class TestWeatherActivity extends AppCompatActivity {
             //Cogemos la respuesta de la primera consulta a aemet
             String dataUrl = getJSONResponse(stringURL);
 
-            Log.d(LOG_TAG, "URL is: " + dataUrl);
+            //Log.d(LOG_TAG, "URL is: " + dataUrl);
 
 
             //conseguimos respuesta https con los datos de aemet a partir de url datos
@@ -71,6 +71,7 @@ public class TestWeatherActivity extends AppCompatActivity {
         }
 
         public String getJSONResponse(String stringURL) {
+            Log.d("","HOLA");
             URL url = null;
             InputStream is = null;
             JSONObject jObj = null;
@@ -88,32 +89,45 @@ public class TestWeatherActivity extends AppCompatActivity {
                     HttpsURLConnection urlConnection = (HttpsURLConnection) url.openConnection();
                     urlConnection.setRequestMethod("GET");
                     urlConnection.connect();
+                    InputStream in = null;
                     //Sacamos el código de respuesta
                     int responseCode = urlConnection.getResponseCode();
                     Log.d(LOG_TAG, "The response is: " + responseCode);
-
-                    //Leemos el input stream
+                    //Leemos el InputStream
+                    in = urlConnection.getInputStream();
+                    /* ***************************
+                    Antes haciamos esto...y no funcionaba
                     is = new BufferedInputStream(urlConnection.getInputStream());
-                    //Ponemos un json reader
                     streamToString(is);
-                   // jsonReader = new JsonReader(new InputStreamReader(is, "UTF-8"));
-
+                    Pero el jsonReader se tiene que crear con un InputStream, no con un BuferedInputStream
+                    ******************************* */
+                    // TODO: Cambiar streamToString para que lea el nuevo  tipo de dato InputStream
+                    //streamToString(in);
                     //Leer campo datos del json, coger url y repetir el proceso
-                    dataUrl=readAemetJson(new JsonReader(new InputStreamReader(is, "UTF-8")));
-                    Log.d(LOG_TAG, dataUrl);
+                    dataUrl=readAemetJson(in);
+
+                    //////////////////////////////////////////
+
+                    //////////////////////////////////////////
+
+
+
                 }
             } catch (IOException ioe) {
                 System.out.println("IOException");
             }
+
+            Log.d(LOG_TAG, "FIN getJSONResponse, dataURL: " + dataUrl);
+            // Si hay algun error devuelve dataURL = "";
             return dataUrl;
         }
         //DESARROLLAR METODO PARA LEER CAMPOS DE JSON
         //PRIMERO PARA SACAR DEL CAMPO DATOS LA URL Y LUEGO PARA LOS CAMPOS ÚTILES DE LA PETICION AEMET
 
         //Convierte un InputStream a un String
-        public void streamToString(InputStream is) {
+        private void streamToString(InputStream in) {
             //Para hacer un buffer para
-            BufferedReader buffReader = new BufferedReader(new InputStreamReader(is));
+            BufferedReader buffReader = new BufferedReader(new InputStreamReader(in));
             StringBuilder sb = new StringBuilder();//
 
             String responseStr = null;
@@ -127,7 +141,7 @@ public class TestWeatherActivity extends AppCompatActivity {
             } finally {
                 try {
                     //Cierra el stream
-                    is.close();
+                    in.close();
                     Log.d(LOG_TAG, sb.toString());
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -135,32 +149,52 @@ public class TestWeatherActivity extends AppCompatActivity {
             }
         }
 
-        public String readAemetJson(JsonReader jsonReader) {
-            int responseCode = 0;
+        public String readAemetJson(InputStream in) {
+
+            //COMIENZO DE LECTURA DEL PRIMER JSON PARA OBTENER URL DE DATOS DE TIEMPO
+            int responseCodeJSON = 0;
             String dataURL = "";
+            JsonReader reader;
+
+
             try {
-                jsonReader.beginObject();
+                reader = new JsonReader(new InputStreamReader(in, "UTF-8"));
+
+                reader.beginObject();
                 //Se inicia un objeto por cada llave
-                while (jsonReader.hasNext()) {
-                    String name = jsonReader.nextName();
+                while (reader.hasNext()) {
+                    String name = reader.nextName();
                     // Busca la cadena "results"
-                    if (name.equals("estado")) {
-                        // si clave "name" guarda el valor
-                        responseCode = jsonReader.nextInt();
-                        Log.d(LOG_TAG, "Response Code: " + responseCode);
-                    } else if (name.equals("datos")) {
-                        // si clave "name" guarda el valor
-                        dataURL = jsonReader.nextString();
-                        Log.d(LOG_TAG, "Url: " + dataURL);
-                    } else {
-                        jsonReader.skipValue();
+                    Log.d(LOG_TAG, "JSON NAME: "+name);
+                    switch (name) {
+                        case "descripcion":
+                            String descripcion = reader.nextString();
+                            Log.d(LOG_TAG, "JSON Descripcion: " + descripcion);
+                            break;
+                        case "estado":
+                            // si clave "name" guarda el valor
+                            responseCodeJSON = reader.nextInt();
+                            if (responseCodeJSON != 200) {
+                                // TODO: Si codigo de respuesta no OK...
+                                Log.d(LOG_TAG,"JSON Estado: " + responseCodeJSON);
+                                return "";
+                            }
+                            break;
+                        case "datos":
+                            // si clave "name" guarda el valor
+                            dataURL = reader.nextString();
+                            Log.d(LOG_TAG, "URL DATOS: " + dataURL);
+                            return dataURL;
+                        default:
+                            reader.skipValue();
+                            break;
                     }
                 }
-
-                jsonReader.endObject();
+                reader.endObject();
                 return dataURL;
             } catch (Exception e) {
                 System.out.println("Exception");
+                e.printStackTrace();
                 return "";
             }
         }
