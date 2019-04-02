@@ -56,7 +56,7 @@ public class TestWeatherActivity extends AppCompatActivity {
             InputStream inAemetURL, inData = null;
 
 
-            //desarrollar metodo para buscar código del pueblo dado el nombre del pueblo en el editText de google maps buscan do en base de datos id nombre cp-pueblo
+            // TODO: desarrollar metodo para buscar código del pueblo dado el nombre del pueblo en el editText de google maps buscan do en base de datos id nombre cp-pueblo
             String CP = "28109"; // Codigo pueblo de Pelayos de la Presa
             String stringURL = "https://opendata.aemet.es/opendata/api/prediccion/especifica/municipio/diaria/" +
                     CP + "/?api_key=" + AEMET_KEY;
