@@ -16,9 +16,8 @@ public class DatabaseAdapter {
     private static final String DB_NAME = "LETSMOVE_DB";
     private static final String DB_CARS = "CARS";
     private static final String DB_RIDES = "RIDES";
-
+    // Version de lka base de datos
     private static final int DB_VERSION = 1;
-
     //campos de la tabla de la base de datos DE COCHES
     public static final String KEY_C_ID_PK = "ID_C";
     public static final String KEY_C_NAME = "NAME_C";
@@ -28,7 +27,6 @@ public class DatabaseAdapter {
     public static final String KEY_SIZE = "SIZE";
     public static final String KEY_CONSUMO = "CONSUMO"; //Litros cada 100km
     public static final String KEY_ANTIG = "ANTIG";
-
     //campos de la tabla de la base de datos DE RIDES
     public static final String KEY_R_ID_PK = "ID_R";
     public static final String KEY_R_NAME = "NAME_R";
@@ -87,12 +85,13 @@ public class DatabaseAdapter {
     private SQLiteDatabase mDB;
 // Desconocido, álex dice que es un manager, gestor de ayudas, android me ayuda amigablemente a hacer mi tarea
 
-    private final Context mCtx;
+    Context mCtx;
 
-    private static class DatabaseHelper extends SQLiteOpenHelper {
+    public class DatabaseHelper extends SQLiteOpenHelper {
 
-        DatabaseHelper(Context context) {
+        public DatabaseHelper(Context context) {
             super(context, DB_NAME, null, DB_VERSION);
+            mCtx = context;
             //buscar qué es la versión
         }
 
@@ -123,7 +122,6 @@ public class DatabaseAdapter {
      *
      * @param ctx the Context within which to work
      */
-
     public DatabaseAdapter(Context ctx) {
         this.mCtx = ctx;
     }
@@ -232,13 +230,9 @@ public class DatabaseAdapter {
      * @return Cursor positioned to matching note, if found
      * @throws SQLException if note could not be found/retrieved
      */
-
-
-
     public Cursor fetchRIDES(long rowId_R) throws SQLException {
 
         Cursor mCursor =
-
                 mDB.query(true, DB_RIDES, new String[] {KEY_R_ID_PK, KEY_R_NAME, KEY_ORIGEN, KEY_LAT_ORIG,
                                 KEY_LNG_ORIG, KEY_FECHA_SALIDA, KEY_DESTINO, KEY_LAT_DEST, KEY_LNG_DEST, KEY_FECHA_LLEGADA,
                                 KEY_TIPO, KEY_FECHA_LIMITE, KEY_PRECIO, KEY_PERIOD, KEY_PROGRAM},
@@ -249,12 +243,10 @@ public class DatabaseAdapter {
             mCursor.moveToFirst();
         }
         return mCursor;
-
     }
     public Cursor fetchCARS(long rowId_C) throws SQLException {
 
         Cursor mCursor =
-
                 mDB.query(true, DB_RIDES, new String[] {KEY_C_ID_PK, KEY_C_NAME, KEY_MODELO,
                                 KEY_PLAZAS, KEY_COLOR, KEY_SIZE, KEY_CONSUMO, KEY_ANTIG},
                         KEY_C_ID_PK + "=" + rowId_C, null,
@@ -264,20 +256,22 @@ public class DatabaseAdapter {
             mCursor.moveToFirst();
         }
         return mCursor;
-
     }
 
     /**
      * Update the note using the details provided. The note to be updated is
      * specified using the rowId, and it is altered to use the title and body
      * values passed in
-     *
-     * @param rowId_R o rowId_C id of note to update
-     * @param //title value to set note title to
-     * @param //body value to set note body to
-     * @return true if the note was successfully updated, false otherwise
      */
 
+    //TODO:
+    /**
+     *
+     * VAMOS A ACTUALIZAR LOS METODOS DE updateRIDES, createRIDES, updateCARS y createCARS usando objetos
+     *
+     * RidesDataModel y CarsDataModel
+     *
+     * */
     public boolean updateRIDES(long rowId_R, String ID_R, String NAME_R, String ORIGEN,
                                String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_SALIDA, String DESTINO,
                                String LAT_DESTINO, String LNG_DESTINO, String FECHA_LLEGADA,
@@ -318,4 +312,245 @@ public class DatabaseAdapter {
 
         return mDB.update(DB_CARS, args, KEY_C_ID_PK + "=" + rowId_C, null) > 0;
     }
+
+    public void addRidesData(RidesDataModel ridesDataModel){
+        //TODO
+
+    }
+    public void updateRidesData(){
+        //TODO
+    }
+
+    public void addCarsData(CarsDataModel carsDataModel){
+        //TODO
+
+
+    }
+    public void updateCarsData(){
+        //TODO
+    }
+
+
+
+    /**
+     * Modelo de datos de Viajes para lectura/escritura de datos en la base de datos
+     * */
+    public class RidesDataModel {
+        private int r_id = 0;
+        private String r_name = "";
+        private String origen = "";
+        private double lat_orig = 0;
+        private double lng_orig = 0;
+        private String fecha_salida = "";
+        private String destino = "";
+        private double lat_dest = 0;
+        private double lng_dest = 0;
+        private String fecha_llegada = "";
+        private String fecha_limite = "";
+        private int precio = 0;
+        private String period = "";
+        private String tipo = "";
+        private String program = "";
+
+        public int getR_id() {
+            return r_id;
+        }
+
+        public void setR_id(int r_id) {
+            this.r_id = r_id;
+        }
+
+        public String getR_name() {
+            return r_name;
+        }
+
+        public void setR_name(String r_name) {
+            this.r_name = r_name;
+        }
+
+        public String getDestino() {
+            return destino;
+        }
+
+        public void setDestino(String destino) {
+            this.destino = destino;
+        }
+
+
+        public String getOrigen() {
+            return origen;
+        }
+
+        public void setOrigen(String origen) {
+            this.origen = origen;
+        }
+
+        public double getLat_orig() {
+            return lat_orig;
+        }
+
+        public void setLat_orig(double lat_orig) {
+            this.lat_orig = lat_orig;
+        }
+
+        public double getLng_orig() {
+            return lng_orig;
+        }
+
+        public void setLng_orig(double lng_orig) {
+            this.lng_orig = lng_orig;
+        }
+
+        public String getFecha_salida() {
+            return fecha_salida;
+        }
+
+        public void setFecha_salida(String fecha_salida) {
+            this.fecha_salida = fecha_salida;
+        }
+
+        public double getLat_dest() {
+            return lat_dest;
+        }
+
+        public void setLat_dest(double lat_dest) {
+            this.lat_dest = lat_dest;
+        }
+
+        public double getLng_dest() {
+            return lng_dest;
+        }
+
+        public void setLng_dest(double lng_dest) {
+            this.lng_dest = lng_dest;
+        }
+
+        public String getFecha_llegada() {
+            return fecha_llegada;
+        }
+
+        public void setFecha_llegada(String fecha_llegada) {
+            this.fecha_llegada = fecha_llegada;
+        }
+
+        public String getFecha_limite() {
+            return fecha_limite;
+        }
+
+        public void setFecha_limite(String fecha_limite) {
+            this.fecha_limite = fecha_limite;
+        }
+
+        public int getPrecio() {
+            return precio;
+        }
+
+        public void setPrecio(int precio) {
+            this.precio = precio;
+        }
+
+        public String getPeriod() {
+            return period;
+        }
+
+        public void setPeriod(String period) {
+            this.period = period;
+        }
+
+        public String getTipo() {
+            return tipo;
+        }
+
+        public void setTipo(String tipo) {
+            this.tipo = tipo;
+        }
+
+        public String getProgram() {
+            return program;
+        }
+
+        public void setProgram(String program) {
+            this.program = program;
+        }
+    }
+
+    /**
+     * Modelo de datos de Coches para lectura/escritura de datos en la base de datos
+     * */
+    public class CarsDataModel {
+        private int c_id = 0;
+        private String c_name = "";
+        private String model = "";
+        private int plazas = 0;
+        private String color = "";
+        private String size = "";
+        private double consumo = 0;
+        private int antig = 0;
+
+        public int getC_id() {
+            return c_id;
+        }
+
+        public void setC_id(int c_id) {
+            this.c_id = c_id;
+        }
+
+        public String getC_name() {
+            return c_name;
+        }
+
+        public void setC_name(String c_name) {
+            this.c_name = c_name;
+        }
+
+        public String getModel() {
+            return model;
+        }
+
+        public void setModel(String model) {
+            this.model = model;
+        }
+
+        public int getPlazas() {
+            return plazas;
+        }
+
+        public void setPlazas(int plazas) {
+            this.plazas = plazas;
+        }
+
+        public String getColor() {
+            return color;
+        }
+
+        public void setColor(String color) {
+            this.color = color;
+        }
+
+        public String getSize() {
+            return size;
+        }
+
+        public void setSize(String size) {
+            this.size = size;
+        }
+
+        public double getConsumo() {
+            return consumo;
+        }
+
+        public void setConsumo(double consumo) {
+            this.consumo = consumo;
+        }
+
+        public int getAntig() {
+            return antig;
+        }
+
+        public void setAntig(int antig) {
+            this.antig = antig;
+        }
+    }
 }
+
+
