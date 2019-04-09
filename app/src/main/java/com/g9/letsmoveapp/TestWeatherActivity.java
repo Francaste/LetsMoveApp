@@ -376,7 +376,7 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                         break;
                                                     default:
                                                         jsonReader.skipValue();
-                                                        Log.d(LOG_TAG, "Obviamos lo demás");
+                                                        Log.d(LOG_TAG, "Obviamos lo demás y ya");
                                                         break;
 
                                                 }
@@ -410,7 +410,6 @@ public class TestWeatherActivity extends AppCompatActivity {
                         default:
                             jsonReader.skipValue();
                             Log.d(LOG_TAG, "Obviamos lo demás");
-
                             break;
 
 
@@ -419,9 +418,9 @@ public class TestWeatherActivity extends AppCompatActivity {
 
 
                 }
+                jsonReader.endObject();
                 jsonReader.endArray();
 
-                jsonReader.endObject();
             } catch (
                     Exception e) {
                 System.out.println("Exception");
