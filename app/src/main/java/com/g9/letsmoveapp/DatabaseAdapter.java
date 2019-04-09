@@ -45,6 +45,8 @@ public class DatabaseAdapter {
     public static final String KEY_PROGRAM = "PROGRAMACION";
 
 
+
+
     // Sentencia SQL para crear las tablas de las bases de datos
     private static final String DB_CREATE_CARS = "create table " + DB_CARS + " (" +
             KEY_C_ID_PK +" integer primary key autoincrement, " +
