@@ -70,7 +70,7 @@ public class TestWeatherActivity extends AppCompatActivity {
 
             inData = getJSONResponse(dataUrl);
 
-            //readWeatherDataJson(inData);
+            readWeatherDataJson(inData);
 
             //conseguimos respuesta https con los datos de aemet a partir de url datos
 
@@ -170,25 +170,25 @@ public class TestWeatherActivity extends AppCompatActivity {
                 while (reader.hasNext()) {
                     String name = reader.nextName();
                     // Busca la cadena "results"
-                    Log.d(LOG_TAG, "JSON NAME: " + name);
+                    Log.d(LOG_TAG, "1-JSON NAME: " + name);
                     switch (name) {
                         case "descripcion":
                             String descripcion = reader.nextString();
-                            Log.d(LOG_TAG, "JSON Descripcion: " + descripcion);
+                            Log.d(LOG_TAG, "1-JSON Descripcion: " + descripcion);
                             break;
                         case "estado":
                             // si clave "name" guarda el valor
                             responseCodeJSON = reader.nextInt();
                             if (responseCodeJSON != 200) {
                                 // TODO: Si codigo de respuesta no OK...
-                                Log.d(LOG_TAG, "JSON Estado: " + responseCodeJSON);
+                                Log.d(LOG_TAG, "1-JSON Estado: " + responseCodeJSON);
                                 return null;
                             }
                             break;
                         case "datos":
                             // si clave "name" guarda el valor
                             dataURL = reader.nextString();
-                            Log.d(LOG_TAG, "URL DATOS: " + dataURL);
+                            Log.d(LOG_TAG, "1-URL DATOS: " + dataURL);
                             return dataURL;
                         default:
                             reader.skipValue();
@@ -218,212 +218,225 @@ public class TestWeatherActivity extends AppCompatActivity {
             try {
                 jsonReader = new JsonReader(new InputStreamReader(in, "UTF-8"));
                 jsonReader.beginArray(); //añadido
-                //jsonReader.beginObject();
 
-                jsonReader.skipValue();
+                if(jsonReader.hasNext()) {
+                    jsonReader.beginObject();
+                    while (jsonReader.hasNext()) {
+                        //Esto es un "mientras haya más elementos"
+                        String name = jsonReader.nextName();
 
-                while (jsonReader.hasNext()) {
-                    //Esto es un "mientras haya más elementos"
-                    String name = jsonReader.nextName();
+                        // Busca la cadena "results"
+                        Log.d(LOG_TAG, "2-JSON NAME: " + name);
 
-                    // Busca la cadena "results"
-                    Log.d(LOG_TAG, "JSON NAME: " + name);
+                        switch (name) {
 
-                    switch (name) {
-
-                        case "nombre":
-                            String nombre = jsonReader.nextString();
-                            break;
-                        case "provincia":
-                            String provincia = jsonReader.nextString();
-                            break;
-                        case "prediccion":
-
-                            jsonReader.beginObject();
-
-                            String name_dia = jsonReader.nextName();
-                            // Para debuggear, vamos viendo qué estamos creando
-                            Log.d(LOG_TAG, "JSON NAME: " + name_dia);
-
-                            if(name_dia=="dia"){
-
-                                jsonReader.beginArray();
-
-
-                                while (jsonReader.hasNext()){
-                                    //propiedades del dia
-                                    jsonReader.beginObject();
-                                    //Una vez dentro del array dia, tenemos muchas propiedades del día
-                                    //que serán objetos diferentes
-
-                                    String prop_dia = jsonReader.nextName();
-
-                                    Log.d(LOG_TAG, "JSON NAME: " + prop_dia);
-
-                                    switch (prop_dia){
-
-                                        case "probPrecipitacion":
-                                            jsonReader.beginArray();
-
-                                            jsonReader.beginObject();
-                                            try {
-                                                String props = jsonReader.nextName();
-                                                switch (props) {
-                                                    case "value":
-                                                        String value_probPrep = jsonReader.nextName();
-                                                        break;
-                                                    case "periodo":
-                                                        String periodo_probPrep = jsonReader.nextName();
-                                                        break;
-
-                                                }
-                                                //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
-                                                jsonReader.endObject();
-
-                                                while (jsonReader.hasNext()) {
-                                                    //No se hace begin object ni end object porque no estamos
-                                                    //entrando al objeto para hacerle skip
-                                                    jsonReader.skipValue();
-
-                                                }
-
-                                            }catch(Exception e) {
-                                                System.out.println("Exception");
-                                                return null;
-                                            }
-
-                                            jsonReader.endArray();
-                                            break;
-
-                                        case "CotaNieveProv":
-                                            jsonReader.beginArray();
-                                            jsonReader.beginObject();
-                                            try {
-                                                String props = jsonReader.nextName();
-                                                switch (props) {
-                                                    case "value":
-                                                        String value_CotaNieve = jsonReader.nextName();
-                                                        break;
-                                                    case "periodo":
-                                                        String periodo_CotaNieve = jsonReader.nextName();
-                                                        break;
-
-                                                }
-                                                //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
-                                                jsonReader.endObject();
-
-                                                while (jsonReader.hasNext()) {
-                                                    //No se hace begin object ni end object porque no estamos
-                                                    //entrando al objeto para hacerle skip
-                                                    jsonReader.skipValue();
-
-                                                }
-
-
-                                            }catch(Exception e) {
-                                                System.out.println("Exception");
-                                                return null;
-                                            }
-
-                                            jsonReader.endArray();
-                                            break;
-
-                                        case "estadoCielo":
-                                            jsonReader.beginArray();
-                                            jsonReader.beginObject();
-                                            try {
-                                                String props = jsonReader.nextName();
-                                                switch (props) {
-                                                    case "value":
-                                                        String value_estadoCielo = jsonReader.nextName();
-                                                        break;
-                                                    case "periodo":
-                                                        String periodo_estadoCielo = jsonReader.nextName();
-                                                        break;
-                                                    case "descripcion":
-                                                        String descrip_estadoCielo = jsonReader.nextName();
-                                                        break;
-
-                                                }
-                                                //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
-                                                jsonReader.endObject();
-
-                                                while (jsonReader.hasNext()) {
-                                                    //No se hace begin object ni end object porque no estamos
-                                                    //entrando al objeto para hacerle skip
-                                                    jsonReader.skipValue();
-
-                                                }
-
-                                            }catch(Exception e) {
-                                                System.out.println("Exception");
-                                                return null;
-                                            }
-
-                                            jsonReader.endArray();
-                                            break;
-
-                                        case "temperatura":
-                                            jsonReader.beginObject();
-                                            try {
-                                                String props = jsonReader.nextName();
-                                                switch (props) {
-                                                    case "maxima":
-                                                        String maxima_temp = jsonReader.nextName();
-                                                        break;
-                                                    case "minima":
-                                                        String minima_temp = jsonReader.nextName();
-                                                        break;
-                                                    default:
-                                                        jsonReader.skipValue();
-                                                        Log.d(LOG_TAG, "Obviamos lo demás y ya");
-                                                        break;
-
-                                                }
-                                                //Podemos obviar este while porque acabamos de leer con "dato"
-                                                jsonReader.endObject();
-
-                                            }catch(Exception e) {
-                                                System.out.println("Exception");
-                                                return null;
-                                            }
-
-                                            break;
-
-                                        case "fecha":
-                                            String fecha = jsonReader.nextString();
-                                            break;
-
-                                        default:
-                                            jsonReader.skipValue();
-                                            Log.d(LOG_TAG, "Obviamos lo demás");
-                                            break;
-                                    }
+                            case "origen":
+                                jsonReader.beginObject();
+                                while(jsonReader.hasNext()){
+                                    jsonReader.skipValue();
                                 }
-                            }
-                            break;
+                                jsonReader.endObject();
+                                break;
+                            case "nombre":
+                                String nombre = jsonReader.nextString();
+                                break;
+                            case "provincia":
+                                String provincia = jsonReader.nextString();
+                                break;
+                            case "prediccion":
 
-                        case "id":
-                            String id = jsonReader.nextString();
-                            break;
+                                jsonReader.beginObject();
 
-                        default:
-                            jsonReader.skipValue();
-                            Log.d(LOG_TAG, "Obviamos lo demás");
-                            break;
+                                String name_dia = jsonReader.nextName();
+                                // Para debuggear, vamos viendo qué estamos creando
+                                Log.d(LOG_TAG, "2-JSON NAME: " + name_dia);
+
+                                if (name_dia.equals("dia")) {
+
+                                    jsonReader.beginArray();
+                                    jsonReader.beginObject();
+
+
+                                    while (jsonReader.hasNext()) {
+                                        //propiedades del dia
+
+                                        //Una vez dentro del array dia, tenemos muchas propiedades del día
+                                        //que serán objetos diferentes
+
+                                        String prop_dia = jsonReader.nextName();
+
+                                        Log.d(LOG_TAG, "2-JSON NAME: " + prop_dia);
+
+                                        switch (prop_dia) {
+
+                                            case "probPrecipitacion":
+                                                jsonReader.beginArray();
+
+                                                jsonReader.beginObject();
+                                                try {
+
+                                                    String props = jsonReader.nextName();
+                                                    switch (props) {
+                                                        case "value":
+                                                            String value_probPrep = jsonReader.nextName();
+                                                            break;
+                                                        case "periodo":
+                                                            String periodo_probPrep = jsonReader.nextName();
+                                                            break;
+
+                                                    }
+                                                    //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
+
+                                                    while (jsonReader.hasNext()) {
+                                                        //No se hace begin object ni end object porque no estamos
+                                                        //entrando al objeto para hacerle skip
+                                                        jsonReader.skipValue();
+
+                                                    }
+
+                                                } catch (Exception e) {
+                                                    System.out.println("Exception");
+                                                    e.printStackTrace();
+                                                    return null;
+                                                }
+                                                jsonReader.endObject();
+                                                jsonReader.endArray();
+                                                break;
+
+                                            case "CotaNieveProv":
+                                                jsonReader.beginArray();
+                                                jsonReader.beginObject();
+                                                try {
+                                                    String props = jsonReader.nextName();
+                                                    switch (props) {
+                                                        case "value":
+                                                            String value_CotaNieve = jsonReader.nextName();
+                                                            break;
+                                                        case "periodo":
+                                                            String periodo_CotaNieve = jsonReader.nextName();
+                                                            break;
+
+                                                    }
+                                                    //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
+                                                    jsonReader.endObject();
+
+                                                    while (jsonReader.hasNext()) {
+                                                        //No se hace begin object ni end object porque no estamos
+                                                        //entrando al objeto para hacerle skip
+                                                        jsonReader.skipValue();
+
+                                                    }
+
+
+                                                } catch (Exception e) {
+                                                    System.out.println("Exception");
+                                                    e.printStackTrace();
+                                                    return null;
+                                                }
+
+                                                jsonReader.endArray();
+                                                break;
+
+                                            case "estadoCielo":
+                                                jsonReader.beginArray();
+                                                jsonReader.beginObject();
+                                                try {
+                                                    String props = jsonReader.nextName();
+                                                    switch (props) {
+                                                        case "value":
+                                                            String value_estadoCielo = jsonReader.nextName();
+                                                            break;
+                                                        case "periodo":
+                                                            String periodo_estadoCielo = jsonReader.nextName();
+                                                            break;
+                                                        case "descripcion":
+                                                            String descrip_estadoCielo = jsonReader.nextName();
+                                                            break;
+
+                                                    }
+                                                    //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
+                                                    jsonReader.endObject();
+
+                                                    while (jsonReader.hasNext()) {
+                                                        //No se hace begin object ni end object porque no estamos
+                                                        //entrando al objeto para hacerle skip
+                                                        jsonReader.skipValue();
+
+                                                    }
+
+                                                } catch (Exception e) {
+                                                    System.out.println("Exception");
+                                                    e.printStackTrace();
+                                                    return null;
+                                                }
+
+                                                jsonReader.endArray();
+                                                break;
+
+                                            case "temperatura":
+                                                jsonReader.beginObject();
+                                                try {
+                                                    String props = jsonReader.nextName();
+                                                    switch (props) {
+                                                        case "maxima":
+                                                            String maxima_temp = jsonReader.nextName();
+                                                            break;
+                                                        case "minima":
+                                                            String minima_temp = jsonReader.nextName();
+                                                            break;
+                                                        default:
+                                                            jsonReader.skipValue();
+                                                            Log.d(LOG_TAG, "Obviamos lo demás y ya");
+                                                            break;
+
+                                                    }
+                                                    //Podemos obviar este while porque acabamos de leer con "dato"
+                                                    jsonReader.endObject();
+
+                                                } catch (Exception e) {
+                                                    System.out.println("Exception");
+                                                    e.printStackTrace();
+                                                    return null;
+                                                }
+
+                                                break;
+
+                                            case "fecha":
+                                                String fecha = jsonReader.nextString();
+                                                break;
+
+                                            default:
+                                                jsonReader.skipValue();
+                                                Log.d(LOG_TAG, "Obviamos lo demás");
+                                                break;
+                                        }
+                                    }
+                                    jsonReader.endObject();
+                                }
+                                break;
+
+                            case "id":
+                                String id = jsonReader.nextString();
+                                break;
+
+                            default:
+                                jsonReader.skipValue();
+                                Log.d(LOG_TAG, "Obviamos lo demás");
+                                break;
+
+
+                        }
+                        //////
 
 
                     }
-                    //////
-
-
+                    jsonReader.endObject();
+                    jsonReader.endArray();
                 }
-                jsonReader.endObject();
-                jsonReader.endArray();
 
-            } catch (
-                    Exception e) {
-                System.out.println("Exception");
+            } catch (Exception e) {
+                System.out.println("Exception: readWeatherDataJSON");
+                e.printStackTrace();
                 return null;
             }
             return null;
