@@ -219,7 +219,7 @@ public class TestWeatherActivity extends AppCompatActivity {
                 jsonReader = new JsonReader(new InputStreamReader(in, "UTF-8"));
                 jsonReader.beginArray(); //añadido
 
-                if(jsonReader.hasNext()) {
+                if (jsonReader.hasNext()) {
                     jsonReader.beginObject();
                     while (jsonReader.hasNext()) {
                         //Esto es un "mientras haya más elementos"
@@ -232,7 +232,7 @@ public class TestWeatherActivity extends AppCompatActivity {
 
                             case "origen":
                                 jsonReader.beginObject();
-                                while(jsonReader.hasNext()){
+                                while (jsonReader.hasNext()) {
                                     jsonReader.skipValue();
                                 }
                                 jsonReader.endObject();
@@ -270,37 +270,41 @@ public class TestWeatherActivity extends AppCompatActivity {
                                         switch (prop_dia) {
 
                                             case "probPrecipitacion":
-                                                jsonReader.beginArray();
-
-                                                jsonReader.beginObject();
+                                                jsonReader.beginArray();//abrimos el array de probPrecipitacion
+                                                jsonReader.beginObject();//abrimos el objeto del periodo
                                                 try {
-
-                                                    String props = jsonReader.nextName();
-                                                    switch (props) {
-                                                        case "value":
-                                                            String value_probPrep = jsonReader.nextName();
-                                                            break;
-                                                        case "periodo":
-                                                            String periodo_probPrep = jsonReader.nextName();
-                                                            break;
-
+                                                    int value_probPrep=0;
+                                                    String periodo_probPrep=null;
+                                                    //comprobamos mientras haya propiedades en el objeto json dentro del array
+                                                    while (jsonReader.hasNext()) {
+                                                        String props = jsonReader.nextName();//cogemos el nombre de la propiedad siguiente
+                                                        switch (props) {
+                                                            case "value":
+                                                                value_probPrep = jsonReader.nextInt();//cogemos el valor de la propiedad con un tipo concreto
+                                                                break;
+                                                            case "periodo":
+                                                                periodo_probPrep = jsonReader.nextString();
+                                                                break;
+                                                        }
                                                     }
-                                                    //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
-
+                                                    //Cerramos el objeto una vez leido para pasar a los siguientes elementos del array
+                                                    jsonReader.endObject();
+                                                    //nos saltamos el resto de objetos
                                                     while (jsonReader.hasNext()) {
                                                         //No se hace begin object ni end object porque no estamos
                                                         //entrando al objeto para hacerle skip
                                                         jsonReader.skipValue();
-
                                                     }
+                                                    //cerramos el array de la probPrecipitacion
+                                                    jsonReader.endArray();
+                                                    //En un futuro en vez de loggearlo, lo mostramos en la activity
+                                                    Log.d(LOG_TAG, "RESULTADOS Precipitación-> Value:  " + value_probPrep+" ->Period:  "+periodo_probPrep);
 
                                                 } catch (Exception e) {
                                                     System.out.println("Exception");
                                                     e.printStackTrace();
                                                     return null;
                                                 }
-                                                jsonReader.endObject();
-                                                jsonReader.endArray();
                                                 break;
 
                                             case "CotaNieveProv":
@@ -310,10 +314,10 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                     String props = jsonReader.nextName();
                                                     switch (props) {
                                                         case "value":
-                                                            String value_CotaNieve = jsonReader.nextName();
+                                                            int value_CotaNieve = jsonReader.nextInt();
                                                             break;
                                                         case "periodo":
-                                                            String periodo_CotaNieve = jsonReader.nextName();
+                                                            String periodo_CotaNieve = jsonReader.nextString();
                                                             break;
 
                                                     }
@@ -344,13 +348,13 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                     String props = jsonReader.nextName();
                                                     switch (props) {
                                                         case "value":
-                                                            String value_estadoCielo = jsonReader.nextName();
+                                                            int value_estadoCielo = jsonReader.nextInt();
                                                             break;
                                                         case "periodo":
-                                                            String periodo_estadoCielo = jsonReader.nextName();
+                                                            String periodo_estadoCielo = jsonReader.nextString();
                                                             break;
                                                         case "descripcion":
-                                                            String descrip_estadoCielo = jsonReader.nextName();
+                                                            String descrip_estadoCielo = jsonReader.nextString();
                                                             break;
 
                                                     }
@@ -379,10 +383,10 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                     String props = jsonReader.nextName();
                                                     switch (props) {
                                                         case "maxima":
-                                                            String maxima_temp = jsonReader.nextName();
+                                                            int maxima_temp = jsonReader.nextInt();
                                                             break;
                                                         case "minima":
-                                                            String minima_temp = jsonReader.nextName();
+                                                            int minima_temp = jsonReader.nextInt();
                                                             break;
                                                         default:
                                                             jsonReader.skipValue();
@@ -426,9 +430,6 @@ public class TestWeatherActivity extends AppCompatActivity {
 
 
                         }
-                        //////
-
-
                     }
                     jsonReader.endObject();
                     jsonReader.endArray();
