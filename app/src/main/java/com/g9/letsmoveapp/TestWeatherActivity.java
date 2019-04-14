@@ -308,49 +308,49 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                 break;
 
                                             case "cotaNieveProv":
-                                                jsonReader.beginArray();
-                                                jsonReader.beginObject();
+                                                jsonReader.beginArray();//abrimos el array
+                                                jsonReader.beginObject();//abrimos el objeto
                                                 try {
-                                                    int value_CotaNieve = 0;
-                                                    String periodo_CotaNieve = null;
-                                                    while (jsonReader.hasNext()) {
-                                                        String props = jsonReader.nextName();
+                                                    int value_cotaNieve = 0;
+                                                    String periodo_cotaNieve = null;
+                                                    //comprobamos mientras haya propiedades en el objeto json dentro del array
+                                                    while (jsonReader.hasNext()) {//necesitamos el while para asegurarnos que el objeto tiene datos que leer
+                                                        String props = jsonReader.nextName();//cogemos el nombre de la propiedad siguiente
                                                         switch (props) {
                                                             case "value":
-                                                                try {//puede que el valor sea un String nulo y lance excepcion
-                                                                    value_CotaNieve = jsonReader.nextInt();
-                                                                }catch(Exception e){
-                                                                    if(jsonReader.nextString() == null || jsonReader.nextString().isEmpty()) {
-                                                                        value_CotaNieve= 0;
-                                                                    } else {
-                                                                        throw e;
-                                                                    }                                                           }
+                                                                // con este if no sale la excepcion y sigue leyendo el codigo
+                                                                //hay que buscarle una solucion funcional
+                                                                if (jsonReader.nextString().equals("")||jsonReader.nextString().isEmpty()) {
+                                                                    Log.d(LOG_TAG, "Cota Nieve no disponible");
+                                                                } else {
+                                                                    value_cotaNieve = jsonReader.nextInt();
+                                                                }
+                                                                //cogemos el valor de la propiedad con un tipo concreto
                                                                 break;
                                                             case "periodo":
-                                                                periodo_CotaNieve = jsonReader.nextString();
+                                                                periodo_cotaNieve = jsonReader.nextString();
                                                                 break;
                                                         }
                                                     }
-                                                    //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
+                                                    //Cerramos el objeto una vez leido para pasar a los siguientes elementos del array
                                                     jsonReader.endObject();
-
+                                                    //nos saltamos el resto de objetos
                                                     while (jsonReader.hasNext()) {
                                                         //No se hace begin object ni end object porque no estamos
                                                         //entrando al objeto para hacerle skip
                                                         jsonReader.skipValue();
                                                     }
-                                                    jsonReader.endObject();
+                                                    //cerramos el array de la probPrecipitacion
                                                     jsonReader.endArray();
                                                     //En un futuro en vez de loggearlo, lo mostramos en la activity
-                                                    Log.d(LOG_TAG, "RESULTADOS Cota Nieve-> Value:  " + value_CotaNieve + " ->Period:  " + periodo_CotaNieve);
+                                                    Log.d(LOG_TAG, "RESULTADOS Cota Nieve-> Value:  " + value_cotaNieve + " ->Period:  " + periodo_cotaNieve);
+
                                                 } catch (Exception e) {
                                                     System.out.println("Exception");
                                                     e.printStackTrace();
                                                     return null;
                                                 }
-
                                                 break;
-
                                             case "estadoCielo":
                                                 jsonReader.beginArray();
                                                 jsonReader.beginObject();
@@ -362,15 +362,26 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                         String props = jsonReader.nextName();
                                                         switch (props) {
                                                             case "value":
-                                                                value_estadoCielo = jsonReader.nextInt();
+                                                                // con este if no sale la excepcion y sigue leyendo el codigo
+                                                                //hay que buscarle una solucion funcional
+                                                                if (jsonReader.nextString().equals("")||jsonReader.nextString().isEmpty()) {
+                                                                    Log.d(LOG_TAG, "Valor estado cielo no disponible");
+                                                                } else {
+                                                                    value_estadoCielo = jsonReader.nextInt();
+                                                                }
                                                                 break;
                                                             case "periodo":
                                                                 periodo_estadoCielo = jsonReader.nextString();
                                                                 break;
                                                             case "descripcion":
-                                                                descrip_estadoCielo = jsonReader.nextString();
+                                                                // con este if no sale la excepcion y sigue leyendo el codigo
+                                                                //hay que buscarle una solucion funcional
+                                                                if (jsonReader.nextString().equals("")||jsonReader.nextString().isEmpty()) {
+                                                                    Log.d(LOG_TAG, "Descripcion estado cielo no disponible");
+                                                                } else {
+                                                                    descrip_estadoCielo = jsonReader.nextString();
+                                                                }
                                                                 break;
-
                                                         }
                                                     }
                                                     //cerramos el primer objeto (periodo 0-24h) del probPrecipitacion
@@ -401,10 +412,10 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                         String props = jsonReader.nextName();
                                                         switch (props) {
                                                             case "maxima":
-                                                                maxima_temp = jsonReader.nextInt();
+                                                                    maxima_temp = jsonReader.nextInt();
                                                                 break;
                                                             case "minima":
-                                                                minima_temp = jsonReader.nextInt();
+                                                               minima_temp = jsonReader.nextInt();
                                                                 break;
                                                             default:
                                                                 jsonReader.skipValue();
@@ -421,7 +432,6 @@ public class TestWeatherActivity extends AppCompatActivity {
                                                     e.printStackTrace();
                                                     return null;
                                                 }
-
                                                 break;
 
                                             case "fecha":
@@ -453,7 +463,8 @@ public class TestWeatherActivity extends AppCompatActivity {
                     jsonReader.endArray();
                 }
 
-            } catch (Exception e) {
+            } catch (
+                    Exception e) {
                 System.out.println("Exception: readWeatherDataJSON");
                 e.printStackTrace();
                 return null;
