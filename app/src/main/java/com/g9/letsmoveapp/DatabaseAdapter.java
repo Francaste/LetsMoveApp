@@ -149,10 +149,14 @@ public class DatabaseAdapter {
 
 //Comentao
     //Creamos la tabla de los viajes
+
+    /**
+     * Este método va a ser sustituido por addRidesData()
+     * */
+    // TODO: Eliminar?
     public long createRIDES(String NAME_R, String ORIGEN, String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_LLEGADA,
                            String DESTINO, String LAT_DEST, String LNG_DEST, String FECHA_SALIDA,String TIPO,
                             String FECHA_LIMITE, String PRECIO, String PERIODICIDAD, String PROGRAMACION) {
-
         ContentValues initialValues_R = new ContentValues();
         initialValues_R.put(KEY_R_NAME, NAME_R);
         initialValues_R.put(KEY_ORIGEN, ORIGEN);
@@ -168,14 +172,16 @@ public class DatabaseAdapter {
         initialValues_R.put(KEY_PRECIO, PRECIO);
         initialValues_R.put(KEY_PERIOD, PERIODICIDAD);
         initialValues_R.put(KEY_PROGRAM, PROGRAMACION);
-
         return mDB.insert(DB_RIDES, null, initialValues_R);
     }
 
     //Creamos la tabla de los viajes
+    /**
+     * Este método se sustituye por addCarsData()
+     * */
+    // TODO: Eliminar?
     public long createCARS(String NAME_C, String MODELO, String PLAZAS, String COLOR, String SIZE,
                            String CONSUMO, String ANTIG) {
-
         ContentValues initialValues_C = new ContentValues();
         initialValues_C.put(KEY_C_NAME, NAME_C);
         initialValues_C.put(KEY_MODELO, MODELO);
@@ -184,7 +190,6 @@ public class DatabaseAdapter {
         initialValues_C.put(KEY_SIZE, SIZE);
         initialValues_C.put(KEY_CONSUMO, CONSUMO);
         initialValues_C.put(KEY_ANTIG, ANTIG);
-
         return mDB.insert(DB_CARS, null, initialValues_C);
     }
 
@@ -260,26 +265,24 @@ public class DatabaseAdapter {
         return mCursor;
     }
 
+
+
+
     /**
      * Update the note using the details provided. The note to be updated is
      * specified using the rowId, and it is altered to use the title and body
      * values passed in
      */
 
-    //TODO:
     /**
-     *
-     * VAMOS A ACTUALIZAR LOS METODOS DE updateRIDES, createRIDES, updateCARS y createCARS usando objetos
-     *
-     * RidesDataModel y CarsDataModel
-     *
+     * Este metodo va a ser sustituido por updateRidesData()
      * */
+    // TODO: Eliminar?
     public boolean updateRIDES(long rowId_R, String ID_R, String NAME_R, String ORIGEN,
                                String LAT_ORIGEN, String LNG_ORIGEN, String FECHA_SALIDA, String DESTINO,
                                String LAT_DESTINO, String LNG_DESTINO, String FECHA_LLEGADA,
                                String TIPO, String FECHA_LIMITE, String PRECIO, String PERIODICIDAD,
                                String PROGRAMACION) {
-
         ContentValues args = new ContentValues();
         args.put(KEY_R_ID_PK, ID_R);
         args.put(KEY_R_NAME, NAME_R);
@@ -296,13 +299,15 @@ public class DatabaseAdapter {
         args.put(KEY_PRECIO, PRECIO);
         args.put(KEY_PERIOD, PERIODICIDAD);
         args.put(KEY_PROGRAM, PROGRAMACION);
-
         return mDB.update(DB_RIDES, args, KEY_R_ID_PK + "=" + rowId_R, null) > 0;
     }
 
+    /**
+     * Este metodo va a ser sustituido por updateCarsData()
+     * */
+    // TODO: Eliminar?
     public boolean updateCARS(long rowId_C, String NAME_C, String MODELO, String PLAZAS, String COLOR, String SIZE,
                               String CONSUMO, String ANTIG) {
-
         ContentValues args = new ContentValues();
         args.put(KEY_C_NAME, NAME_C);
         args.put(KEY_MODELO, MODELO);
@@ -311,25 +316,74 @@ public class DatabaseAdapter {
         args.put(KEY_SIZE, SIZE);
         args.put(KEY_CONSUMO, CONSUMO);
         args.put(KEY_ANTIG, ANTIG);
-
         return mDB.update(DB_CARS, args, KEY_C_ID_PK + "=" + rowId_C, null) > 0;
     }
 
-    public void addRidesData(RidesDataModel ridesDataModel){
-        //TODO
 
+    // Añade un nievo regstro a la Tabla de Rides
+    public long addRidesData(RidesDataModel ridesDataModel){
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_R_ID_PK, ridesDataModel.getR_id());
+        cv.put(KEY_ORIGEN, ridesDataModel.getOrigen());
+        cv.put(KEY_LAT_ORIG, ridesDataModel.getLat_orig());
+        cv.put(KEY_LNG_ORIG, ridesDataModel.getLng_orig());
+        cv.put(KEY_FECHA_SALIDA, ridesDataModel.getFecha_salida());
+        cv.put(KEY_DESTINO, ridesDataModel.getDestino());
+        cv.put(KEY_LAT_DEST, ridesDataModel.getLat_dest());
+        cv.put(KEY_LNG_DEST, ridesDataModel.getLng_dest());
+        cv.put(KEY_FECHA_LLEGADA, ridesDataModel.getFecha_llegada());
+        cv.put(KEY_TIPO, ridesDataModel.getTipo());
+        cv.put(KEY_FECHA_LIMITE, ridesDataModel.getFecha_limite());
+        cv.put(KEY_PRECIO, ridesDataModel.getPrecio());
+        cv.put(KEY_PERIOD, ridesDataModel.getPeriod());
+        cv.put(KEY_PROGRAM, ridesDataModel.getProgram());
+        return mDB.insert(DB_RIDES, null, cv);
     }
-    public void updateRidesData(){
-        //TODO
+
+    // Actualiza un registro de la tabla Rides
+    public boolean updateRidesData(RidesDataModel ridesDataModel){
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_R_ID_PK, ridesDataModel.getR_id());
+        cv.put(KEY_ORIGEN, ridesDataModel.getOrigen());
+        cv.put(KEY_LAT_ORIG, ridesDataModel.getLat_orig());
+        cv.put(KEY_LNG_ORIG, ridesDataModel.getLng_orig());
+        cv.put(KEY_FECHA_SALIDA, ridesDataModel.getFecha_salida());
+        cv.put(KEY_DESTINO, ridesDataModel.getDestino());
+        cv.put(KEY_LAT_DEST, ridesDataModel.getLat_dest());
+        cv.put(KEY_LNG_DEST, ridesDataModel.getLng_dest());
+        cv.put(KEY_FECHA_LLEGADA, ridesDataModel.getFecha_llegada());
+        cv.put(KEY_TIPO, ridesDataModel.getTipo());
+        cv.put(KEY_FECHA_LIMITE, ridesDataModel.getFecha_limite());
+        cv.put(KEY_PRECIO, ridesDataModel.getPrecio());
+        cv.put(KEY_PERIOD, ridesDataModel.getPeriod());
+        cv.put(KEY_PROGRAM, ridesDataModel.getProgram());
+        return mDB.update(DB_RIDES, cv, KEY_R_ID_PK + "=" + cv, null) > 0;
     }
 
-    public void addCarsData(CarsDataModel carsDataModel){
-        //TODO
-
-
+    // Añade un nievo regstro a la Tabla de Rides
+    public long addCarsData(CarsDataModel carsDataModel){
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_C_ID_PK, carsDataModel.getC_id());
+        cv.put(KEY_C_NAME, carsDataModel.getC_name());
+        cv.put(KEY_MODELO, carsDataModel.getModel());
+        cv.put(KEY_PLAZAS, carsDataModel.getPlazas());
+        cv.put(KEY_COLOR, carsDataModel.getColor());
+        cv.put(KEY_CONSUMO, carsDataModel.getConsumo());
+        cv.put(KEY_ANTIG, carsDataModel.getAntig());
+        return mDB.insert(DB_CARS, null, cv);
     }
-    public void updateCarsData(){
-        //TODO
+
+    // Actualiza un registro de la tabla Rides
+    public boolean updateCarsData(CarsDataModel carsDataModel){
+        ContentValues cv = new ContentValues();
+        cv.put(KEY_C_ID_PK, carsDataModel.getC_id());
+        cv.put(KEY_C_NAME, carsDataModel.getC_name());
+        cv.put(KEY_MODELO, carsDataModel.getModel());
+        cv.put(KEY_PLAZAS, carsDataModel.getPlazas());
+        cv.put(KEY_COLOR, carsDataModel.getColor());
+        cv.put(KEY_CONSUMO, carsDataModel.getConsumo());
+        cv.put(KEY_ANTIG, carsDataModel.getAntig());
+        return mDB.update(DB_CARS, cv, KEY_C_ID_PK + "=" + cv, null) > 0;
     }
 
 
