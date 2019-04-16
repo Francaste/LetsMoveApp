@@ -1,263 +1,255 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+
     tools:context=".NewRidesFragment">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Nombre"
+            android:textSize="20sp" />
+
+        <EditText
+            android:id="@+id/name_ride"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Etiqueta del viaje"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Origen"
+            android:textSize="20sp" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:padding="10dp"
-                android:text="Nombre"
-                android:textSize="20sp" />
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/name_ride"
+                android:id="@+id/origen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:hint="Etiqueta del viaje"
+                android:hint="Tatooin"
                 android:inputType="textPersonName"
                 android:padding="10dp" />
 
-            <TextView
+            <ImageButton
+                android:id="@+id/button_maps_origen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Origen"
-                android:textSize="20sp" />
+                android:src="@android:drawable/ic_dialog_map" />
 
-            <LinearLayout
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="ok" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Destino"
+            android:textSize="20sp" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/destino"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:ems="10"
+                android:hint="Naboo"
+                android:inputType="textPersonName"
+                android:padding="10dp" />
 
-                <EditText
-                    android:id="@+id/origen"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Tatooin"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_dialog_map" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="ok" />
-            </LinearLayout>
-
-            <TextView
+            <ImageButton
+                android:id="@+id/button_maps_destino"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="Destino"
-                android:textSize="20sp" />
+                android:src="@android:drawable/ic_dialog_map" />
 
-            <LinearLayout
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <EditText
-                    android:id="@+id/destino"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Naboo"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <ImageButton
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:src="@android:drawable/ic_dialog_map" />
-
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="ok" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/button_horasalida"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Hora de salida" />
-
-                <TextView
-                    android:id="@+id/textView_horaSalida"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <Button
-                    android:id="@+id/button_horallegada"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Hora de llegada" />
-
-                <TextView
-                    android:id="@+id/textView_horaLlegada"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp" />
-
-            </LinearLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                >
-                <!--Añadido para hacer pruebas con la base de datos!-->
-
-                <EditText
-                    android:id="@+id/lat_orig"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Latitud origen"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/lng_orig"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Longitud origen"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/lat_dest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Latitud destino"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/lng_dest"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Longitud destino"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/tipo_ride"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Tipo de viaje"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/hora_limite"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Hora límite de espera"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/precio"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Preio aproximado"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/period"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Periodicidad"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <EditText
-                    android:id="@+id/programacion"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:ems="10"
-                    android:hint="Programacion"
-                    android:inputType="textPersonName"
-                    android:padding="10dp" />
-
-                <Button
-                    android:id="@+id/add_button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:padding="10dp"
-                    android:text="Añadir" />
-
-                <!--KEY_R_ID_PK +" integer primary key autoincrement, " +
-                            -KEY_R_NAME + " text not null, " +
-                            -KEY_ORIGEN + " text not null, "+
-                            -KEY_LAT_ORIG + " real not null, "+
-                            -KEY_LNG_ORIG + " real not null, "+
-                            -KEY_FECHA_SALIDA + " text not null, "+
-                            -KEY_DESTINO + " text not null, "+
-                            -KEY_LAT_DEST + " real not null, "+
-                            -KEY_LNG_DEST + " real not null, "+
-                            -KEY_FECHA_LLEGADA + " text not null, "+
-                            -KEY_TIPO + " text not null, "+
-                            -KEY_FECHA_LIMITE + " text not null, "+
-                            -KEY_PRECIO + " integer not null, "+
-                            -KEY_PERIOD + " text not null, "+
-                            KEY_PROGRAM + " text not null);";
-                            !-->
-
-
-            </LinearLayout>
+                android:padding="10dp"
+                android:text="ok" />
 
         </LinearLayout>
 
-    </ScrollView>
-</LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_horasalida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Hora de salida" />
+
+            <TextView
+                android:id="@+id/textView_horaSalida"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/button_horallegada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="Hora de llegada" />
+
+            <TextView
+                android:id="@+id/textView_horaLlegada"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="10dp" />
+
+        </LinearLayout>
+
+
+
+        <!--Añadido para hacer pruebas con la base de datos!-->
+
+        <EditText
+            android:id="@+id/lat_orig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Latitud origen"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/lng_orig"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Longitud origen"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/lat_dest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Latitud destino"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/lng_dest"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Longitud destino"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/tipo_ride"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Tipo de viaje"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/hora_limite"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Hora límite de espera"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/precio"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Preio aproximado"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/period"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Periodicidad"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <EditText
+            android:id="@+id/programacion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Programacion"
+            android:inputType="textPersonName"
+            android:padding="10dp" />
+
+        <Button
+            android:id="@+id/add_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:text="Añadir" />
+
+        <!--KEY_R_ID_PK +" integer primary key autoincrement, " +
+                    -KEY_R_NAME + " text not null, " +
+                    -KEY_ORIGEN + " text not null, "+
+                    -KEY_LAT_ORIG + " real not null, "+
+                    -KEY_LNG_ORIG + " real not null, "+
+                    -KEY_FECHA_SALIDA + " text not null, "+
+                    -KEY_DESTINO + " text not null, "+
+                    -KEY_LAT_DEST + " real not null, "+
+                    -KEY_LNG_DEST + " real not null, "+
+                    -KEY_FECHA_LLEGADA + " text not null, "+
+                    -KEY_TIPO + " text not null, "+
+                    -KEY_FECHA_LIMITE + " text not null, "+
+                    -KEY_PRECIO + " integer not null, "+
+                    -KEY_PERIOD + " text not null, "+
+                    KEY_PROGRAM + " text not null);";
+                    !-->
+
+
+    </LinearLayout>
+</ScrollView>

@@ -1,5 +1,6 @@
 package com.g9.letsmoveapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -9,6 +10,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class NewRidesFragment extends Fragment {
     @Override
@@ -34,6 +36,17 @@ public class NewRidesFragment extends Fragment {
                 fragmentManager.beginTransaction();
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.show(fragmentManager, "time picker");
+            }
+        });
+
+        // Click Listener para lanzar actividad MapsActivity y selsecionar origen
+        ImageButton button_maps_origen = (ImageButton) view.findViewById(R.id.button_maps_origen);
+        button_maps_origen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapsActivity.class);
+                startActivity(intent);
+
             }
         });
 
