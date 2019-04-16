@@ -28,8 +28,6 @@ public class NuevoCoche extends Activity {
         super.onCreate(savedInstanceState); setContentView(R.layout.nuevo_coche);
         button_camera = findViewById(R.id.cam_car);
         fotoCar=findViewById(R.id.foto_car);
-        //------------BOTON: MI PERFIL----------------
-        //Aquí se establece el escuchador OnCLick para el boton
         button_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
