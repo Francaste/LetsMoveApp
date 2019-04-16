@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,7 +16,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import java.util.ArrayList;
-import java.util.LinkedList;
+
+import com.g9.letsmoveapp.DatabaseAdapter.DatabaseHelper;
+import com.g9.letsmoveapp.NuevoCoche;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -57,6 +58,14 @@ public class MainActivity extends AppCompatActivity
         fragmentManager.beginTransaction().replace(R.id.contenedor, new MenuFragment()).commit();
 
         //Triplecito para el context del adaptador
+
+        //Creamos base de datos
+        try {
+            DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
+            dbAdapter.mDBHelper.onCreate(dbAdapter.mDB);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
     }
 
     //Triple unido al a anterior línea del context del adaptador

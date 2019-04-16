@@ -19,7 +19,11 @@ import android.view.View.OnClickListener;
 
 public class NuevoCoche extends Activity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
+    public static final String LOG_TAG = "NuevoCoche";
+
     Button button_camera;
+    Button add_new_car;
+
     ImageView fotoCar;
 
 
@@ -27,11 +31,19 @@ public class NuevoCoche extends Activity {
         //Te deja controlar la actividad general "haciendo como que entras", coge la clase superior
         super.onCreate(savedInstanceState); setContentView(R.layout.nuevo_coche);
         button_camera = findViewById(R.id.cam_car);
+        add_new_car = findViewById(R.id.add_new_car);
+
         fotoCar=findViewById(R.id.foto_car);
         button_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 intentCamara(view);
+            }
+        });
+        add_new_car.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                add_car();
             }
         });
     }
@@ -42,9 +54,16 @@ public class NuevoCoche extends Activity {
     }
 */
 
-    public void add_car(View view) {
+    public void add_car() {
         EditText editText = (EditText) findViewById(R.id.nombre_nuevo_coche);
         String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
+        try {
+            DatabaseAdapter dbAdapter=new DatabaseAdapter(this);
+            CarsDataModel carsDataModel=new CarsDataModel();
+            dbAdapter.addCarsData(carsDataModel);
+        }catch(Exception e){
+            e.printStackTrace();
+        }
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         finish();
 
@@ -74,4 +93,5 @@ public class NuevoCoche extends Activity {
             fotoCar.setImageBitmap(imageBitmap);
         }
     }
+
 }
