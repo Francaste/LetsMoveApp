@@ -1,5 +1,6 @@
 package com.g9.letsmoveapp;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
@@ -9,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 
 public class NewRidesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_newrides, container, false);
 
+        // CLick Listener para mostrar el TIiePicker
         Button button_horasalida = (Button)view.findViewById(R.id.button_horasalida);
         button_horasalida.setOnClickListener(new View.OnClickListener(){
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -26,6 +29,7 @@ public class NewRidesFragment extends Fragment {
             }
         });
 
+        // CLick Listener para mostrar el TIiePicker
         Button button_horallegada = (Button)view.findViewById(R.id.button_horallegada);
         button_horallegada.setOnClickListener(new View.OnClickListener(){
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -34,6 +38,26 @@ public class NewRidesFragment extends Fragment {
                 fragmentManager.beginTransaction();
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.show(fragmentManager, "time picker");
+            }
+        });
+
+        // Click Listener para lanzar actividad MapsActivity y selsecionar ORIGEN
+        ImageButton button_maps_origen = (ImageButton) view.findViewById(R.id.button_maps_origen);
+        button_maps_origen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapsActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        // Click Listener para lanzar actividad MapsActivity y selsecionar DESTINO
+        ImageButton button_maps_destino = (ImageButton) view.findViewById(R.id.button_maps_destino);
+        button_maps_destino.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapsActivity.class);
+                startActivity(intent);
             }
         });
 
