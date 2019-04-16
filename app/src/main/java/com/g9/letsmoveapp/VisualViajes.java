@@ -1,5 +1,4 @@
 package com.g9.letsmoveapp;
-
 import java.util.ArrayList;
 
 public class VisualViajes {
