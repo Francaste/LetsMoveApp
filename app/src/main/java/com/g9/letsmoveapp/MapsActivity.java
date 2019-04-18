@@ -6,24 +6,19 @@ import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
-import android.location.LocationProvider;
-import android.support.annotation.NonNull;
+import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
-import android.util.Log;
+import android.support.v4.content.ContextCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -31,8 +26,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private GoogleMap mMap;
     private String TAG = "MapsActivity";
+    private static final int REQUEST_LOCATION = 123;
+    private LocationManager locationManager;
+    private String provider;
+    private boolean permission;
 
-    public FusedLocationProviderClient fusedLocationClient;
+    private FusedLocationProviderClient fusedLocationClient;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,77 +44,24 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
 
-        // Primer intento de obtener la localización
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
-        // Proveedor de loc por criterio
-        /*
-        Criteria criteria = new Criteria();
-        criteria.setAccuracy(Criteria.ACCURACY_COARSE);
-        criteria.setPowerRequirement(Criteria.POWER_LOW);
-        criteria.setAltitudeRequired(false);
-        criteria.setBearingRequired(false);
-        criteria.setSpeedRequired(false);
-        criteria.setCostAllowed(true);
+        provider = locationManager.getBestProvider(new Criteria(), false);
 
-        String serviceString = Context.LOCATION_SERVICE;
-        LocationManager locationManager;
-        locationManager = (LocationManager) getSystemService(serviceString);
-        String bestProvider = locationManager.getBestProvider(criteria, true);
-        */
-        /*
-        LocationProvider gpsProvider;
-        gpsProvider = LocationManager.getProvider(bestProvider);
-        */
+        permission = checkPermission();
 
-        // PERMISSION CHECK
-        /*
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
+        if(permission){
+            Location location = locationManager.getLastKnownLocation(provider);
         }
-        String provider = LocationManager.GPS_PROVIDER;
-        Location location = locationManager.getLastKnownLocation(provider);
-        Log.d(TAG, "Location: "+location);
-        */
 
 
-        // segun android developers
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            // TODO: Consider calling
-            //    ActivityCompat#requestPermissions
-            // here to request the missing permissions, and then overriding
-            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-            //                                          int[] grantResults)
-            // to handle the case where the user grants the permission. See the documentation
-            // for ActivityCompat#requestPermissions for more details.
-            return;
-        }
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        Log.d(TAG, "Location: "+location);
-                    }
-                })
-                .addOnFailureListener(this, new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-
-                    }
-                });
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+         checkPermission();
+    }
 
     /**
      * Manipulates the map once available.
@@ -129,13 +76,62 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
+
+
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        }else checkPermission();
+
+        marcadores(googleMap);
+
+
+    }
+
+    public void marcadores(GoogleMap googleMap) {
+        mMap = googleMap;
         // Campus de Leganés
         // LAT 40.332008867438645
         // LONG -3.765928643655343
         // Añade un marcador y mueve la cámara
-        LatLng leganes = new LatLng(40.332008, -3.765928);
+        final LatLng leganes = new LatLng(40.332008, -3.765928);
         mMap.addMarker(new MarkerOptions().position(leganes).title("UC3M Campus Leganés"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(leganes, 17));
-
     }
+
+    public boolean checkPermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+                //...
+            }else {
+                ActivityCompat.requestPermissions(this,
+                        new String[]{
+                                android.Manifest.permission.ACCESS_COARSE_LOCATION,
+                                android.Manifest.permission.ACCESS_FINE_LOCATION,
+                        }, REQUEST_LOCATION);
+            }
+            return false;
+        } else {
+            System.out.println("Permisos de localización disponibles, obtniendo localización...");
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+        if (requestCode == REQUEST_LOCATION) {
+            if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                System.out.println("Permisos de localización obtenidos, obteniendo localización...");
+            }else{
+                System.out.println("No hay permisos para obtener localización");
+            }
+        }
+    }
+
 }
