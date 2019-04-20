@@ -1,42 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/scroller"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:layout_height="wrap_content"
+    android:fillViewport="true"
     tools:context=".NuevoCoche">
-
-
+<LinearLayout
+    android:layout_weight="1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:id="@+id/linearLayout">
     <TextView
         android:id="@+id/title_nuevo_coche"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Nuevo Coche"
         android:textAlignment="center"
         android:textSize="35sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:layout_conversion_absoluteHeight="47dp"
+        tools:layout_editor_absoluteY="0dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="411dp" />
 
     <ImageView
         android:id="@+id/foto_car"
-        android:layout_weight="1"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:layout_conversion_absoluteHeight="0dp"
+        tools:layout_editor_absoluteY="47dp"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_conversion_absoluteWidth="411dp" />
 
         <Button
             android:id="@+id/cam_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:icon="@drawable/ic_camera_alt_black_24dp"
-            android:onClick="intentCamara"/>
+            android:drawableLeft="@drawable/ic_camera_alt_black_24dp"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_editor_absoluteY="47dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_conversion_absoluteWidth="88dp" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:orientation="vertical">
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -44,56 +55,69 @@
             android:text="Nombre del nuevo coche"
             android:textSize="16sp"
             android:textStyle="bold"
-            android:layout_gravity="left"/>
+            tools:layout_conversion_absoluteHeight="21dp"
+            tools:layout_editor_absoluteY="95dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_conversion_absoluteWidth="177dp" />
         <EditText
             android:id="@+id/nombre_nuevo_coche"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="14sp"
-            android:hint="Tesla Y" />
+            android:hint="Tesla Y"
+            tools:layout_conversion_absoluteHeight="40dp"
+            tools:layout_editor_absoluteY="117dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_conversion_absoluteWidth="411dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
                 android:text="Huecos libres: "
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                tools:layout_conversion_absoluteHeight="21dp"
+                tools:layout_editor_absoluteY="157dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_conversion_absoluteWidth="107dp" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
-                android:hint="2" />
-        </LinearLayout>
+                android:hint="2"
+                tools:layout_conversion_absoluteHeight="40dp"
+                tools:layout_editor_absoluteY="178dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_conversion_absoluteWidth="411dp" />
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+
+
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Antigüedad (meses): "
                 android:textSize="16sp"
-
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                tools:layout_conversion_absoluteHeight="21dp"
+                tools:layout_editor_absoluteY="218dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_conversion_absoluteWidth="154dp" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="2"
-                android:textSize="14sp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+                android:textSize="14sp"
+                tools:layout_conversion_absoluteHeight="40dp"
+                tools:layout_editor_absoluteY="239dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_conversion_absoluteWidth="411dp" />
+
+
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,21 +125,31 @@
                 android:text="Color: "
                 android:textSize="16sp"
                 android:textStyle="bold"
-                />
+                tools:layout_conversion_absoluteHeight="21dp"
+                tools:layout_editor_absoluteY="279dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_conversion_absoluteWidth="47dp" />
 
             <EditText
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:hint="Negro"
                 android:textSize="14sp"
-                />
-        </LinearLayout>
+                tools:layout_conversion_absoluteHeight="40dp"
+                tools:layout_editor_absoluteY="301dp"
+                tools:layout_editor_absoluteX="0dp"
+                tools:layout_conversion_absoluteWidth="411dp" />
+
         <Button
             android:id="@+id/add_new_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Añadir nuevo coche"
-            android:onClick="onClickAddCar"
-            />
+            android:onClick="add_car"
+            tools:layout_conversion_absoluteHeight="48dp"
+            tools:layout_editor_absoluteY="341dp"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_conversion_absoluteWidth="174dp" />
+
 </LinearLayout>
-</LinearLayout>
+</ScrollView>
