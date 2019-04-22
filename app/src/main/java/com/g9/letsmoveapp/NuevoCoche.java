@@ -59,7 +59,6 @@ public class NuevoCoche extends AppCompatActivity {
 
         button_camera = findViewById(R.id.cam_car);
         fotoCar = findViewById(R.id.foto_car);
-
         button_camera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
