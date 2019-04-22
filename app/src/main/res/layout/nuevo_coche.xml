@@ -1,11 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     tools:context=".NuevoCoche">
+
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
 
 
     <TextView
@@ -19,6 +24,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <ImageView
         android:id="@+id/foto_car"
         android:layout_weight="1"
@@ -30,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:icon="@drawable/ic_camera_alt_black_24dp"
-            android:onClick="intentCamara"/>
+            />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -61,14 +67,36 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="16sp"
-                android:text="Huecos libres: "
+                android:text="Número de plazas: "
                 android:textStyle="bold"/>
 
             <EditText
+                android:id="@+id/num_plazas"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:hint="2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tamaño (deportivo, estándar, monovolumen): "
+                android:textSize="16sp"
+
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/size"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Monovolumen"
+                android:textSize="14sp" />
         </LinearLayout>
 
         <LinearLayout
@@ -85,6 +113,7 @@
                 android:textStyle="bold" />
 
             <EditText
+                android:id="@+id/antiguedad"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="2"
@@ -104,18 +133,42 @@
                 />
 
             <EditText
+                android:id="@+id/color"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="Negro"
                 android:textSize="14sp"
                 />
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Consumo (L/100km): "
+                android:textSize="16sp"
+
+                android:textStyle="bold" />
+
+            <EditText
+                android:id="@+id/consumo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="6"
+                android:textSize="14sp" />
+        </LinearLayout>
+
         <Button
             android:id="@+id/add_new_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Añadir nuevo coche"
-            android:onClick="onClickAddCar"
-            />
+            android:onClick="add_car"/>
 </LinearLayout>
+
 </LinearLayout>
+</ScrollView>

@@ -10,15 +10,16 @@ import android.util.Log;
 
 // Clase adaptadora que nos va a facilitar el uso de la BD
 public class DatabaseAdapter {
-    private static final String TAG = "DatabaseAdapter"; // Usado en los mensajes de Log
+    public static final String TAG = "DatabaseAdapter"; // Usado en los mensajes de Log
 
-    //Nombre de la base de datos, tablas (en este caso una) y versión
+    //Nombre de las base de datos, tablas (en este caso una) y versión
+    //Ponemos static para poder acceder desde cualquier parte del código
     //hay que poner la extension
-    private static final String DB_NAME = "LETSMOVE_DB.db";
-    private static final String DB_CARS = "CARS";
-    private static final String DB_RIDES = "RIDES";
+    public static final String DB_NAME = "LETSMOVE_DB.db";
+    public static final String DB_CARS = "CARS";
+    public static final String DB_RIDES = "RIDES";
     // Version de lka base de datos
-    private static final int DB_VERSION = 1;
+    public static final int DB_VERSION = 1;
     //campos de la tabla de la base de datos DE COCHES
     public static final String KEY_C_ID_PK = "ID_C";
     public static final String KEY_C_NAME = "NAME_C";
@@ -46,8 +47,9 @@ public class DatabaseAdapter {
     public static final String KEY_PROGRAM = "PROGRAMACION";
 
 
-    // Sentencia SQL para crear las tablas de las bases de datos
-    private static final String DB_CREATE_CARS = "create table " + DB_CARS + " (" +
+    // Sentencia SQL para crear las tablas de las bases de datos, tenemos que hacerlas públicas
+    // si queremos acceder a ellas desde ConexionDatabase
+    public static final String DB_CREATE_CARS = "create table " + DB_CARS + " (" +
             KEY_C_ID_PK + " integer primary key autoincrement, " +
             KEY_C_NAME + " text not null, " +
             KEY_MODELO + " text not null, " +
@@ -57,7 +59,7 @@ public class DatabaseAdapter {
             KEY_CONSUMO + " real not null, " +
             KEY_ANTIG + " integer not null);";
 
-    private static final String DB_CREATE_RIDES = "create table " + DB_RIDES + " (" +
+    public static final String DB_CREATE_RIDES = "create table " + DB_RIDES + " (" +
             KEY_R_ID_PK + " integer primary key autoincrement, " +
             KEY_R_NAME + " text not null, " +
             KEY_ORIGEN + " text not null, " +
@@ -82,6 +84,8 @@ public class DatabaseAdapter {
     //tiene que tener un número único que será incrementado con la creación de otros elementos
     // título es de tipo text, no puede ser nulo y body igual
 
+
+    /*
     protected DatabaseHelper mDBHelper;
     protected static SQLiteDatabase mDB;
 
@@ -114,17 +118,17 @@ public class DatabaseAdapter {
         }
     }
 
-    /**
+    *//**
      * Constructor - takes the context to allow the daatabase to be
      * opened/created
      *
      * @param ctx the Context within which to work
-     */
+     *//*
     public DatabaseAdapter(Context ctx) {
         this.mCtx = ctx;
     }
 
-    /**
+    *//**
      * Open the notes database. If it cannot be opened, try to create a new
      * instance of the database. If it cannot be created, throw an exception to
      * signal the failure
@@ -132,7 +136,7 @@ public class DatabaseAdapter {
      * @return this (self reference, allowing this to be chained in an
      * initialization call)
      * @throws SQLException if the database could be neither opened or created dfads
-     */
+     *//*
     public DatabaseAdapter open() throws SQLException {
         mDBHelper = new DatabaseHelper(mCtx);
         mDB = mDBHelper.getWritableDatabase();
@@ -144,12 +148,12 @@ public class DatabaseAdapter {
     }
 
 
-    /**
+    *//**
      * Delete the note with the given rowId
      *
      * @param rowId_R id of note to delete
      * @return true if deleted, false otherwise
-     */
+     *//*
     public boolean deleteRIDES(long rowId_R) {
 
         return mDB.delete(DB_RIDES, KEY_R_ID_PK + "=" + rowId_R, null) > 0;
@@ -161,12 +165,13 @@ public class DatabaseAdapter {
     }
 
 
-    /**
+    *//**
      * Return a Cursor over the list of all notes in the database
      *
      * @return Cursor over all notes
-     */
+     *//*
 
+    //ir a buscar todos los rides
     public Cursor fetchALLRIDES() {
 
         return mDB.query(DB_RIDES, new String[]{KEY_R_ID_PK, KEY_R_NAME, KEY_ORIGEN, KEY_LAT_ORIG,
@@ -182,13 +187,13 @@ public class DatabaseAdapter {
                 null, null, null);
     }
 
-    /**
+    *//**
      * Return a Cursor positioned at the note that matches the given rowId
      *
      * @param rowId_R id of note to retrieve
      * @return Cursor positioned to matching note, if found
      * @throws SQLException if note could not be found/retrieved
-     */
+     *//*
     public Cursor fetchRIDES(long rowId_R) throws SQLException {
 
         Cursor mCursor =
@@ -290,6 +295,7 @@ public class DatabaseAdapter {
         cv.put(KEY_ANTIG, carsDataModel.getAntig());
         return mDB.update(DB_CARS, cv, KEY_C_ID_PK + "=" + cv, null) > 0;
     }
+*/
 
 }
 

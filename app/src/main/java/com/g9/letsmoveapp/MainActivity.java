@@ -19,7 +19,7 @@ import android.view.MenuItem;
 
 import java.util.ArrayList;
 
-import com.g9.letsmoveapp.DatabaseAdapter.DatabaseHelper;
+//import com.g9.letsmoveapp.DatabaseAdapter.ConexionDatabase;
 import com.g9.letsmoveapp.NuevoCoche;
 
 public class MainActivity extends AppCompatActivity
@@ -62,12 +62,17 @@ public class MainActivity extends AppCompatActivity
         //Triplecito para el context del adaptador
 
         //Creamos base de datos
+/*
         try {
             DatabaseAdapter dbAdapter = new DatabaseAdapter(this);
             dbAdapter.mDBHelper.onCreate(dbAdapter.mDB);
         } catch (Exception e) {
             e.printStackTrace();
         }
+*/
+        //Creamos la conexión de acuerdo a la última versión que vamos a llevar a cabo
+        ConexionDatabase conn =new ConexionDatabase(this,"bd_usuarios",null,1);
+
     }
 
     //Triple unido al a anterior línea del context del adaptador

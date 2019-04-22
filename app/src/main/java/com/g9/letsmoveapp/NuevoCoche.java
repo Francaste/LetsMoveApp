@@ -29,8 +29,14 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+//Imports para la base de datos
+import android.database.sqlite.SQLiteDatabase;
+import android.support.v7.app.AppCompatActivity;
+import com.g9.letsmoveapp.DatabaseAdapter;
+import com.g9.letsmoveapp.ConexionDatabase;
 
-public class NuevoCoche extends Activity {
+
+public class NuevoCoche extends AppCompatActivity {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE =1001 ;
@@ -40,9 +46,12 @@ public class NuevoCoche extends Activity {
     public static final String LOG_TAG = "nuevoCoche";
     Uri photoUri;//esta uri la guardamos en la base de datos en el registro de cada coche
 
+    //Variables para el coche
+    EditText car_nombre,car_plazas,car_size,car_antig,car_color,car_consumo;
+
 
     public void onCreate(Bundle savedInstanceState) {
-        //Te deja controlar la actividad general "haciendo como que entras", coge la clase superior
+        //Parte correspondiente a la cámara de esta clase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nuevo_coche);
 
@@ -68,6 +77,20 @@ public class NuevoCoche extends Activity {
                 }
             }
         });
+
+
+
+    //Parte corresondiente a añadir coches
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.nuevo_coche);
+
+        car_nombre= (EditText) findViewById(R.id.nombre_nuevo_coche);
+        car_plazas= (EditText) findViewById(R.id.num_plazas);
+        car_size= (EditText) findViewById(R.id.size);
+        car_antig= (EditText) findViewById(R.id.antiguedad);
+        car_color= (EditText) findViewById(R.id.color);
+        car_consumo= (EditText) findViewById(R.id.consumo);
+
     }
 
     private void openCamera() {
@@ -93,15 +116,6 @@ public class NuevoCoche extends Activity {
         }
     }
 
-    public void add_car(View view) {
-        EditText editText = (EditText) findViewById(R.id.nombre_nuevo_coche);
-        String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-        finish();
-
-        // Cuando acaba una actividad vuelve a la actividad padre. No hace falta hacer un intent
-
-    }
     @Override
     //para los permisos
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
@@ -114,6 +128,18 @@ switch(requestCode){
         }
     }
 }
+    }
+
+
+    //Añadimos el coche
+    public void add_car(View view) {
+        EditText editText = (EditText) findViewById(R.id.nombre_nuevo_coche);
+        String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        finish();
+
+        // Cuando acaba una actividad vuelve a la actividad padre. No hace falta hacer un intent
+
     }
 }
 /*
@@ -131,6 +157,7 @@ switch(requestCode){
     public void add_car(View view) {
         EditText editText = (EditText) findViewById(R.id.nombre_nuevo_coche);
         String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
+        //Cascar aquí el adaptador datos del coche addCarsData
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         finish();
 
