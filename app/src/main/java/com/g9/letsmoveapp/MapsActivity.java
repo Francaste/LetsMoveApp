@@ -5,11 +5,13 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Criteria;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -21,14 +23,15 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
 
     private GoogleMap mMap;
-    private String TAG = "MapsActivity";
+    private final String TAG = "MapsActivity";
     private static final int REQUEST_LOCATION = 123;
     private LocationManager locationManager;
     private String provider;
+    private Location location;
     private boolean permission;
 
     private FusedLocationProviderClient fusedLocationClient;
@@ -41,8 +44,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
-        mapFragment.getMapAsync(this);
-
+        if (mapFragment != null) {
+            mapFragment.getMapAsync(this);
+        }
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
@@ -50,9 +54,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         permission = checkPermission();
 
-        if(permission){
-            Location location = locationManager.getLastKnownLocation(provider);
-        }
 
 
     }
@@ -60,7 +61,33 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     protected void onResume() {
         super.onResume();
-         checkPermission();
+        // Si se han concedido los permisos obtenetmos la localización
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            provider = locationManager.getBestProvider(new Criteria(), false);
+
+            //Solicitar localizacion
+            if (provider != null) {
+                //location = locationManager.getLastKnownLocation(provider);
+                locationManager.requestLocationUpdates(provider, 400, 5, this);
+                location = locationManager.getLastKnownLocation(provider);
+                onMapReady(mMap);
+            } else {
+                Log.e(TAG, "Error obteniendo localizaión...");
+            }
+        }
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+
+            locationManager.removeUpdates(this);
+        }
     }
 
     /**
@@ -75,41 +102,46 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-
-
-
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                == PackageManager.PERMISSION_GRANTED) {
-            mMap.setMyLocationEnabled(true);
-            mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
-        }else checkPermission();
-
         marcadores(googleMap);
-
-
     }
 
+    /**
+     * En este método añadimos los marcadores que deseemos en el mapa
+     */
     public void marcadores(GoogleMap googleMap) {
         mMap = googleMap;
-        // Campus de Leganés
+        // UC3M Campus de Leganés
         // LAT 40.332008867438645
         // LONG -3.765928643655343
         // Añade un marcador y mueve la cámara
         final LatLng leganes = new LatLng(40.332008, -3.765928);
         mMap.addMarker(new MarkerOptions().position(leganes).title("UC3M Campus Leganés"));
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(leganes, 17));
+
+        // Checkea permisos y pone el punto azul con la localización
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                == PackageManager.PERMISSION_GRANTED) {
+            mMap.setMyLocationEnabled(true);
+            mMap.getUiSettings().setMyLocationButtonEnabled(true);
+
+        }
     }
 
+    /**
+     * Verifica si los permisos estan concedidos. Si no lo estan los solicita
+     */
     public boolean checkPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
             // Should we show an explanation?
             if (ActivityCompat.shouldShowRequestPermissionRationale(this,
                     Manifest.permission.ACCESS_FINE_LOCATION)) {
-                //...
-            }else {
+                //...Mostrar algun mensaje explicando porqué necesitamos permisos de localizacion
+                Log.d(TAG, "Explanation: se requiere acceso a la ubicacion");
+            } else {
+                // Solicitar permisos de localización
                 ActivityCompat.requestPermissions(this,
                         new String[]{
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
@@ -118,20 +150,66 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
             return false;
         } else {
-            System.out.println("Permisos de localización disponibles, obtniendo localización...");
+            Log.d(TAG, "Permisos de localización disponibles, obtniendo localización...");
             return true;
         }
     }
 
+
+    /**
+     * Este método se ejecuta al responder a la solicitud de permisos de localización
+     */
     @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         if (requestCode == REQUEST_LOCATION) {
             if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 System.out.println("Permisos de localización obtenidos, obteniendo localización...");
-            }else{
+                //Acciones necesarias si aplica
+
+
+                // permission was granted, yay! Do the
+                // location-related task you need to do.
+                if (ContextCompat.checkSelfPermission(this,
+                        Manifest.permission.ACCESS_FINE_LOCATION)
+                        == PackageManager.PERMISSION_GRANTED) {
+
+                    provider = locationManager.getBestProvider(new Criteria(), false);
+
+                    //Solicitar localizacion
+                    if (provider != null) {
+                        locationManager.requestLocationUpdates(provider, 400, 5, this);
+                        location = locationManager.getLastKnownLocation(provider);
+                    } else {
+                        Log.e(TAG, "Error obteniendo localizaión...");
+                    }
+                }
+
+
+            } else {
                 System.out.println("No hay permisos para obtener localización");
+                //Acciones necesarias si aplica
             }
+            return;
         }
     }
 
+    @Override
+    public void onLocationChanged(Location location) {
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 }
