@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v4.app.FragmentManager;
@@ -45,10 +46,11 @@ public class NuevoCoche extends AppCompatActivity {
     private final static String CLAVE_RUTA_IMAGEN = "CLAVE_RUTA_IMAGEN";
     public static final String LOG_TAG = "nuevoCoche";
     Uri photoUri;//esta uri la guardamos en la base de datos en el registro de cada coche
+    String portaURI="";
 
     //Variables para el coche
-    EditText car_nombre,car_plazas,car_size,car_antig,car_color,car_consumo;
-
+    EditText car_modelo,car_plazas,car_size,car_color,car_antig,car_consumo;
+    Button button_new_car;
 
     public void onCreate(Bundle savedInstanceState) {
         //Parte correspondiente a la cámara de esta clase
@@ -78,13 +80,9 @@ public class NuevoCoche extends AppCompatActivity {
             }
         });
 
-
-
     //Parte corresondiente a añadir coches
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.nuevo_coche);
 
-        car_nombre= (EditText) findViewById(R.id.nombre_nuevo_coche);
+        car_modelo= (EditText) findViewById(R.id.modelo_coche);
         car_plazas= (EditText) findViewById(R.id.num_plazas);
         car_size= (EditText) findViewById(R.id.size);
         car_antig= (EditText) findViewById(R.id.antiguedad);
@@ -100,6 +98,8 @@ public class NuevoCoche extends AppCompatActivity {
         values.put(MediaStore.Images.Media.TITLE,imageFileName);//añadimos nombre
         values.put(MediaStore.Images.Media.DESCRIPTION,"Let's MoveApp");//añadimos descripción
         photoUri=getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI,values);//insertamos en la uri externa titulo y descri
+
+        portaURI=photoUri.toString();
 
         //Intent de la cámara
         Intent photoIntent=new Intent(MediaStore.ACTION_IMAGE_CAPTURE);//crear intent
@@ -130,13 +130,59 @@ switch(requestCode){
 }
     }
 
+/*
+    //Aquí está lo relacionado con coches en esta actividad
+    public void add_car_Sql() {
+        ConexionDatabase conn=new ConexionDatabase(this,"db_cars",null,1);
+        SQLiteDatabase db_cars=conn.getWritableDatabase();
 
-    //Añadimos el coche
+        //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
+
+        String insert="INSERT INTO "+DatabaseAdapter.DB_CARS
+                +" ( " +DatabaseAdapter.KEY_MODELO+","+DatabaseAdapter.KEY_PLAZAS+"," +
+                ""+DatabaseAdapter.KEY_SIZE+","+DatabaseAdapter.KEY_COLOR+","+DatabaseAdapter.KEY_ANTIG+","+DatabaseAdapter.KEY_CONSUMO+")" +
+                " VALUES ('"+car_modelo.getText().toString()+"', "+car_plazas.getText().toString()+",'"+car_color.getText().toString()+
+                "','"+car_size.getText().toString()+"','"+car_consumo.getText().toString()+"','"+car_antig.getText().toString()+"')";
+        //Hay algunos con comillas simples porque son textos, necesito ponerlas si no parseo números
+        // modelo-texto, plazas-int, color-texto
+
+
+        db_cars.execSQL(insert);
+        db_cars.close();
+    }
+*/
+    //Al método add_car lo está llamando el onClick del xml, no hace falta poner escuchador
     public void add_car(View view) {
-        EditText editText = (EditText) findViewById(R.id.nombre_nuevo_coche);
+        ConexionDatabase conn=new ConexionDatabase(this,"db_cars",null,1);
+        SQLiteDatabase db_cars=conn.getWritableDatabase();
+
+        //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
+
+        String insert="INSERT INTO "+DatabaseAdapter.DB_CARS
+                +" ( " +DatabaseAdapter.KEY_MODELO+","+DatabaseAdapter.KEY_PLAZAS+"," +
+                ""+DatabaseAdapter.KEY_SIZE+","+DatabaseAdapter.KEY_COLOR+","+DatabaseAdapter.KEY_ANTIG+","+DatabaseAdapter.KEY_URI+","+DatabaseAdapter.KEY_CONSUMO+")" +
+                " VALUES ('"+car_modelo.getText().toString()+"', "+car_plazas.getText().toString()+",'"+car_size.getText().toString()+
+                "','"+car_color.getText().toString()+"','"+car_antig.getText().toString()+"','"+portaURI+"','"+car_consumo.getText().toString()+"')";
+        //Hay algunos con comillas simples porque son textos, necesito ponerlas si no parseo números
+        // modelo-texto, plazas-int, color-texto
+
+
+        // car_modelo,car_plazas,car_size,car_color,car_antig,car_consumo;
+
+
+        db_cars.execSQL(insert);
+        String message = "Coche: " + car_modelo.getText().toString() + " añadido correctamente";
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        finish();
+        db_cars.close();
+
+       /*
+        EditText editText = (EditText) findViewById(R.id.modelo_coche);
         String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         finish();
+        */
+
 
         // Cuando acaba una actividad vuelve a la actividad padre. No hace falta hacer un intent
 

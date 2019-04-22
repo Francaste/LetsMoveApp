@@ -18,17 +18,18 @@ public class DatabaseAdapter {
     public static final String DB_NAME = "LETSMOVE_DB.db";
     public static final String DB_CARS = "CARS";
     public static final String DB_RIDES = "RIDES";
-    // Version de lka base de datos
+    // Version de la base de datos
     public static final int DB_VERSION = 1;
     //campos de la tabla de la base de datos DE COCHES
     public static final String KEY_C_ID_PK = "ID_C";
-    public static final String KEY_C_NAME = "NAME_C";
     public static final String KEY_MODELO = "MODELO";
     public static final String KEY_PLAZAS = "PLAZAS";
     public static final String KEY_COLOR = "COLOR";
     public static final String KEY_SIZE = "SIZE";
     public static final String KEY_CONSUMO = "CONSUMO"; //Litros cada 100km
     public static final String KEY_ANTIG = "ANTIG";
+    public static final String KEY_URI="URI_FOTO";
+
     //campos de la tabla de la base de datos DE RIDES
     public static final String KEY_R_ID_PK = "ID_R";
     public static final String KEY_R_NAME = "NAME_R";
@@ -51,13 +52,15 @@ public class DatabaseAdapter {
     // si queremos acceder a ellas desde ConexionDatabase
     public static final String DB_CREATE_CARS = "create table " + DB_CARS + " (" +
             KEY_C_ID_PK + " integer primary key autoincrement, " +
-            KEY_C_NAME + " text not null, " +
             KEY_MODELO + " text not null, " +
             KEY_PLAZAS + " integer not null, " +
-            KEY_COLOR + " text not null, " +
             KEY_SIZE + " text not null, " +
-            KEY_CONSUMO + " real not null, " +
-            KEY_ANTIG + " integer not null);";
+            KEY_COLOR + " text not null, " +
+            KEY_ANTIG + " real not null, " +
+            KEY_URI + "text not null, " +
+            KEY_CONSUMO + " integer not null);";
+
+
 
     public static final String DB_CREATE_RIDES = "create table " + DB_RIDES + " (" +
             KEY_R_ID_PK + " integer primary key autoincrement, " +

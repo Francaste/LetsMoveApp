@@ -9,9 +9,10 @@ public class CarsDataModel {
     private String size;
     private double consumo;
     private int antig;
+    private String uri;
 
     public CarsDataModel(int c_id, String c_name, String model, int plazas,
-                         String color, String size, double consumo, int antig) {
+                         String color, String size, double consumo, int antig, String uri) {
         this.c_id = c_id;
         this.c_name = c_name;
         this.model = model;
@@ -20,6 +21,7 @@ public class CarsDataModel {
         this.size = size;
         this.consumo = consumo;
         this.antig = antig;
+        this.uri=uri;
     }
 
     public CarsDataModel() {
@@ -31,6 +33,7 @@ public class CarsDataModel {
         this.size = "big";
         this.consumo = 0;
         this.antig = 1;
+        this.uri="kdsjfalksdfjksadfjakslf";
     }
 
     public int getC_id() {
@@ -95,5 +98,13 @@ public class CarsDataModel {
 
     public void setAntig(int antig) {
         this.antig = antig;
+    }
+
+    public String getUri() {
+        return uri;
+    }
+
+    public void setUri (String uri) {
+        this.uri = uri;
     }
 }

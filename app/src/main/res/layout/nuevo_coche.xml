@@ -47,16 +47,17 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Nombre del nuevo coche"
+            android:text="Modelo del coche:"
             android:textSize="16sp"
             android:textStyle="bold"
             android:layout_gravity="left"/>
         <EditText
-            android:id="@+id/nombre_nuevo_coche"
+            android:id="@+id/modelo_coche"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="14sp"
             android:hint="Tesla Y" />
+
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -163,7 +164,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/add_new_car"
+            android:id="@+id/button_new_car"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Añadir nuevo coche"
