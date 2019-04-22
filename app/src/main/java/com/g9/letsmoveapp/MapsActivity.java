@@ -1,9 +1,14 @@
 package com.g9.letsmoveapp;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
+import android.location.Address;
 import android.location.Criteria;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -12,27 +17,37 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.Projection;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
 
     private GoogleMap mMap;
-    private final String TAG = "MapsActivity";
+    private boolean isReady = false;//Para checkear que el mapa esta listo
+    private final String TAG = MapsActivity.class.getSimpleName();
     private static final int REQUEST_LOCATION = 123;
     private LocationManager locationManager;
     private String provider;
     private Location location;
     private boolean permission;
+    private Marker clickMarker = null;
+
 
     private FusedLocationProviderClient fusedLocationClient;
 
@@ -48,12 +63,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mapFragment.getMapAsync(this);
         }
 
+
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
 
         provider = locationManager.getBestProvider(new Criteria(), false);
 
         permission = checkPermission();
-
 
 
     }
@@ -70,9 +85,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Solicitar localizacion
             if (provider != null) {
                 //location = locationManager.getLastKnownLocation(provider);
-                locationManager.requestLocationUpdates(provider, 400, 5, this);
+
+
+                locationManager.requestLocationUpdates(provider, 1000 * 60 * 5, 25, this);
                 location = locationManager.getLastKnownLocation(provider);
-                onMapReady(mMap);
+                String text = "Coordenadas: LAT:" + location.getLatitude() + ", LONG: " + location.getLongitude();
+                //Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "Coordenadas: " + text);
             } else {
                 Log.e(TAG, "Error obteniendo localizaión...");
             }
@@ -93,26 +112,57 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
+     * This is where we can add markers or lines, add listeners or move the camera.
      */
     @Override
     public void onMapReady(GoogleMap googleMap) {
+        isReady = true;
         mMap = googleMap;
         marcadores(googleMap);
+
+        // Al pulsar sobre el mapa
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                Projection proj = mMap.getProjection();
+                Point coord = proj.toScreenLocation(latLng);
+                String toast = "Click\n" + "Lat: " + latLng.latitude + "\n" + "Lng: " + latLng.longitude + "\n" + "X: " + coord.x + " - Y: " + coord.y;
+                Toast.makeText(MapsActivity.this, toast, Toast.LENGTH_SHORT).show();
+                Log.d(TAG, toast);
+
+            }
+        });
+
+        // Al hacer una pulsación larga sobre el mapa se actualiza el marcador click
+        mMap.setOnMapLongClickListener(new GoogleMap.OnMapLongClickListener() {
+            @Override
+            public void onMapLongClick(LatLng latLng) {
+                marcadorClick(mMap, latLng);
+                getAddress(latLng);
+            }
+        });
     }
 
     /**
-     * En este método añadimos los marcadores que deseemos en el mapa
+     * Actuliza el marcador clickMarker al hacer una pulsacion sobre el mapa
+     */
+    public void marcadorClick(GoogleMap googleMap, LatLng latLng) {
+        mMap = googleMap;
+        if (clickMarker != null) {
+            clickMarker.remove();
+            clickMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+        } else {
+            clickMarker = mMap.addMarker(new MarkerOptions().position(latLng));
+        }
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+    }
+
+    /**
+     * En este método añadimos los marcadores FIJOS que deseemos en el mapa y la localización
      */
     public void marcadores(GoogleMap googleMap) {
         mMap = googleMap;
-        // UC3M Campus de Leganés
-        // LAT 40.332008867438645
-        // LONG -3.765928643655343
+        // UC3M Campus de Leganés LAT 40.332008867438645 LONG -3.765928643655343
         // Añade un marcador y mueve la cámara
         final LatLng leganes = new LatLng(40.332008, -3.765928);
         mMap.addMarker(new MarkerOptions().position(leganes).title("UC3M Campus Leganés"));
@@ -124,12 +174,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
-
         }
+
     }
 
     /**
      * Verifica si los permisos estan concedidos. Si no lo estan los solicita
+     *
+     *
+     * Fuente: https://stackoverflow.com/questions/40142331/how-to-request-location-permission-at-runtime
      */
     public boolean checkPermission() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
@@ -145,8 +198,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 ActivityCompat.requestPermissions(this,
                         new String[]{
                                 android.Manifest.permission.ACCESS_COARSE_LOCATION,
-                                android.Manifest.permission.ACCESS_FINE_LOCATION,
-                        }, REQUEST_LOCATION);
+                                android.Manifest.permission.ACCESS_FINE_LOCATION,},
+                        REQUEST_LOCATION);
             }
             return false;
         } else {
@@ -177,8 +230,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
                     //Solicitar localizacion
                     if (provider != null) {
-                        locationManager.requestLocationUpdates(provider, 400, 5, this);
+                        locationManager.requestLocationUpdates(provider, 1000 * 60 * 5, 25, this);
+                        //minTime en milisegundos
+                        // minDistance en metros
                         location = locationManager.getLastKnownLocation(provider);
+
+                        //Volvemos a llamar a onMapReady para refrescar y habilitar a visualización de la localización
+                        //Verificar si ya se ha cargado el mapa
+                        if (isReady) {
+                            onMapReady(mMap);
+                        }
+
                     } else {
                         Log.e(TAG, "Error obteniendo localizaión...");
                     }
@@ -186,10 +248,32 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
             } else {
-                System.out.println("No hay permisos para obtener localización");
+                Log.e(TAG, "No hay permisos para obtener localización");
                 //Acciones necesarias si aplica
             }
-            return;
+        }
+    }
+
+    /**
+     * Obttencion de la dirección a partir de las coordenadas
+     */
+    public void getAddress(LatLng latLng) {
+        List<Address> addresses = null;
+        // chekea si el dispositivo tiene geocoder
+        if (Geocoder.isPresent()) {
+            Geocoder gc = new Geocoder(this, Locale.getDefault());
+            try {
+                // Obtencion de la direccion
+                addresses = gc.getFromLocation(latLng.latitude, latLng.longitude, 10);
+                Address address = addresses.get(0);
+                String addresLine = address.getAddressLine(0);
+                Log.d(TAG, "GEOCODING: Address:" + addresLine);
+                Toast.makeText(MapsActivity.this, addresLine, Toast.LENGTH_SHORT).show();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                Log.d(TAG, "Error de geocoding");
+            }
         }
     }
 
