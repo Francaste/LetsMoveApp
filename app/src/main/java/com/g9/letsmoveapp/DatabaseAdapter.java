@@ -57,7 +57,7 @@ public class DatabaseAdapter {
             KEY_SIZE + " text not null, " +
             KEY_COLOR + " text not null, " +
             KEY_ANTIG + " real not null, " +
-            KEY_URI + "text not null, " +
+            KEY_URI + " text not null, " +
             KEY_CONSUMO + " integer not null);";
 
 

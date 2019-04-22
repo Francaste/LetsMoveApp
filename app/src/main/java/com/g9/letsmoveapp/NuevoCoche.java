@@ -158,11 +158,23 @@ switch(requestCode){
         //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
 
         String insert="INSERT INTO "+DatabaseAdapter.DB_CARS
-                +" ( " +DatabaseAdapter.KEY_MODELO+","+DatabaseAdapter.KEY_PLAZAS+"," +
-                ""+DatabaseAdapter.KEY_SIZE+","+DatabaseAdapter.KEY_COLOR+","+DatabaseAdapter.KEY_ANTIG+","+DatabaseAdapter.KEY_URI+","+DatabaseAdapter.KEY_CONSUMO+")" +
-                " VALUES ('"+car_modelo.getText().toString()+"', "+car_plazas.getText().toString()+",'"+car_size.getText().toString()+
-                "','"+car_color.getText().toString()+"','"+car_antig.getText().toString()+"','"+portaURI+"','"+car_consumo.getText().toString()+"')";
-        //Hay algunos con comillas simples porque son textos, necesito ponerlas si no parseo números
+                +" ( " +
+                DatabaseAdapter.KEY_MODELO+", "+
+                DatabaseAdapter.KEY_PLAZAS+", " +
+                DatabaseAdapter.KEY_SIZE+", "+
+                DatabaseAdapter.KEY_COLOR+", "+
+                DatabaseAdapter.KEY_ANTIG+", "+
+                DatabaseAdapter.KEY_URI+", "+
+                DatabaseAdapter.KEY_CONSUMO+")" +
+                " VALUES ('"+
+                car_modelo.getText().toString()+"','"+
+                car_plazas.getText().toString()+"','"+
+                car_size.getText().toString()+ "','"+
+                car_color.getText().toString()+"','"+
+                car_antig.getText().toString()+"','"+
+                portaURI+"','"+
+                car_consumo.getText().toString()+"')";
+        //Hay algunos con comillas simples porque son textos y en sql se usan comilla simple, necesito ponerlas si no parseo números
         // modelo-texto, plazas-int, color-texto
 
 
@@ -187,122 +199,3 @@ switch(requestCode){
 
     }
 }
-/*
-
-*/
-/*
-/*
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.nuevo_coche);
-    }
-*//*
-
-
-    public void add_car(View view) {
-        EditText editText = (EditText) findViewById(R.id.nombre_nuevo_coche);
-        String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
-        //Cascar aquí el adaptador datos del coche addCarsData
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-        finish();
-
-        // Cuando acaba una actividad vuelve a la actividad padre. No hace falta hacer un intent
-
-        //Intent intent = new Intent(this, MisCoches.class);
-        //startActivity(intent);
-    }
-
-*/
-/*en codelabs era private
-  Este es el método que estaba ayer cuando la cámara funcionaba sin problemas
-    public void intentCamara(View view) {
-        //Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE);
-        }
-    }*//*
-
-
-    //Este es el método que estaba ayer cuando la cámara funcionaba sin problemas pero no se usaba
-    // de por sí en ningún sitio y ahora con la nueva, es el código que da problemas
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
-            Log.d(LOG_TAG, "Data: "+data.toString());
-            // Continue only if the File was successfully created
-            Uri photoUri = data.getData();
-            Bundle extras = data.getExtras();
-            Bitmap imageBitmap = null;
-            try {
-                imageBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), photoUri);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            fotoCar.setImageBitmap(imageBitmap);
-        }
-    }
-
-
-    //Guardar la foto en la galería o donde sea, hemos importao File, IOException, SimpleDateFormat
-    //Y Environment, que se ha importado más arriba con los otros import (URI y FileProvider
-    // también están arriba)
-
-
-//Esto es nuevo
-    String currentPhotoPath;
-    private File createImageFile() throws IOException {
-        // Create an image file name
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(
-                imageFileName,  */
-/* prefix *//*
-
-                ".jpg",         */
-/* suffix *//*
-
-                storageDir      */
-/* directory *//*
-
-        );
-
-        // Save a file: path for use with ACTION_VIEW intents
-        currentPhotoPath = image.getAbsolutePath();
-        return image;
-    }
-
-//Nuevo
-    static final int REQUEST_TAKE_PHOTO = 1;
-
-    //Una vez que tenemos un método para crear ficheros, lanzamos la cámara
-
-    //Nuevo
-    private void dispatchTakePictureIntent(Intent takePictureIntent) {
-        Intent photoIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        Uri photoURI =null;
-        // Ensure that there's a camera activity to handle the intent
-        if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-            // Create the File where the photo should go
-            File photoFile = null;
-            try {
-                photoFile = createImageFile();
-            } catch (IOException ex) {
-                // Error occurred while creating the File
-                System.out.println("Exception");
-                ex.printStackTrace();
-            }
-           // Continue only if the File was successfully created
-            if (photoFile != null) {
-                photoURI =
-                        FileProvider.getUriForFile(this,
-                        "com.g9.letsmoveapp",
-                        photoFile);
-                //photoIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
-                startActivityForResult(photoIntent, REQUEST_TAKE_PHOTO);
-            }
-        }
-    }
-
-}
-*/

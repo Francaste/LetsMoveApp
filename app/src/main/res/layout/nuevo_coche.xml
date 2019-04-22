@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_weight="1"
     android:orientation="vertical"
     tools:context=".NuevoCoche">
 
@@ -16,104 +15,178 @@
 
         <TextView
             android:id="@+id/title_nuevo_coche"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="Nuevo Coche"
             android:textAlignment="center"
             android:textSize="35sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ScrollView
             android:id="@+id/scroller"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:layout_weight="1">
+            android:layout_alignParentTop="true">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
+
                 <ImageView
                     android:id="@+id/foto_car"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="20dp"
-                    android:adjustViewBounds="true"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentTop="true"
-                    />
+                    android:layout_weight="1"
+                    android:adjustViewBounds="true" />
 
                 <Button
                     android:id="@+id/cam_car"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="New"
-                    android:drawableLeft="@drawable/ic_camera_alt_black_24dp" />
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Nombre del nuevo coche"
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    android:drawableLeft="@drawable/ic_camera_alt_black_24dp"
+                    android:text="New" />
 
-                <EditText
-                    android:id="@+id/nombre_nuevo_coche"
-                    android:layout_width="wrap_content"
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="Tesla Y"
-                    android:textSize="14sp" />
+                    android:layout_weight="1"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Huecos libres: "
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="Modelo del coche:"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="2"
-                    android:textSize="14sp" />
+                    <EditText
+                        android:id="@+id/modelo_coche"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Tesla Y"
+                        android:textSize="14sp" />
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Antigüedad (meses): "
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="2"
-                    android:textSize="14sp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Color: "
-                    android:textSize="16sp"
-                    android:textStyle="bold" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Número de plazas: "
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
 
-                <EditText
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:hint="Negro"
-                    android:textSize="14sp" />
+                        <EditText
+                            android:id="@+id/num_plazas"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="2"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tamaño (deportivo, estándar, monovolumen): "
+                            android:textSize="16sp"
+
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/size"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Monovolumen"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Antigüedad (meses): "
+                            android:textSize="16sp"
+
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/antiguedad"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="2"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Color: "
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/color"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="Negro"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Consumo (L/100km): "
+                            android:textSize="16sp"
+
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/consumo"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:hint="6"
+                            android:textSize="14sp" />
+                    </LinearLayout>
+                </LinearLayout>
             </LinearLayout>
         </ScrollView>
 
-        <Button
-            android:id="@+id/add_new_car"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom"
-            android:layout_weight="0"
-            android:onClick="add_car"
-            android:text="Añadir nuevo coche" />
-
     </LinearLayout>
+    <Button
+        android:id="@+id/button_new_car"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:gravity="bottom"
+        android:onClick="add_car"
+        android:text="Añadir nuevo coche" />
 </LinearLayout>
