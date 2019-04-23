@@ -10,7 +10,7 @@
         android:id="@+id/profile_photo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:src="@drawable/ic_person_black_24dp"
+        android:src="@drawable/ic_person_black_24dp"
         android:layout_gravity="left"
         android:layout_weight="2"/>
     <TextView
