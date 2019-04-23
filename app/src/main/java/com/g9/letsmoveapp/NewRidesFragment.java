@@ -13,9 +13,16 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 public class NewRidesFragment extends Fragment {
+
+    private EditText editTex_origen, getEditTex_destino;
+
+    public static final String EXTRA_MESSAGE_MAP
+            = "com.g9.letsmoveapp.MapsActivity.extra.MESSAGE_MAP";
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_newrides, container, false);
+        final View view = inflater.inflate(R.layout.fragment_newrides, container, false);
 
         // CLick Listener para mostrar el TIiePicker
         Button button_horasalida = (Button)view.findViewById(R.id.button_horasalida);
@@ -29,7 +36,7 @@ public class NewRidesFragment extends Fragment {
             }
         });
 
-        // CLick Listener para mostrar el TIiePicker
+        // CLick Listener para mostrar el TimePicker
         Button button_horallegada = (Button)view.findViewById(R.id.button_horallegada);
         button_horallegada.setOnClickListener(new View.OnClickListener(){
             FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -41,22 +48,32 @@ public class NewRidesFragment extends Fragment {
             }
         });
 
-        // Click Listener para lanzar actividad MapsActivity y selsecionar ORIGEN
+        /*
+        Click Listener para lanzar actividad MapsActivity y selsecionar ORIGEN
+         */
         ImageButton button_maps_origen = (ImageButton) view.findViewById(R.id.button_maps_origen);
         button_maps_origen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                editTex_origen = view.findViewById(R.id.editText_origen);
+                String msg_origen = editTex_origen.getText().toString();
                 Intent intent = new Intent(getContext(), MapsActivity.class);
+                intent.putExtra(EXTRA_MESSAGE_MAP, msg_origen);
                 startActivity(intent);
             }
         });
 
-        // Click Listener para lanzar actividad MapsActivity y selsecionar DESTINO
+        /*
+        Click Listener para lanzar actividad MapsActivity y selsecionar DESTINO
+         */
         ImageButton button_maps_destino = (ImageButton) view.findViewById(R.id.button_maps_destino);
         button_maps_destino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                getEditTex_destino = view.findViewById(R.id.editText_destino);
+                String msg_destino = getEditTex_destino.getText().toString();
                 Intent intent = new Intent(getContext(), MapsActivity.class);
+                intent.putExtra(EXTRA_MESSAGE_MAP, msg_destino);
                 startActivity(intent);
             }
         });
