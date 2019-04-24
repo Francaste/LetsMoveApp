@@ -11,6 +11,7 @@ import android.util.Log;
 import static android.content.ContentValues.TAG;
 
 public class ConexionDatabase extends SQLiteOpenHelper {
+    public static final String TAG = "conexionDB"; // Usado en los mensajes de Log
 
         //final String DB_CREATE_CARS="CREATE TABLE db_cars (id_cars INTEGER, name_c TEXT, modelo TEXT, plazas INTEGER, color TEXT, size TEXT, consumo REAL, antig INTEGER)";
 
