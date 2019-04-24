@@ -23,6 +23,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TabHost;
 import android.widget.Toast;
 import android.view.View.OnClickListener;
 
@@ -41,12 +42,15 @@ import com.g9.letsmoveapp.ConexionDatabase;
 
 
 public class NuevoCoche extends AppCompatActivity {
-    public static final String LOG_TAG = "nuevoCoche";
+    public static final String LOG_TAG = "LEER_COCHE";
     static final int REQUEST_IMAGE_CAPTURE = 1;
     private static final int PERMISSION_CODE = 1000;
     private static final int IMAGE_CAPTURE_CODE = 1001;
     private final static String CLAVE_RUTA_IMAGEN = "CLAVE_RUTA_IMAGEN";
     Button button_camera;
+
+    Button button_readCars;
+    ArrayList carsTable;
     ImageView fotoCar;
     Uri photoUri;//esta uri la guardamos en la base de datos en el registro de cada coche
     String portaURI = "";
@@ -59,6 +63,9 @@ public class NuevoCoche extends AppCompatActivity {
         //Parte correspondiente a la cámara de esta clase
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nuevo_coche);
+
+        button_readCars = findViewById(R.id.button_read_car);
+
 
         button_camera = findViewById(R.id.cam_car);
         fotoCar = findViewById(R.id.foto_car);
@@ -79,6 +86,43 @@ public class NuevoCoche extends AppCompatActivity {
                 } else {
                     openCamera();
                 }
+            }
+        });
+
+        //BOTON DE PRUEBA PARA VER SI SE LEEN LOS REGISTROS
+        button_readCars.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //ver permisos
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {//check version
+                    if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_DENIED) {
+                        //dar permiso
+                        String[] permission = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                        requestPermissions(permission, PERMISSION_CODE);
+                    } else {
+                        //permission OK
+                        carsTable = get_cars();
+                        Log.d(LOG_TAG, "SIZE ARRAY: "+carsTable.size());
+                        CarsDataModel carsDataModel;
+                        int i = 0;
+                        while(carsTable.size() > i) {
+                            carsDataModel= (CarsDataModel) carsTable.get(i);
+                            Log.d(LOG_TAG, "Car1: " + "Model: " + carsDataModel.getModel() + "Model: " + carsDataModel.getModel() + " -  Color: " + carsDataModel.getColor() + " -  Uri: " + carsDataModel.getUri() + " - ");
+                            i++;
+                        }
+                    }
+                } else {
+                    carsTable= get_cars();
+                    Log.d(LOG_TAG, "SIZE ARRAY: "+carsTable.size());
+                    CarsDataModel carsDataModel;
+                    int i = 0;
+                    while(carsTable.size() > i) {
+                        carsDataModel= (CarsDataModel) carsTable.get(i);
+                        Log.d(LOG_TAG, "Car1: " + "Model: " + carsDataModel.getModel() + "Model: " + carsDataModel.getModel() + " -  Color: " + carsDataModel.getColor() + " -  Uri: " + carsDataModel.getUri() + " - ");
+                        i++;
+                    }
+                }
+
             }
         });
 
@@ -169,28 +213,40 @@ public class NuevoCoche extends AppCompatActivity {
         db_cars.close();
         finish();
     }
-    public ArrayList get_car(View view) {
+    public ArrayList get_cars() {
         ConexionDatabase conn = new ConexionDatabase(this, "db_cars", null, 1);
         SQLiteDatabase db_cars = conn.getReadableDatabase();
 
-            String selectQuery = "SELECT  * FROM " + db_cars;
+            String selectQuery = "SELECT * FROM " + DatabaseAdapter.DB_CARS;
 
             Cursor cursor = db_cars.rawQuery(selectQuery,null,null);
         ArrayList carsModelArrayList = new ArrayList();
 
         if(cursor.moveToFirst()){
-                do {
-                    CarsDataModel carsDataModel = new CarsDataModel();//leemos todos los registros de base de datos
+            CarsDataModel carsDataModel;
+            while (cursor.moveToNext()) {
+                carsDataModel= new CarsDataModel();//leemos todos los registros de base de datos
 
-                    carsDataModel.setModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_MODELO)));
+                  /*  carsDataModel.setModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_MODELO)));
+                    Log.d(LOG_TAG,"Model: "+carsDataModel.getModel());
+                     carsDataModel.setPlazas(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_COLOR)));
+                    Log.d(LOG_TAG,"Color: "+carsDataModel.getModel());
                     carsDataModel.setPlazas(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_PLAZAS)));
+                    Log.d(LOG_TAG,"Plazas: "+carsDataModel.getPlazas());
                     carsDataModel.setSize(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_SIZE)));
+                    Log.d(LOG_TAG,"Size: "+carsDataModel.getSize());
                     carsDataModel.setAntig(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_ANTIG)));
+                    Log.d(LOG_TAG,"Antig: "+carsDataModel.getAntig());
                     carsDataModel.setUri(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_URI)));
+                    Log.d(LOG_TAG,"Uri: "+carsDataModel.getUri());
                     carsDataModel.setConsumo(cursor.getDouble(cursor.getColumnIndex(DatabaseAdapter.KEY_CONSUMO)));
+                    Log.d(LOG_TAG,"Consumo: "+carsDataModel.getConsumo());*/
+
+                carsDataModel= new CarsDataModel(carsDataModel.getModel(),carsDataModel.getPlazas(),carsDataModel.getColor(),
+                        carsDataModel.getSize(),carsDataModel.getConsumo(),carsDataModel.getUri(),carsDataModel.getAntig());
 
                     carsModelArrayList.add(carsDataModel);
-                } while (cursor.moveToNext());
+                }
             }
             cursor.close();
 
