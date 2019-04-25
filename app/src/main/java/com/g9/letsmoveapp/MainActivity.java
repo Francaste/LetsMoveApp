@@ -146,6 +146,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+
+    /**
+     * Botones de MyRidesFragment
+     * */
+    //TODO: Esto seria mejor ponerlo en MyRidesFragment.java con onclick listeners. Lo hacemos si nos da tiempo
     public void actuales(View view) {
         Intent intent = new Intent(this, ViajesActuales.class);
         startActivity(intent);
@@ -165,7 +170,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, MisCoches.class);
         startActivity(intent);
     }
-
 
     // Este metodo lanza una actividad para testear la API AEMET
 // al pulsar el boton TEST WEATHER que esta en Mis Viajes
