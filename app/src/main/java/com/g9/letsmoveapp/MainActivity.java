@@ -25,6 +25,9 @@ import com.g9.letsmoveapp.NuevoCoche;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
+
+    // TODO: Cambiar NewRidesFragment para que sea una activity
+
     //Codelabs
     private final ArrayList<VisualViajes> listaViajes = new ArrayList<>();
     private RecyclerView recyclerViajes;
@@ -145,8 +148,6 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
     /**
      * Botones de MyRidesFragment
      * */
