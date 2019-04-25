@@ -41,7 +41,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editText_origen"
+                android:id="@+id/origen"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -76,7 +76,7 @@
             android:orientation="horizontal">
 
             <EditText
-                android:id="@+id/editText_destino"
+                android:id="@+id/destino"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
@@ -143,7 +143,7 @@
 
 
 
-        <!--Añadido para hacer pruebas con la base de datos!-->
+        <!--AÃ±adido para hacer pruebas con la base de datos!-->
 
         <EditText
             android:id="@+id/lat_orig"
@@ -195,7 +195,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Hora límite de espera"
+            android:hint="Hora lÃ­mite de espera"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
@@ -204,7 +204,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Precio aproximado"
+            android:hint="Preio aproximado"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
@@ -231,24 +231,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Añadir Viaje" />
+            android:text="AÃ±adir" />
 
-        <!--KEY_R_ID_PK +" integer primary key autoincrement, " +
-                    -KEY_R_NAME + " text not null, " +
-                    -KEY_ORIGEN + " text not null, "+
-                    -KEY_LAT_ORIG + " real not null, "+
-                    -KEY_LNG_ORIG + " real not null, "+
-                    -KEY_FECHA_SALIDA + " text not null, "+
-                    -KEY_DESTINO + " text not null, "+
-                    -KEY_LAT_DEST + " real not null, "+
-                    -KEY_LNG_DEST + " real not null, "+
-                    -KEY_FECHA_LLEGADA + " text not null, "+
-                    -KEY_TIPO + " text not null, "+
-                    -KEY_FECHA_LIMITE + " text not null, "+
-                    -KEY_PRECIO + " integer not null, "+
-                    -KEY_PERIOD + " text not null, "+
-                    KEY_PROGRAM + " text not null);";
-                    !-->
 
 
     </LinearLayout>
