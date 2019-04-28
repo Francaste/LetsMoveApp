@@ -34,7 +34,7 @@ public class MyRidesFragment extends Fragment {
 
         // Click Listener para lanzar actividad ViajesAnteriores
         Button rides_anteriores= view.findViewById(R.id.rides_anteriores);
-        rides_actuales.setOnClickListener(new View.OnClickListener() {
+        rides_anteriores.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), ViajesAnteriores.class);
@@ -44,7 +44,7 @@ public class MyRidesFragment extends Fragment {
 
         // Click Listener para lanzar actividad GastosViajes
         Button rides_gastos = view.findViewById(R.id.rides_gastos);
-        rides_actuales.setOnClickListener(new View.OnClickListener() {
+        rides_gastos.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), GastosViajes.class);
@@ -54,17 +54,13 @@ public class MyRidesFragment extends Fragment {
 
         // Click Listener para lanzar actividad TestWeatherActivity
         Button test_weather = view.findViewById(R.id.test_weather);
-        rides_actuales.setOnClickListener(new View.OnClickListener() {
+        test_weather.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getContext(), TestWeatherActivity.class);
                 startActivity(intent);
             }
         });
-
-
-
-
 
         return view;
     }

@@ -214,47 +214,116 @@ public class NuevoCoche extends AppCompatActivity {
         finish();
     }
     public ArrayList get_cars() {
-        ConexionDatabase conn = new ConexionDatabase(this, "db_cars", null, 1);
-        SQLiteDatabase db_cars = conn.getReadableDatabase();
+        ConexionDatabase conn = new ConexionDatabase(this, DatabaseAdapter.DB_CARS, null, 1);
+        //abres conecxion bbdd
+        SQLiteDatabase db_cars = conn.getReadableDatabase();//para leer
 
-            String selectQuery = "SELECT * FROM " + DatabaseAdapter.DB_CARS;
+//TODO: podemos utilizar distintos métodos para la lectura de nuestra base de datos. ¿Cómo?
+//TODO Muy fácil, pasamos como parámetro la sentencia sql de lectura que queremos aplicar.
+        String selectQuery = "SELECT * FROM " + DatabaseAdapter.DB_CARS;
+        //haces la sentencia de lectura de todos los registros
 
-            Cursor cursor = db_cars.rawQuery(selectQuery,null,null);
-        ArrayList carsModelArrayList = new ArrayList();
+        Cursor cursor = db_cars.rawQuery(selectQuery,null,null);
+        //utilizamos directamente la query
+        ArrayList carsModelArrayList = new ArrayList();//lista de resultados
 
-        if(cursor.moveToFirst()){
-            CarsDataModel carsDataModel;
-            while (cursor.moveToNext()) {
+        if(cursor.moveToFirst()){//se va al principio de la tabla
+            CarsDataModel carsDataModel;//creamos datamodel
+            while (cursor.moveToNext()) {//si hay registros aún
                 carsDataModel= new CarsDataModel();//leemos todos los registros de base de datos
+                //damos los valores del registro de base de datos a nuestro modelo de datos de coche temporal
+                carsDataModel.setModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_MODELO)));
+                Log.d(LOG_TAG,"Model: "+carsDataModel.getModel());
+                carsDataModel.setColor(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_COLOR)));
+                Log.d(LOG_TAG,"Color: "+carsDataModel.getModel());
+                carsDataModel.setPlazas(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_PLAZAS)));
+                Log.d(LOG_TAG,"Plazas: "+carsDataModel.getPlazas());
+                carsDataModel.setSize(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_SIZE)));
+                Log.d(LOG_TAG,"Size: "+carsDataModel.getSize());
+                carsDataModel.setAntig(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_ANTIG)));
+                Log.d(LOG_TAG,"Antig: "+carsDataModel.getAntig());
+                carsDataModel.setUri(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_URI)));
+                Log.d(LOG_TAG,"Uri: "+carsDataModel.getUri());
+                carsDataModel.setConsumo(cursor.getDouble(cursor.getColumnIndex(DatabaseAdapter.KEY_CONSUMO)));
+                Log.d(LOG_TAG,"Consumo: "+carsDataModel.getConsumo());
 
-                  /*  carsDataModel.setModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_MODELO)));
-                    Log.d(LOG_TAG,"Model: "+carsDataModel.getModel());
-                     carsDataModel.setPlazas(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_COLOR)));
-                    Log.d(LOG_TAG,"Color: "+carsDataModel.getModel());
-                    carsDataModel.setPlazas(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_PLAZAS)));
-                    Log.d(LOG_TAG,"Plazas: "+carsDataModel.getPlazas());
-                    carsDataModel.setSize(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_SIZE)));
-                    Log.d(LOG_TAG,"Size: "+carsDataModel.getSize());
-                    carsDataModel.setAntig(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_ANTIG)));
-                    Log.d(LOG_TAG,"Antig: "+carsDataModel.getAntig());
-                    carsDataModel.setUri(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_URI)));
-                    Log.d(LOG_TAG,"Uri: "+carsDataModel.getUri());
-                    carsDataModel.setConsumo(cursor.getDouble(cursor.getColumnIndex(DatabaseAdapter.KEY_CONSUMO)));
-                    Log.d(LOG_TAG,"Consumo: "+carsDataModel.getConsumo());*/
-
-                carsDataModel= new CarsDataModel(carsDataModel.getModel(),carsDataModel.getPlazas(),carsDataModel.getColor(),
-                        carsDataModel.getSize(),carsDataModel.getConsumo(),carsDataModel.getUri(),carsDataModel.getAntig());
-
-                    carsModelArrayList.add(carsDataModel);
-                }
+                //añadimos el modelo de datos a la lista
+                carsModelArrayList.add(carsDataModel);
             }
-            cursor.close();
+        }
+        cursor.close();//cerramos el cursor, dejamos de leer la tabla
 
         String message = "Coches leídos correctamente";
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-        db_cars.close();
-        finish();
+        db_cars.close();//cerramos conexion
+        finish();//cerramos la activity
         return carsModelArrayList;
 
     }
+
+//este método recibe parámetro un string, que sacamos del text view título de la tarjeta de viajes actuales.
+/*
+    public ArrayList getRides(String r_nombre) {
+        ConexionDatabase conn = new ConexionDatabase(this, DatabaseAdapter.DB_RIDES, null, 1);
+        //abres conexion bbdd
+        SQLiteDatabase db_rides = conn.getReadableDatabase();//para leer
+
+//TODO: podemos utilizar distintos métodos para la lectura de nuestra base de datos. ¿Cómo?
+//TODO Muy fácil, pasamos como parámetro la sentencia sql de lectura que queremos aplicar.
+//TODO Por ejemplo, elegir todo o elegir siguiendo alguna regla de los campos de bbdd
+
+//*****************************PARA RIDES********************
+        //ACTUALES
+        //SELECCIONAR TODOS LOS REGISTROS, POR CADA REGISTRO CREAS UN LINEAR LAYOUT CON LOS CAMPOS
+        //
+        //CLICK EN UNO CONCRETO
+        //SELECCIONAR EN BBDD REGISTROS QUE TENGAN EL NOMBRE DEL TÍTULO DEL LINEAR LAYOUT
+
+        //cómo	cogemos el valor del textview, en el linear layout de cada tarjeta y lo pasamos al query de sql
+
+
+        String selectCondicional=" WHERE "+DatabaseAdapter.KEY_R_NAME+" IN '"+r_nombre+"'";
+        //seleccionamos los registros para los que el valor del campo R_NAME
+        // coincide con la variable nombre del textview de la tarjeta
+        String selectQuery = "SELECT * FROM " + DatabaseAdapter.DB_RIDES+selectCondicional;
+        //haces la sentencia de lectura de todos los registros
+
+        Cursor cursor = db_rides.rawQuery(selectQuery,null,null);
+        //utilizamos directamente la query
+        ArrayList ridesModelArrayList = new ArrayList();//lista de resultados
+
+        if(cursor.moveToFirst()){//se va al principio de la tabla
+            RidesDataModel ridesDataModel;//creamos datamodel
+            while (cursor.moveToNext()) {//si hay registros aún
+                ridesDataModel= new RidesDataModel();//leemos todos los registros de base de datos
+                //damos los valores del registro de base de datos a nuestro modelo de datos de coche temporal
+                ridesDataModel.setModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_MODELO)));
+                Log.d(LOG_TAG,"Model: "+ridesDataModel.getModel());
+                ridesDataModel.setColor(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_COLOR)));
+                Log.d(LOG_TAG,"Color: "+ridesDataModel.getModel());
+                ridesDataModel.setPlazas(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_PLAZAS)));
+                Log.d(LOG_TAG,"Plazas: "+ridesDataModel.getPlazas());
+                ridesDataModel.setSize(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_SIZE)));
+                Log.d(LOG_TAG,"Size: "+ridesDataModel.getSize());
+                ridesDataModel.setAntig(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_ANTIG)));
+                Log.d(LOG_TAG,"Antig: "+ridesDataModel.getAntig());
+                ridesDataModel.setUri(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_URI)));
+                Log.d(LOG_TAG,"Uri: "+ridesDataModel.getUri());
+                ridesDataModel.setConsumo(cursor.getDouble(cursor.getColumnIndex(DatabaseAdapter.KEY_CONSUMO)));
+                Log.d(LOG_TAG,"Consumo: "+ridesDataModel.getConsumo());
+
+                //añadimos el modelo de datos a la lista
+                carsModelArrayList.add(carsDataModel);
+            }
+        }
+        cursor.close();//cerramos el cursor, dejamos de leer la tabla
+
+        String message = "Coches leídos correctamente";
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        db_cars.close();//cerramos conexion
+        finish();//cerramos la activity
+        return carsModelArrayList;
+
+    }
+*/
 }

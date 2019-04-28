@@ -25,7 +25,7 @@ import com.g9.letsmoveapp.ConexionDatabase;
 
 public class NewRidesFragment extends AppCompatActivity {
 
-   EditText ride_name;
+    EditText ride_name;
     EditText ride_origen;
     TextView ride_horaSalida;
     EditText ride_destino;
@@ -36,20 +36,28 @@ public class NewRidesFragment extends AppCompatActivity {
     EditText ride_period;
     EditText ride_program;
 
+    //Mientras no tenemos lat y lng destino y origen ponemos esto
+    String ride_lat_origen = "";
+    String ride_lat_destino = "";
+    String ride_lng_origen = "";
+    String ride_lng_destino = "";
+
+
     public static final String EXTRA_MESSAGE_MAP =
             "com.g9.letsmoveapp.MapsActivity.extra.MESSAGE_MAP";
 
+    //TODO Esto está ya apañao commo para que sea una activity, lo que da por culo ahora mismo aquí es el onClick
+    //Que va a seguir dando por culo hasta que el timepickerfragment sea llamado como dios manda
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fragment_newrides);
 
-
         ride_name = (EditText) findViewById(R.id.name_ride);
         ride_origen = (EditText) findViewById(R.id.origen);
-        ride_horaSalida= (TextView) findViewById(R.id.textView_horaSalida);
+        ride_horaSalida = (TextView) findViewById(R.id.horaSalida);
         ride_destino = (EditText) findViewById(R.id.destino);
-        ride_horaLlegada= (TextView) findViewById(R.id.textView_horaLlegada);
+        ride_horaLlegada = (TextView) findViewById(R.id.horaLlegada);
         ride_tipo = (EditText) findViewById(R.id.tipo_ride);
         ride_horaLimite = (EditText) findViewById(R.id.hora_limite);
         ride_precio = (EditText) findViewById(R.id.precio);
@@ -57,7 +65,7 @@ public class NewRidesFragment extends AppCompatActivity {
         ride_program = (EditText) findViewById(R.id.programacion);
 
 
-        // CLick Listener para mostrar el TmiePicker
+        // CLick Listener para mostrar el TIiePicker
         Button button_horasalida = findViewById(R.id.button_horasalida);
         button_horasalida.setOnClickListener(new View.OnClickListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
@@ -65,8 +73,13 @@ public class NewRidesFragment extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction().commit();
+
                 DialogFragment timePicker = new TimePickerFragment();
+                int hour = 0;
+                int minute = 0;
+                // timePicker.onTimeSet(TimePicker view, hour, minute);
                 timePicker.show(fragmentManager, "time picker");
+
             }
         });
 
@@ -77,18 +90,15 @@ public class NewRidesFragment extends AppCompatActivity {
 
             @Override
             public void onClick(View view) {
-                fragmentManager.beginTransaction().commit();
+                fragmentManager.beginTransaction();
                 DialogFragment timePicker = new TimePickerFragment();
                 timePicker.show(fragmentManager, "time picker");
             }
         });
 
-        /*
-         Click Listener para lanzar actividad MapsActivity y selsecionar ORIGEN
-          */
+        // Click Listener para lanzar actividad MapsActivity y selsecionar ORIGEN
         ImageButton button_maps_origen = (ImageButton) findViewById(R.id.button_maps_origen);
         button_maps_origen.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 String msg_origen = ride_origen.getText().toString();
@@ -98,9 +108,7 @@ public class NewRidesFragment extends AppCompatActivity {
             }
         });
 
-        /*
-         Click Listener para lanzar actividad MapsActivity y selsecionar DESTINO
-          */
+        // Click Listener para lanzar actividad MapsActivity y selsecionar DESTINO
         ImageButton button_maps_destino = (ImageButton) findViewById(R.id.button_maps_destino);
         button_maps_destino.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,45 +119,54 @@ public class NewRidesFragment extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
-
     }
-/*
+   /*
+    KEY_LAT_ORIG + " real not null, " +
+    KEY_LNG_ORIG + " real not null, " +
+    KEY_FECHA_SALIDA + " text not null, " +
+    KEY_LAT_DEST + " real not null, " +
+    KEY_LNG_DEST + " real not null, " +
+    KEY_FECHA_LLEGADA + " text not null, " +
+  */
 
     public void add_ride(View view) {
-        ConexionDatabase conn=new ConexionDatabase(this,"db_rides",null,1);
-        SQLiteDatabase db_rides=conn.getWritableDatabase();
+        ConexionDatabase conn = new ConexionDatabase(this, "db_rides", null, 1);
+        SQLiteDatabase db_rides = conn.getWritableDatabase();
 
         //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
 
-        String insert="INSERT INTO "+DatabaseAdapter.DB_CARS
-                +" ( " +
-                DatabaseAdapter.KEY_R_NAME+", "+
-                DatabaseAdapter.KEY_ORIGEN+", " +
-                DatabaseAdapter.KEY_LAT_ORIG+", "+
-                DatabaseAdapter.KEY_LNG_ORIG+", "+
-                DatabaseAdapter.KEY_FECHA_SALIDA+", "+
-                DatabaseAdapter.KEY_DESTINO+", "+
-                DatabaseAdapter.KEY_LAT_DEST+", "+
-                DatabaseAdapter.KEY_LNG_DEST+", "+
-                DatabaseAdapter.KEY_FECHA_LLEGADA+", "+
-                DatabaseAdapter.KEY_TIPO+", "+
-                DatabaseAdapter.KEY_FECHA_LIMITE+", "+
-                DatabaseAdapter.KEY_PRECIO+", "+
-                DatabaseAdapter.KEY_PERIOD+", "+
-                DatabaseAdapter.KEY_PROGRAM+")" +
-                " VALUES ('"+
-                ride_name.getText().toString()+"','"+
-                ride_origen.getText().toString()+"','"+
-                ride_horaSalida.getText().toString()+ "','"+
-                ride_destino.getText().toString()+"','"+
-                ride_horaLlegada.getText().toString()+"','"+
-                ride_tipo.getText().toString()+"','"+
-                ride_horaLimite.getText().toString()+"','"+
-                ride_precio.getText().toString()+"','"+
-                ride_period.getText().toString()+"','"+
-                ride_program.getText().toString()+"')";
-        //Hay algunos con comillas simples porque son textos y en sql se usan comilla simple, necesito ponerlas si no parseo nÃºmeros
+        String insert = "INSERT INTO " + DatabaseAdapter.DB_RIDES
+                + " ( " +
+                DatabaseAdapter.KEY_R_NAME + ", " +
+                DatabaseAdapter.KEY_ORIGEN + ", " +
+                DatabaseAdapter.KEY_LAT_ORIG + ", " +
+                DatabaseAdapter.KEY_LNG_ORIG + ", " +
+                DatabaseAdapter.KEY_FECHA_SALIDA + ", " +
+                DatabaseAdapter.KEY_DESTINO + ", " +
+                DatabaseAdapter.KEY_LAT_DEST + ", " +
+                DatabaseAdapter.KEY_LNG_DEST + ", " +
+                DatabaseAdapter.KEY_FECHA_LLEGADA + ", " +
+                DatabaseAdapter.KEY_TIPO + ", " +
+                DatabaseAdapter.KEY_FECHA_LIMITE + ", " +
+                DatabaseAdapter.KEY_PRECIO + ", " +
+                DatabaseAdapter.KEY_PERIOD + ", " +
+                DatabaseAdapter.KEY_PROGRAM + ")" +
+                " VALUES ('" +
+                ride_name.getText().toString() + "','" +
+                ride_origen.getText().toString() + "','" +
+                ride_lat_origen + "','" +
+                ride_lng_origen + "','" +
+                ride_horaSalida.getText().toString() + "','" +
+                ride_destino.getText().toString() + "','" +
+                ride_lat_destino + "','" +
+                ride_lng_destino + "','" +
+                ride_horaLlegada.getText().toString() + "','" +
+                ride_tipo.getText().toString() + "','" +
+                ride_horaLimite.getText().toString() + "','" +
+                ride_precio.getText().toString() + "','" +
+                ride_period.getText().toString() + "','" +
+                ride_program.getText().toString() + "')";
+        //Hay algunos con comillas simples porque son textos y en sql se usan comilla simple, necesito ponerlas si no parseo números
         // modelo-texto, plazas-int, color-texto
 
 
@@ -158,14 +175,15 @@ public class NewRidesFragment extends AppCompatActivity {
 
         db_rides.execSQL(insert);
         String message = "Viaje: " + ride_name.getText().toString() + " creado correctamente";
-        Toast.makeText(MainActivity.this, message, Toast.LENGTH_SHORT).show();
+        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
+        finish();
         db_rides.close();
 
 
-       */
+
 /*
         EditText editText = (EditText) findViewById(R.id.modelo_coche);
-        String message = "Coche: " + editText.getText().toString() + " aÃ±adido correctamente";
+        String message = "Coche: " + editText.getText().toString() + " añadido correctamente";
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         finish();
         *//*
@@ -179,4 +197,5 @@ public class NewRidesFragment extends AppCompatActivity {
 */
 
 
+    }
 }

@@ -113,7 +113,7 @@
                 android:text="Hora de salida" />
 
             <TextView
-                android:id="@+id/textView_horaSalida"
+                android:id="@+id/horaSalida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp" />
@@ -134,7 +134,7 @@
                 android:text="Hora de llegada" />
 
             <TextView
-                android:id="@+id/textView_horaLlegada"
+                android:id="@+id/horaLlegada"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp" />
@@ -142,8 +142,7 @@
         </LinearLayout>
 
 
-
-        <!--AÃ±adido para hacer pruebas con la base de datos!-->
+        <!--Añadido para hacer pruebas con la base de datos!-->
 
         <EditText
             android:id="@+id/lat_orig"
@@ -195,7 +194,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Hora lÃ­mite de espera"
+            android:hint="Hora límite de espera"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
@@ -204,7 +203,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Preio aproximado"
+            android:hint="Precio aproximado"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
@@ -231,8 +230,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="AÃ±adir" />
-
+            android:text="Añadir"
+            android:onClick="add_ride"/>
 
 
     </LinearLayout>

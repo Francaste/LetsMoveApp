@@ -127,11 +127,10 @@ public class MainActivity extends AppCompatActivity
             //Dentro del fragment se llama a la actividad NewRidesFragments(antes era fragment, ahora es una activity)
             fragmentManager.beginTransaction().replace(R.id.contenedor, new TransitionNewRides()).commit();
         }
-        /*
         else if (id == R.id.nav_viajes) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
         }
-        */
+
         else if (id == R.id.nav_notificacion) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new NotificationFragment()).commit();
         } else if (id == R.id.nav_puntuacion) {
@@ -151,8 +150,24 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void misCoches(View view) {
+        Intent intent = new Intent(this, MisCoches.class);
+        startActivity(intent);
+    }
+    public void actuales(View view) {
+        Intent intent = new Intent(this, ViajesActuales.class);
+        startActivity(intent);
+    }
 
+    public void anteriores(View view) {
+        Intent intent = new Intent(this, ViajesAnteriores.class);
+        startActivity(intent);
+    }
 
+    public void gastos(View view) {
+        Intent intent = new Intent(this, GastosViajes.class);
+        startActivity(intent);
+    }
     // Este metodo lanza una actividad para testear la API AEMET
 // al pulsar el boton TEST WEATHER que esta en Mis Viajes
     public void testWeather(View view) {

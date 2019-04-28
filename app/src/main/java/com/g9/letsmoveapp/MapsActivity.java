@@ -64,15 +64,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         msg_extra = intent.getStringExtra(NewRidesFragment.EXTRA_MESSAGE_MAP);
 
-
-
-
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         // Checkeamos permisos
         permission = checkPermission();
-
-
     }
 
     @Override
@@ -86,14 +81,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //Solicitar localizacion
             if (provider != null) {
-                //location = locationManager.getLastKnownLocation(provider);
-
-
                 locationManager.requestLocationUpdates(provider, 1000 * 60 * 5, 25, this);
                 location = locationManager.getLastKnownLocation(provider);
-                String text = "Coordenadas: LAT:" + location.getLatitude() + ", LONG: " + location.getLongitude();
-                //Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Coordenadas: " + text);
+                if(location!=null) {
+                    String text = "Coordenadas: LAT:" + location.getLatitude() + ", LONG: " + location.getLongitude();
+                    //Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Coordenadas: " + text);
+                }else {
+                    Log.e(TAG, "Error location null...");
+                }
             } else {
                 Log.e(TAG, "Error obteniendo localizaión...");
             }
