@@ -45,7 +45,7 @@ public class DatabaseAdapter {
     public static final String KEY_FECHA_LIMITE = "FECHA_LIMITE";
     public static final String KEY_PRECIO = "PRECIO";
     public static final String KEY_PERIOD = "PERIODICIDAD";
-    public static final String KEY_PROGRAM = "PROGRAMACION";
+    public static final String KEY_NUM_VIAJ = "NUM_VIAJ";
 
 
     // Sentencia SQL para crear las tablas de las bases de datos, tenemos que hacerlas públicas
@@ -77,7 +77,7 @@ public class DatabaseAdapter {
             KEY_FECHA_LIMITE + " text not null, " +
             KEY_PRECIO + " integer not null, " +
             KEY_PERIOD + " text not null, " +
-            KEY_PROGRAM + " text not null);";
+            KEY_NUM_VIAJ + " text not null);";
 
 
     //Aquí se está creando la tabla, añadiendo a la tabla cada campo, y diciéndole que esta tabla con este nombre

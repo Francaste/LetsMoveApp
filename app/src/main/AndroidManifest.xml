@@ -80,11 +80,11 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MisCoches"
-            android:label="MisCoches"
+            android:label="Mis Coches"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".NuevoCoche"
-            android:label="NuevoCoche"
+            android:label="Nuevo Coche"
             android:parentActivityName=".MisCoches" />
         <activity
             android:name=".NewRidesFragment"

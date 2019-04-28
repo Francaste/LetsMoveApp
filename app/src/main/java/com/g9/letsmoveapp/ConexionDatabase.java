@@ -23,6 +23,7 @@ public class ConexionDatabase extends SQLiteOpenHelper {
         public void onCreate(SQLiteDatabase db) {
             //Creamos lsas dos tablas que tenemos ahora mismo, que son CARS y RIDES
             db.execSQL(DatabaseAdapter.DB_CREATE_CARS);
+            db.execSQL(DatabaseAdapter.DB_CREATE_RIDES);
         }
 
         @Override
@@ -32,6 +33,7 @@ public class ConexionDatabase extends SQLiteOpenHelper {
 
             //PREGUNTA: No sé dónde pasa la newVersion a ser oldVersion, se cambia sola?
             db.execSQL("DROP TABLE IF EXISTS "+DatabaseAdapter.DB_CARS);
+            db.execSQL("DROP TABLE IF EXISTS "+DatabaseAdapter.DB_RIDES);
             onCreate(db);
         }
     }
