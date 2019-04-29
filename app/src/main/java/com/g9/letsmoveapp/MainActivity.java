@@ -70,12 +70,12 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 */
-        //Creamos la conexión de acuerdo a la última versión que vamos a llevar a cabo
+        //Creamos la conexiÃ³n de acuerdo a la Ãºltima versiÃ³n que vamos a llevar a cabo
         ConexionDatabase conn =new ConexionDatabase(this,"bd_usuarios",null,1);
 
     }
 
-    //Triple unido al a anterior línea del context del adaptador
+    //Triple unido al a anterior lÃ­nea del context del adaptador
 
 
     @Override
@@ -110,7 +110,7 @@ public class MainActivity extends AppCompatActivity
         return super.onOptionsItemSelected(item);
     }
 
-    @SuppressWarnings("StatementWithEmptyBody")
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
@@ -124,10 +124,14 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_perfil) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new ProfileFragment()).commit();
         } else if (id == R.id.nav_trayecto) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new NewRidesFragment()).commit();
-        } else if (id == R.id.nav_viajes) {
+            //Dentro del fragment se llama a la actividad NewRidesFragments(antes era fragment, ahora es una activity)
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new TransitionNewRides()).commit();
+        }
+        else if (id == R.id.nav_viajes) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new MyRidesFragment()).commit();
-        } else if (id == R.id.nav_notificacion) {
+        }
+
+        else if (id == R.id.nav_notificacion) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new NotificationFragment()).commit();
         } else if (id == R.id.nav_puntuacion) {
             fragmentManager.beginTransaction().replace(R.id.contenedor, new PuntuaFragment()).commit();
@@ -146,6 +150,10 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void misCoches(View view) {
+        Intent intent = new Intent(this, MisCoches.class);
+        startActivity(intent);
+    }
     public void actuales(View view) {
         Intent intent = new Intent(this, ViajesActuales.class);
         startActivity(intent);
@@ -160,13 +168,6 @@ public class MainActivity extends AppCompatActivity
         Intent intent = new Intent(this, GastosViajes.class);
         startActivity(intent);
     }
-
-    public void misCoches(View view) {
-        Intent intent = new Intent(this, MisCoches.class);
-        startActivity(intent);
-    }
-
-
     // Este metodo lanza una actividad para testear la API AEMET
 // al pulsar el boton TEST WEATHER que esta en Mis Viajes
     public void testWeather(View view) {

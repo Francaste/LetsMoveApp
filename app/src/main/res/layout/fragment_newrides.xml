@@ -1,4 +1,330 @@
 <?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".NewRidesFragment">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/title_nuevo_coche"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Viaje"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ScrollView
+            android:id="@+id/scroller"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="left"
+                        android:text="Nombre:"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <EditText
+                        android:id="@+id/name_ride"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="Etiqueta del viaje"
+                        android:textSize="14sp" />
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="Origen:"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+
+                        <EditText
+                            android:id="@+id/origen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Tatooine"
+                            android:inputType="textPersonName"
+                            android:padding="10dp" />
+
+                        <ImageButton
+                            android:id="@+id/button_maps_origen"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:src="@android:drawable/ic_dialog_map" />
+
+                        <Button
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="ok" />
+                    </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left"
+                            android:text="Destino:"
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/destino"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:ems="10"
+                                android:hint="Naboo"
+                                android:inputType="textPersonName"
+                                android:padding="10dp" />
+
+                            <ImageButton
+                                android:id="@+id/button_maps_destino"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:src="@android:drawable/ic_dialog_map" />
+
+                            <Button
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="ok" />
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/button_horasalida"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Hora de salida" />
+
+                        <TextView
+                            android:id="@+id/horaSalida"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp" />
+
+                    </LinearLayout>
+
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/button_horallegada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp"
+                            android:text="Hora de llegada" />
+
+                        <TextView
+                            android:id="@+id/horaLlegada"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="10dp" />
+
+                    </LinearLayout>
+
+
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tipo de viaje"
+                            android:textSize="16sp"
+
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/tipo_ride"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Rutinario, puntual, vacaciones..."
+                            android:inputType="textPersonName"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Tiempo máximo de espera: "
+                            android:textSize="16sp"
+
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/hora_limite"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Hora límite"
+                            android:inputType="textPersonName"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Precio del viaje total: "
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/precio"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="10€"
+                            android:inputType="textPersonName"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Número de viajerxs: "
+                            android:textSize="16sp"
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/num_viaj"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="3"
+                            android:inputType="textPersonName"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Periodicidad del viaje: "
+                            android:textSize="16sp"
+
+                            android:textStyle="bold" />
+
+                        <EditText
+                            android:id="@+id/period"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:ems="10"
+                            android:hint="Todos los días, cada lunes..."
+                            android:inputType="textPersonName"
+                            android:padding="10dp" />
+                    </LinearLayout>
+
+            </LinearLayout>
+        </ScrollView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <Button
+            android:id="@+id/button_new_car"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="bottom"
+            android:text="Añadir nuevo viaje"
+            android:onClick="add_ride"
+            />
+
+        <Button
+            android:id="@+id/button_read_rides"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:gravity="bottom"
+            android:text="Leer nuevo viaje" />
+
+    </LinearLayout>
+</LinearLayout>
+
+<!--comentado
+
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -11,6 +337,19 @@
         android:layout_height="wrap_content"
         android:orientation="vertical">
 
+        <TextView
+            android:id="@+id/title_nuevo_coche"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Nuevo Viaje"
+            android:textAlignment="center"
+            android:textSize="35sp"
+            android:textStyle="bold" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
@@ -27,6 +366,7 @@
             android:hint="Etiqueta del viaje"
             android:inputType="textPersonName"
             android:padding="10dp" />
+
 
         <TextView
             android:layout_width="wrap_content"
@@ -113,7 +453,7 @@
                 android:text="Hora de salida" />
 
             <TextView
-                android:id="@+id/textView_horaSalida"
+                android:id="@+id/horaSalida"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp" />
@@ -134,16 +474,13 @@
                 android:text="Hora de llegada" />
 
             <TextView
-                android:id="@+id/textView_horaLlegada"
+                android:id="@+id/horaLlegada"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="10dp" />
 
         </LinearLayout>
 
-
-
-        <!--Añadido para hacer pruebas con la base de datos!-->
 
         <EditText
             android:id="@+id/lat_orig"
@@ -204,7 +541,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:hint="Preio aproximado"
+            android:hint="Precio aproximado"
             android:inputType="textPersonName"
             android:padding="10dp" />
 
@@ -226,30 +563,17 @@
             android:inputType="textPersonName"
             android:padding="10dp" />
 
+        </LinearLayout>
         <Button
             android:id="@+id/add_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:padding="10dp"
-            android:text="Añadir" />
-
-        <!--KEY_R_ID_PK +" integer primary key autoincrement, " +
-                    -KEY_R_NAME + " text not null, " +
-                    -KEY_ORIGEN + " text not null, "+
-                    -KEY_LAT_ORIG + " real not null, "+
-                    -KEY_LNG_ORIG + " real not null, "+
-                    -KEY_FECHA_SALIDA + " text not null, "+
-                    -KEY_DESTINO + " text not null, "+
-                    -KEY_LAT_DEST + " real not null, "+
-                    -KEY_LNG_DEST + " real not null, "+
-                    -KEY_FECHA_LLEGADA + " text not null, "+
-                    -KEY_TIPO + " text not null, "+
-                    -KEY_FECHA_LIMITE + " text not null, "+
-                    -KEY_PRECIO + " integer not null, "+
-                    -KEY_PERIOD + " text not null, "+
-                    KEY_PROGRAM + " text not null);";
-                    !-->
+            android:text="Añadir"
+            android:onClick="add_ride"/>
 
 
     </LinearLayout>
 </ScrollView>
+
+!-->

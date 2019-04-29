@@ -10,12 +10,13 @@
     -->
     <permission
         android:name="com.g9.letsmoveapp.permission.MAPS_RECIEVE"
-        android:protectionLevel="signature"/>
-    <uses-permission android:name="com.g9.letsmoveapp.permision.MAPS_RECIEVE"/>
-    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_SERVICES"/>
+        android:protectionLevel="signature" />
+
+    <uses-permission android:name="com.g9.letsmoveapp.permision.MAPS_RECIEVE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_SERVICES" />
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,10 +24,11 @@
 
     <!--para habilitar la cámara!-->
 
-    <uses-feature android:name="android.hardware.camera" android:required="true" />
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
     <!--para que nos deje guardar y coger las fotos de fuera de la app!-->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-
 
 
     <application
@@ -56,12 +58,13 @@
             android:grantUriPermissions="true">
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/file_paths"></meta-data>
+                android:resource="@xml/file_paths" />
         </provider>
+
         <activity
             android:name=".MapsActivity"
             android:label="@string/title_activity_maps"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity" />
         <activity android:name=".TestWeatherActivity" />
         <activity
             android:name=".ViajesActuales"
@@ -77,12 +80,16 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MisCoches"
-            android:label="MisCoches"
+            android:label="Mis Coches"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".NuevoCoche"
-            android:label="NuevoCoche"
+            android:label="Nuevo Coche"
             android:parentActivityName=".MisCoches" />
+        <activity
+            android:name=".NewRidesFragment"
+            android:label="Nuevos viajes"
+            android:parentActivityName=".MainActivity" />
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"

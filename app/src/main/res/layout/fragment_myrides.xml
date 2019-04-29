@@ -10,7 +10,6 @@
         android:id="@+id/rides_actuales"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:onClick="actuales"
         android:text="Actuales"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/rides_anteriores"
@@ -21,7 +20,6 @@
         android:id="@+id/rides_anteriores"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:onClick="anteriores"
         android:text="Anteriores"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/rides_gastos"
@@ -32,7 +30,6 @@
         android:id="@+id/rides_gastos"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:onClick="gastos"
         android:text="Gastos"
         android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="@+id/test_weather"
@@ -52,7 +49,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         android:textSize="30sp"
         android:textStyle="italic"
-        android:onClick="testWeather"
         android:textColor="@android:color/holo_red_light"
         />
 

@@ -11,6 +11,7 @@ import android.util.Log;
 import static android.content.ContentValues.TAG;
 
 public class ConexionDatabase extends SQLiteOpenHelper {
+    public static final String TAG = "conexionDB"; // Usado en los mensajes de Log
 
         //final String DB_CREATE_CARS="CREATE TABLE db_cars (id_cars INTEGER, name_c TEXT, modelo TEXT, plazas INTEGER, color TEXT, size TEXT, consumo REAL, antig INTEGER)";
 
@@ -22,6 +23,7 @@ public class ConexionDatabase extends SQLiteOpenHelper {
         public void onCreate(SQLiteDatabase db) {
             //Creamos lsas dos tablas que tenemos ahora mismo, que son CARS y RIDES
             db.execSQL(DatabaseAdapter.DB_CREATE_CARS);
+            db.execSQL(DatabaseAdapter.DB_CREATE_RIDES);
         }
 
         @Override
@@ -31,6 +33,7 @@ public class ConexionDatabase extends SQLiteOpenHelper {
 
             //PREGUNTA: No sé dónde pasa la newVersion a ser oldVersion, se cambia sola?
             db.execSQL("DROP TABLE IF EXISTS "+DatabaseAdapter.DB_CARS);
+            db.execSQL("DROP TABLE IF EXISTS "+DatabaseAdapter.DB_RIDES);
             onCreate(db);
         }
     }

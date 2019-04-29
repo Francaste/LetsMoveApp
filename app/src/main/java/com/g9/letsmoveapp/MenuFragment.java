@@ -54,7 +54,7 @@ public class MenuFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction();
-                fragmentTransaction.replace(R.id.contenedor, new NewRidesFragment());
+                fragmentTransaction.replace(R.id.contenedor, new TransitionNewRides());
                 fragmentTransaction.addToBackStack(null);
                 fragmentTransaction.commit();
             }

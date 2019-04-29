@@ -1,9 +1,8 @@
 package com.g9.letsmoveapp;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.location.Address;
@@ -19,8 +18,6 @@ import android.support.v4.content.ContextCompat;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -48,9 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private boolean permission;
     private Marker clickMarker = null;
 
-
-    private FusedLocationProviderClient fusedLocationClient;
-
+    private String msg_extra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,14 +58,16 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             mapFragment.getMapAsync(this);
         }
 
+        // Capturamos el intent que lanzó esta actividad y el mensaje
+
+        Intent intent = getIntent();
+
+        msg_extra = intent.getStringExtra(NewRidesFragment.EXTRA_MESSAGE_MAP);
 
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
         provider = locationManager.getBestProvider(new Criteria(), false);
-
+        // Checkeamos permisos
         permission = checkPermission();
-
-
     }
 
     @Override
@@ -84,14 +81,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //Solicitar localizacion
             if (provider != null) {
-                //location = locationManager.getLastKnownLocation(provider);
-
-
                 locationManager.requestLocationUpdates(provider, 1000 * 60 * 5, 25, this);
                 location = locationManager.getLastKnownLocation(provider);
-                String text = "Coordenadas: LAT:" + location.getLatitude() + ", LONG: " + location.getLongitude();
-                //Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
-                Log.d(TAG, "Coordenadas: " + text);
+                if(location!=null) {
+                    String text = "Coordenadas: LAT:" + location.getLatitude() + ", LONG: " + location.getLongitude();
+                    //Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
+                    Log.d(TAG, "Coordenadas: " + text);
+                }else {
+                    Log.e(TAG, "Error location null...");
+                }
             } else {
                 Log.e(TAG, "Error obteniendo localizaión...");
             }
@@ -162,18 +160,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     public void marcadores(GoogleMap googleMap) {
         mMap = googleMap;
-        // UC3M Campus de Leganés LAT 40.332008867438645 LONG -3.765928643655343
         // Añade un marcador y mueve la cámara
-        final LatLng leganes = new LatLng(40.332008, -3.765928);
-        mMap.addMarker(new MarkerOptions().position(leganes).title("UC3M Campus Leganés"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(leganes, 17));
-
         // Checkea permisos y pone el punto azul con la localización
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
+            location = locationManager.getLastKnownLocation(provider);
+        }
+
+        if(!msg_extra.equals("")) {
+            LatLng extraMarker = searchExtraLocation(msg_extra);
+            mMap.addMarker(new MarkerOptions().position(extraMarker).title(msg_extra));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(extraMarker, 17));
+        }else if(location != null){
+            LatLng latLng_location = new LatLng(location.getLatitude(), location.getLongitude());
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng_location, 17));
+        }else{
+            // Si no se consigue la localizacion aolicitada no la localizacion del dispositivo
+            // UC3M Campus de Leganés LAT 40.332008867438645 LONG -3.765928643655343
+            final LatLng leganes = new LatLng(40.332008, -3.765928);
+            mMap.addMarker(new MarkerOptions().position(leganes).title("UC3M Campus Leganés"));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(leganes, 17));
         }
 
     }
@@ -254,8 +263,29 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+/**
+ * Obtiene coordenadas del lugra solicitado al buscar origen o destino
+ * */
+    public LatLng searchExtraLocation(String site){
+        List<Address> addresses = null;
+        if(Geocoder.isPresent()){
+            Geocoder gc = new Geocoder(this);
+            try{
+                addresses = gc.getFromLocationName(site, 2);
+                Address address = addresses.get(0);
+                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
+                return latLng;
+
+            }catch (IOException e){
+                e.printStackTrace();
+            }
+        }
+        //En caso de no conseguir las coordenadas devvuelve null
+        return null;
+    }
+
     /**
-     * Obttencion de la dirección a partir de las coordenadas
+     * Obtencion de la dirección a partir de las coordenadas
      */
     public void getAddress(LatLng latLng) {
         List<Address> addresses = null;
