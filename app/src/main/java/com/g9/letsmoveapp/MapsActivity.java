@@ -16,6 +16,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -34,6 +38,7 @@ import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
+    public static final String EXTRA_MAP_REPLY = "com.g9.letsmoveapp.mapsactivity.extra.REPLY";
 
     private GoogleMap mMap;
     private boolean isReady = false;//Para checkear que el mapa esta listo
@@ -46,6 +51,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private Marker clickMarker = null;
 
     private String msg_extra;
+
+    private EditText editText_buscar;
+    private ImageButton button_buscar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +76,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         provider = locationManager.getBestProvider(new Criteria(), false);
         // Checkeamos permisos
         permission = checkPermission();
+
+        editText_buscar = findViewById(R.id.editText_buscar);
+        button_buscar = findViewById(R.id.button_buscar);
     }
 
     @Override
@@ -83,11 +94,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             if (provider != null) {
                 locationManager.requestLocationUpdates(provider, 1000 * 60 * 5, 25, this);
                 location = locationManager.getLastKnownLocation(provider);
-                if(location!=null) {
+                if (location != null) {
                     String text = "Coordenadas: LAT:" + location.getLatitude() + ", LONG: " + location.getLongitude();
                     //Toast.makeText(this, text,Toast.LENGTH_SHORT).show();
                     Log.d(TAG, "Coordenadas: " + text);
-                }else {
+                } else {
                     Log.e(TAG, "Error location null...");
                 }
             } else {
@@ -118,6 +129,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         mMap = googleMap;
         marcadores(googleMap);
 
+        //
+        mMap.getUiSettings().setMapToolbarEnabled(true);
+
         // Al pulsar sobre el mapa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -136,8 +150,18 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onMapLongClick(LatLng latLng) {
                 marcadorClick(mMap, latLng);
-                getAddress(latLng);
+                Address address = getAddress(latLng);
+                editText_buscar.setText(address.getAddressLine(0));
             }
+        });
+
+        //CLick listener del boton lupa
+        button_buscar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String text_buscar = editText_buscar.getText().toString();
+                LatLng buscador_location = searchExtraLocation(text_buscar);
+                marcadorClick(mMap, buscador_location);            }
         });
     }
 
@@ -170,14 +194,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             location = locationManager.getLastKnownLocation(provider);
         }
 
-        if(!msg_extra.equals("")) {
+        if (!msg_extra.equals("")) {
             LatLng extraMarker = searchExtraLocation(msg_extra);
             mMap.addMarker(new MarkerOptions().position(extraMarker).title(msg_extra));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(extraMarker, 17));
-        }else if(location != null){
+        } else if (location != null) {
             LatLng latLng_location = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng_location, 17));
-        }else{
+        } else {
             // Si no se consigue la localizacion aolicitada no la localizacion del dispositivo
             // UC3M Campus de Leganés LAT 40.332008867438645 LONG -3.765928643655343
             final LatLng leganes = new LatLng(40.332008, -3.765928);
@@ -189,8 +213,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     /**
      * Verifica si los permisos estan concedidos. Si no lo estan los solicita
-     *
-     *
+     * <p>
+     * <p>
      * Fuente: https://stackoverflow.com/questions/40142331/how-to-request-location-permission-at-runtime
      */
     public boolean checkPermission() {
@@ -263,20 +287,20 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-/**
- * Obtiene coordenadas del lugra solicitado al buscar origen o destino
- * */
-    public LatLng searchExtraLocation(String site){
+    /**
+     * Obtiene coordenadas del lugra solicitado al buscar origen o destino
+     */
+    public LatLng searchExtraLocation(String site) {
         List<Address> addresses = null;
-        if(Geocoder.isPresent()){
+        if (Geocoder.isPresent()) {
             Geocoder gc = new Geocoder(this);
-            try{
+            try {
                 addresses = gc.getFromLocationName(site, 2);
                 Address address = addresses.get(0);
                 LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
                 return latLng;
 
-            }catch (IOException e){
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }
@@ -287,7 +311,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     /**
      * Obtencion de la dirección a partir de las coordenadas
      */
-    public void getAddress(LatLng latLng) {
+    public Address getAddress(LatLng latLng) {
         List<Address> addresses = null;
         // chekea si el dispositivo tiene geocoder
         if (Geocoder.isPresent()) {
@@ -299,12 +323,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String addresLine = address.getAddressLine(0);
                 Log.d(TAG, "GEOCODING: Address:" + addresLine);
                 Toast.makeText(MapsActivity.this, addresLine, Toast.LENGTH_SHORT).show();
+                return address;
 
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.d(TAG, "Error de geocoding");
             }
+
         }
+        return null;
     }
 
     @Override
@@ -326,4 +353,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onProviderDisabled(String provider) {
 
     }
+
+    public void replyLocation(View view) {
+        // TODO: devolver el nombre del municipio en el intent y las coordenadas, y la direccion completa
+        // Anadiendo mas extras
+        String reply ="REPLY";
+        Intent replyIntent = new Intent();
+        replyIntent.putExtra(EXTRA_MAP_REPLY, reply);
+        setResult(RESULT_OK, replyIntent);
+        finish();
+    }
+
 }

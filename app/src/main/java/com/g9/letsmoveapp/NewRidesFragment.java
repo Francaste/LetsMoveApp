@@ -5,6 +5,7 @@ import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -54,6 +55,7 @@ public class NewRidesFragment extends AppCompatActivity {
 
     public static final String EXTRA_MESSAGE_MAP =
             "com.g9.letsmoveapp.MapsActivity.extra.MESSAGE_MAP";
+    public static final int MAP_REQUEST = 1;
 
     //TODO Esto está ya apañao commo para que sea una activity, lo que da por culo ahora mismo aquí es el onClick
     //Que va a seguir dando por culo hasta que el timepickerfragment sea llamado como dios manda
@@ -113,7 +115,7 @@ public class NewRidesFragment extends AppCompatActivity {
                 String msg_origen = ride_origen.getText().toString();
                 Intent intent = new Intent(NewRidesFragment.this, MapsActivity.class);
                 intent.putExtra(EXTRA_MESSAGE_MAP, msg_origen);
-                startActivity(intent);
+                startActivityForResult(intent, MAP_REQUEST);
             }
         });
 
@@ -309,5 +311,16 @@ public class NewRidesFragment extends AppCompatActivity {
         finish();//cerramos la activity
         return ridesModelArrayList;
 
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == MAP_REQUEST){
+            if (resultCode == RESULT_OK){
+                String reply = data.getStringExtra(MapsActivity.EXTRA_MAP_REPLY);
+                Toast.makeText(this,  reply, Toast.LENGTH_SHORT).show();
+            }
+        }
     }
 }
