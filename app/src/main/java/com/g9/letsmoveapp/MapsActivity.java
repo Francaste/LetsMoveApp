@@ -54,6 +54,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private EditText editText_buscar;
     private ImageButton button_buscar;
+    private Button button_hecho;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -79,6 +80,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         editText_buscar = findViewById(R.id.editText_buscar);
         button_buscar = findViewById(R.id.button_buscar);
+        button_hecho = findViewById(R.id.button_hecho);
+
     }
 
     @Override
@@ -127,10 +130,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         isReady = true;
         mMap = googleMap;
-        marcadores(googleMap);
 
-        //
-        mMap.getUiSettings().setMapToolbarEnabled(true);
+        // Colocar marcadores
+        marcadores(googleMap);
 
         // Al pulsar sobre el mapa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
@@ -161,8 +163,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 String text_buscar = editText_buscar.getText().toString();
                 LatLng buscador_location = searchExtraLocation(text_buscar);
-                marcadorClick(mMap, buscador_location);            }
+                marcadorClick(mMap, buscador_location); }
         });
+
+        //Click listener del boton HECHO
+        button_hecho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                replyLocation(v);
+            }
+        });
+
+        //
+        mMap.getUiSettings().setMapToolbarEnabled(true);
     }
 
     /**
