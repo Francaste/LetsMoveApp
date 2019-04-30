@@ -3,6 +3,7 @@ package com.g9.letsmoveapp;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.location.Address;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -27,6 +28,7 @@ import com.g9.letsmoveapp.DatabaseAdapter;
 import com.g9.letsmoveapp.ConexionDatabase;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class NewRidesFragment extends AppCompatActivity {
     private static final String LOG_TAG = "LEER_RIDE";
@@ -319,7 +321,13 @@ public class NewRidesFragment extends AppCompatActivity {
         if (requestCode == MAP_REQUEST){
             if (resultCode == RESULT_OK){
                 String reply = data.getStringExtra(MapsActivity.EXTRA_MAP_REPLY);
-                Toast.makeText(this,  reply, Toast.LENGTH_SHORT).show();
+                Log.d(LOG_TAG, reply);
+                //Toast.makeText(this,  reply, Toast.LENGTH_SHORT).show();
+                Address address = new Address(Locale.getDefault());
+                address.setAddressLine(0, reply);
+
+                Log.d(LOG_TAG, "Maps Reply: "+ address.getAddressLine(0));
+                //TODO: crear 2 cogidos de respuesta para diferenciar respuesta origen y destino y settear los editText
             }
         }
     }

@@ -47,7 +47,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationManager locationManager;
     private String provider;
     private Location location;
-    private boolean permission;
     private Marker clickMarker = null;
 
     private String msg_extra;
@@ -76,7 +75,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         // Checkeamos permisos
-        permission = checkPermission();
+        checkPermission();
 
         editText_buscar = findViewById(R.id.editText_buscar);
         button_buscar = findViewById(R.id.button_buscar);
@@ -170,7 +169,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         button_hecho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                replyLocation(v);
+                float lat, lng;
+
+                // Si el clickMarker existe
+                if(clickMarker != null){
+                    Address address = getAddress(clickMarker.getPosition());
+                    replyLocation(address.getAddressLine(0));
+                }
+
+
             }
         });
 
@@ -333,9 +340,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 // Obtencion de la direccion
                 addresses = gc.getFromLocation(latLng.latitude, latLng.longitude, 10);
                 Address address = addresses.get(0);
-                String addresLine = address.getAddressLine(0);
-                Log.d(TAG, "GEOCODING: Address:" + addresLine);
-                Toast.makeText(MapsActivity.this, addresLine, Toast.LENGTH_SHORT).show();
+                String addressLine = address.getAddressLine(0);
+                Log.d(TAG, "GEOCODING: Address:" + addressLine);
+                Toast.makeText(MapsActivity.this, addressLine, Toast.LENGTH_SHORT).show();
                 return address;
 
             } catch (IOException e) {
@@ -367,12 +374,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void replyLocation(View view) {
+    public void replyLocation(String addressLine) {
         // TODO: devolver el nombre del municipio en el intent y las coordenadas, y la direccion completa
         // Anadiendo mas extras
-        String reply ="REPLY";
         Intent replyIntent = new Intent();
-        replyIntent.putExtra(EXTRA_MAP_REPLY, reply);
+        replyIntent.putExtra(EXTRA_MAP_REPLY, addressLine);
         setResult(RESULT_OK, replyIntent);
         finish();
     }
