@@ -78,6 +78,12 @@
             android:name=".GastosViajes"
             android:label="Gastos de tus viajes"
             android:parentActivityName=".MainActivity" />
+
+        <activity
+            android:name=".MiPerfil"
+            android:label="Mi perfil"
+            android:parentActivityName=".MainActivity" />
+
         <activity
             android:name=".MisCoches"
             android:label="Mis Coches"

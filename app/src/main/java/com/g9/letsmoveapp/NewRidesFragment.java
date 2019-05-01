@@ -1,6 +1,8 @@
 package com.g9.letsmoveapp;
 
 import android.content.Intent;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
@@ -14,6 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -21,6 +25,7 @@ import android.widget.ImageButton;
 //Imports referenciados a las bases de datos
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +33,7 @@ import com.g9.letsmoveapp.DatabaseAdapter;
 import com.g9.letsmoveapp.ConexionDatabase;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Locale;
 
 public class NewRidesFragment extends AppCompatActivity {
@@ -82,6 +88,17 @@ public class NewRidesFragment extends AppCompatActivity {
         Button button_horasalida = findViewById(R.id.button_horasalida);
         button_horasalida.setOnClickListener(new View.OnClickListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
+
+        /*
+        //Código para el spinner de los coches
+        Spinner spinner = findViewById(R.id.spinnerCoches);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                R.array.opcionCoche, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
+        //Esto último era this en un primer momento
+        */
 
             @Override
             public void onClick(View view) {
@@ -173,14 +190,6 @@ public class NewRidesFragment extends AppCompatActivity {
             }
         });
     }
-   /*
-    KEY_LAT_ORIG + " real not null, " +
-    KEY_LNG_ORIG + " real not null, " +
-    KEY_FECHA_SALIDA + " text not null, " +
-    KEY_LAT_DEST + " real not null, " +
-    KEY_LNG_DEST + " real not null, " +
-    KEY_FECHA_LLEGADA + " text not null, " +
-  */
 
     public void add_ride(View view) {
         ConexionDatabase conn = new ConexionDatabase(this, DatabaseAdapter.DB_RIDES, null, 1);
@@ -231,6 +240,22 @@ public class NewRidesFragment extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         finish();
         db_rides.close();
+/*  Esta parte la quito mientras lo de notificaciones no funciona, así no llama a las clases y no hacen ná
+        //--------------Notificaciones----------------
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.set(Calendar.HOUR_OF_DAY,12);
+        calendar.set(Calendar.MINUTE,8);
+
+        Intent intent_calendar = new Intent(getApplicationContext(),NotificationReceiver.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100, intent_calendar,PendingIntent.FLAG_UPDATE_CURRENT);
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
+
+        //--------------------------------------------------
+
+*/
+
     }
 
 //este método recibe parámetro un string, que sacamos del text view título de la tarjeta de viajes actuales.
