@@ -6,6 +6,7 @@ import android.app.PendingIntent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.location.Address;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,7 @@ import java.util.Locale;
 
 public class NewRidesFragment extends AppCompatActivity {
     private static final String LOG_TAG = "LEER_RIDE";
+    private static final String TAG = NewRidesFragment.class.getSimpleName();
     private static final int PERMISSION_CODE = 1000;
 
     EditText ride_name;
@@ -52,21 +54,20 @@ public class NewRidesFragment extends AppCompatActivity {
     EditText ride_num_viaj;
     Button button_read_car;
 
-    ArrayList ridesTable;
-
-    //Mientras no tenemos lat y lng destino y origen ponemos esto
     String ride_lat_origen = "";
     String ride_lat_destino = "";
     String ride_lng_origen = "";
     String ride_lng_destino = "";
 
+    ArrayList ridesTable;
 
-    public static final String EXTRA_MESSAGE_MAP =
-            "com.g9.letsmoveapp.MapsActivity.extra.MESSAGE_MAP";
-    public static final int MAP_REQUEST = 1;
+    //Intents Extra de Maps
+    public static final String EXTRA_MAPS =
+            "com.g9.letsmoveapp.MapsActivity.extra.MAPS";
 
-    //TODO Esto está ya apañao commo para que sea una activity, lo que da por culo ahora mismo aquí es el onClick
-    //Que va a seguir dando por culo hasta que el timepickerfragment sea llamado como dios manda
+    public static final int REQUEST_ORIGEN = 1;
+    public static final int REQUEST_DESTINO = 2;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -126,27 +127,31 @@ public class NewRidesFragment extends AppCompatActivity {
             }
         });
 
-        // Click Listener para lanzar actividad MapsActivity y selsecionar ORIGEN
+        /**
+         Click Listener para lanzar actividad MapsActivity y selseccionar ORIGEN
+         */
         ImageButton button_maps_origen = (ImageButton) findViewById(R.id.button_maps_origen);
         button_maps_origen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg_origen = ride_origen.getText().toString();
                 Intent intent = new Intent(NewRidesFragment.this, MapsActivity.class);
-                intent.putExtra(EXTRA_MESSAGE_MAP, msg_origen);
-                startActivityForResult(intent, MAP_REQUEST);
+                intent.putExtra(EXTRA_MAPS, msg_origen);
+                startActivityForResult(intent, REQUEST_ORIGEN);
             }
         });
 
-        // Click Listener para lanzar actividad MapsActivity y seleCcionar DESTINO
+        /**
+         Click Listener para lanzar actividad MapsActivity y seleccionar DESTINO
+         */
         ImageButton button_maps_destino = (ImageButton) findViewById(R.id.button_maps_destino);
         button_maps_destino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String msg_destino = ride_destino.getText().toString();
                 Intent intent = new Intent(NewRidesFragment.this, MapsActivity.class);
-                intent.putExtra(EXTRA_MESSAGE_MAP, msg_destino);
-                startActivity(intent);
+                intent.putExtra(EXTRA_MAPS, msg_destino);
+                startActivityForResult(intent, REQUEST_DESTINO);
             }
         });
         //BOTON DE PRUEBA PARA VER SI SE LEEN LOS REGISTROS
@@ -343,16 +348,52 @@ public class NewRidesFragment extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == MAP_REQUEST){
-            if (resultCode == RESULT_OK){
-                String reply = data.getStringExtra(MapsActivity.EXTRA_MAP_REPLY);
-                Log.d(LOG_TAG, reply);
-                //Toast.makeText(this,  reply, Toast.LENGTH_SHORT).show();
-                Address address = new Address(Locale.getDefault());
-                address.setAddressLine(0, reply);
 
-                Log.d(LOG_TAG, "Maps Reply: "+ address.getAddressLine(0));
-                //TODO: crear 2 cogidos de respuesta para diferenciar respuesta origen y destino y settear los editText
+        Bundle bundleReply;
+        //Address address = new Address(Locale.getDefault());
+        String direccion, municipio, calle, numero, provincia, pais;
+        Double lat, lng;
+
+        if (resultCode == RESULT_OK) {
+            //Settear los campos necesarios que se guardaran en bbdd
+            bundleReply = data.getBundleExtra(MapsActivity.EXTRA_MAP_REPLY);
+            municipio = (String) bundleReply.get("municipio");
+            calle = (String) bundleReply.get("calle");
+            direccion = (String) bundleReply.get("direccion");
+            numero = (String) bundleReply.get("numero");
+            provincia = (String) bundleReply.get("provincia");
+            pais = (String) bundleReply.get("pais");
+
+            Log.d(TAG, "Bundle reply ORIGEN: " +"; "+ municipio +"; "+ calle + "; "+ numero +"; " + provincia + "; " + pais);
+            Log.d(TAG, "Bundle reply ORIGEN: Direccion completa" + direccion);
+
+            lat = (Double) bundleReply.get("latitud");
+            lng = (Double) bundleReply.get("longitud");
+
+            switch (requestCode) {
+                // Guardar resultados para ORIGEN
+                case REQUEST_ORIGEN:
+                    if (municipio != null && numero != null && calle != null ) {
+                        String stringText = municipio + ", " + calle + " " + numero;
+                        ride_origen.setText(stringText);
+                    }
+                    if (lat != null && lng != null) {
+                        ride_lat_origen = Double.toString(lat);
+                        ride_lng_origen = Double.toString(lng);
+                    }
+                    break;
+
+                // Guarar resultados para DESTINO
+                case REQUEST_DESTINO:
+                    if (municipio != null && numero != null && calle != null ) {
+                        String stringText = municipio + ", " + calle + " " + numero;
+                        ride_destino.setText(stringText);
+                    }
+                    if (lat != null && lng != null) {
+                        ride_lat_destino = Double.toString(lat);
+                        ride_lng_destino = Double.toString(lng);
+                    }
+                    break;
             }
         }
     }
