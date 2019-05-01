@@ -18,11 +18,12 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-
+import com.g9.letsmoveapp.TimePickerFragment;
 //Imports referenciados a las bases de datos
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
+import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.g9.letsmoveapp.DatabaseAdapter;
@@ -38,8 +39,10 @@ public class NewRidesFragment extends AppCompatActivity {
 
     EditText ride_name;
     EditText ride_origen;
+    TextView ride_fechaSalida;
     TextView ride_horaSalida;
     EditText ride_destino;
+    TextView ride_fechaLlegada;
     TextView ride_horaLlegada;
     EditText ride_tipo;
     EditText ride_horaLimite;
@@ -48,12 +51,15 @@ public class NewRidesFragment extends AppCompatActivity {
     EditText ride_num_viaj;
     Button button_read_car;
 
+    ArrayList ridesTable;
+
+    //Mientras no tenemos lat y lng destino y origen ponemos esto
     String ride_lat_origen = "";
     String ride_lat_destino = "";
     String ride_lng_origen = "";
     String ride_lng_destino = "";
 
-    ArrayList ridesTable;
+    //ArrayList ridesTable;
 
     //Intents Extra de Maps
     public static final String EXTRA_MAPS =
@@ -69,8 +75,10 @@ public class NewRidesFragment extends AppCompatActivity {
 
         ride_name = (EditText) findViewById(R.id.name_ride);
         ride_origen = (EditText) findViewById(R.id.origen);
+        ride_fechaSalida = (TextView) findViewById(R.id.fechaSalida);
         ride_horaSalida = (TextView) findViewById(R.id.horaSalida);
         ride_destino = (EditText) findViewById(R.id.destino);
+        ride_fechaLlegada = (TextView) findViewById(R.id.fechaLlegada);
         ride_horaLlegada = (TextView) findViewById(R.id.horaLlegada);
         ride_tipo = (EditText) findViewById(R.id.tipo_ride);
         ride_horaLimite = (EditText) findViewById(R.id.hora_limite);
@@ -87,13 +95,11 @@ public class NewRidesFragment extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction().commit();
-
-                DialogFragment timePicker = new TimePickerFragment();
+                TimePickerFragment timePicker = new TimePickerFragment();
+                 timePicker.timePickerType=1;//ponemos este campo distinto de 0 para lanzar el código de hora salida
                 int hour = 0;
                 int minute = 0;
-                // timePicker.onTimeSet(TimePicker view, hour, minute);
                 timePicker.show(fragmentManager, "time picker");
-
             }
         });
 
@@ -105,7 +111,12 @@ public class NewRidesFragment extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction();
-                DialogFragment timePicker = new TimePickerFragment();
+                TimePickerFragment timePicker = new TimePickerFragment();
+                timePicker.timePickerType=0;//ponemos este campo a 0 para lanzar el código de hora llegada
+                int hour = 0;
+                int minute = 0;
+                Log.d(LOG_TAG, "Time: " + hour+":"+minute);
+
                 timePicker.show(fragmentManager, "time picker");
             }
         });
@@ -178,46 +189,42 @@ public class NewRidesFragment extends AppCompatActivity {
             }
         });
     }
-   /*
-    KEY_LAT_ORIG + " real not null, " +
-    KEY_LNG_ORIG + " real not null, " +
-    KEY_FECHA_SALIDA + " text not null, " +
-    KEY_LAT_DEST + " real not null, " +
-    KEY_LNG_DEST + " real not null, " +
-    KEY_FECHA_LLEGADA + " text not null, " +
-  */
-
     public void add_ride(View view) {
         ConexionDatabase conn = new ConexionDatabase(this, DatabaseAdapter.DB_RIDES, null, 1);
         SQLiteDatabase db_rides = conn.getWritableDatabase();
+        Log.d(LOG_TAG,"TABLE "+db_rides.toString());
 
         //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
 
         String insert = "INSERT INTO " + DatabaseAdapter.DB_RIDES
-                + " ( " +
-                DatabaseAdapter.KEY_R_NAME + ", " +
-                DatabaseAdapter.KEY_ORIGEN + ", " +
-                DatabaseAdapter.KEY_LAT_ORIG + ", " +
-                DatabaseAdapter.KEY_LNG_ORIG + ", " +
-                DatabaseAdapter.KEY_FECHA_SALIDA + ", " +
-                DatabaseAdapter.KEY_DESTINO + ", " +
-                DatabaseAdapter.KEY_LAT_DEST + ", " +
-                DatabaseAdapter.KEY_LNG_DEST + ", " +
-                DatabaseAdapter.KEY_FECHA_LLEGADA + ", " +
-                DatabaseAdapter.KEY_TIPO + ", " +
-                DatabaseAdapter.KEY_FECHA_LIMITE + ", " +
-                DatabaseAdapter.KEY_PRECIO + ", " +
-                DatabaseAdapter.KEY_PERIOD + ", " +
+                + " (" +
+                DatabaseAdapter.KEY_R_NAME + "," +
+                DatabaseAdapter.KEY_ORIGEN + "," +
+                DatabaseAdapter.KEY_LAT_ORIG + "," +
+                DatabaseAdapter.KEY_LNG_ORIG + "," +
+                DatabaseAdapter.KEY_FECHA_SALIDA + "," +
+                DatabaseAdapter.KEY_HORA_SALIDA + "," +
+                DatabaseAdapter.KEY_DESTINO + "," +
+                DatabaseAdapter.KEY_LAT_DEST + "," +
+                DatabaseAdapter.KEY_LNG_DEST + "," +
+                DatabaseAdapter.KEY_FECHA_LLEGADA + "," +
+                DatabaseAdapter.KEY_HORA_LLEGADA + "," +
+                DatabaseAdapter.KEY_TIPO + "," +
+                DatabaseAdapter.KEY_FECHA_LIMITE + "," +
+                DatabaseAdapter.KEY_PRECIO + "," +
+                DatabaseAdapter.KEY_PERIOD + "," +
                 DatabaseAdapter.KEY_NUM_VIAJ + ")" +
-                " VALUES ('" +
+                " VALUES('" +
                 ride_name.getText().toString() + "','" +
                 ride_origen.getText().toString() + "','" +
                 ride_lat_origen + "','" +
                 ride_lng_origen + "','" +
+                ride_fechaSalida.getText().toString() + "','" +
                 ride_horaSalida.getText().toString() + "','" +
                 ride_destino.getText().toString() + "','" +
                 ride_lat_destino + "','" +
                 ride_lng_destino + "','" +
+                ride_fechaLlegada.getText().toString() + "','" +
                 ride_horaLlegada.getText().toString() + "','" +
                 ride_tipo.getText().toString() + "','" +
                 ride_horaLimite.getText().toString() + "','" +
@@ -226,10 +233,7 @@ public class NewRidesFragment extends AppCompatActivity {
                 ride_num_viaj.getText().toString() + "')";
         //Hay algunos con comillas simples porque son textos y en sql se usan comilla simple, necesito ponerlas si no parseo números
         // modelo-texto, plazas-int, color-texto
-
-
-        // car_modelo,car_plazas,car_size,car_color,car_antig,car_consumo;
-
+        Log.d(LOG_TAG,"InsertSQL "+insert);
 
         db_rides.execSQL(insert);
         String message = "Viaje: " + ride_name.getText().toString() + " creado correctamente";
@@ -284,8 +288,10 @@ public class NewRidesFragment extends AppCompatActivity {
                 Log.d(LOG_TAG, "LatOr: " + ridesDataModel.getLat_orig());
                 ridesDataModel.setLng_orig(cursor.getDouble(cursor.getColumnIndex(DatabaseAdapter.KEY_LNG_ORIG)));
                 Log.d(LOG_TAG, "LngOr: " + ridesDataModel.getLng_orig());
-                ridesDataModel.setFecha_salida(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_DESTINO)));
+                ridesDataModel.setFecha_salida(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_FECHA_SALIDA)));
                 Log.d(LOG_TAG, "FechaSalida: " + ridesDataModel.getFecha_salida());
+                ridesDataModel.setHora_salida(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_HORA_SALIDA)));
+                Log.d(LOG_TAG, "HoraSalida: " + ridesDataModel.getHora_salida());
                 ridesDataModel.setDestino(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_DESTINO)));
                 Log.d(LOG_TAG, "Destino: " + ridesDataModel.getDestino());
                 ridesDataModel.setLat_dest(cursor.getDouble(cursor.getColumnIndex(DatabaseAdapter.KEY_LAT_DEST)));
@@ -294,6 +300,8 @@ public class NewRidesFragment extends AppCompatActivity {
                 Log.d(LOG_TAG, "LngDest: " + ridesDataModel.getLng_dest());
                 ridesDataModel.setFecha_llegada(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_FECHA_LLEGADA)));
                 Log.d(LOG_TAG, "FechaLlegada: " + ridesDataModel.getFecha_llegada());
+                ridesDataModel.setHora_llegada(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_HORA_LLEGADA)));
+                Log.d(LOG_TAG, "HoraSalida: " + ridesDataModel.getHora_llegada());
                 ridesDataModel.setTipo(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_TIPO)));
                 Log.d(LOG_TAG, "Tipo: " + ridesDataModel.getTipo());
                 ridesDataModel.setHora_limite(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_FECHA_LIMITE)));

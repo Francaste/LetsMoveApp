@@ -7,6 +7,9 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -17,7 +20,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     private int minuLlegada;
     private int horaSalida;
     private int minuSalida;
-    private int type;
+    public int timePickerType=0;
 
     @NonNull
     @Override
@@ -31,7 +34,7 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     //TODO hacer dos timepickerfragment para poder leer fecha y día de llegada y salida
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-        if (type == 0) {
+        if (timePickerType == 0) {
             horaLlegada = hourOfDay;
             minuLlegada = minute;
             TextView text_llegada = (TextView) getActivity().findViewById(R.id.horaLlegada);
@@ -42,7 +45,5 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
             TextView text_salida = (TextView) getActivity().findViewById(R.id.horaSalida);
             text_salida.setText(hourOfDay + ":" + minute);
         }
-
-
     }
 }

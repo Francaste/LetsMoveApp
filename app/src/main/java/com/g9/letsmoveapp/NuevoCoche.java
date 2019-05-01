@@ -166,6 +166,9 @@ public class NuevoCoche extends AppCompatActivity {
         switch (requestCode) {
             case PERMISSION_CODE: {
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //dar permiso
+                    String[] permission = {android.Manifest.permission.WRITE_EXTERNAL_STORAGE};
+                    requestPermissions(permission, PERMISSION_CODE);
                     openCamera();
                 } else {
                     Toast.makeText(this, "No hay permiso para abrir cámara", Toast.LENGTH_LONG).show();

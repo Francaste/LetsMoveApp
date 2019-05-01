@@ -5,7 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".NewRidesFragment">
+    tools:context=".NewRidesFragment"
+    android:focusable="true"
+    android:focusableInTouchMode="true">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -128,48 +130,109 @@
 
                     </LinearLayout>
                 </LinearLayout>
-
+                <!-- BOTONES DE PICKERS-->
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
 
-                    <Button
-                        android:id="@+id/button_horasalida"
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="Hora de salida" />
+                        android:layout_gravity="left"
+                        android:orientation="vertical">
 
-                    <TextView
-                        android:id="@+id/horaSalida"
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/button_fechasalida"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="Fecha de salida" />
+
+                            <TextView
+                                android:id="@+id/fechaSalida"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:hint="01/01/2019"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/button_fechallegada"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="Fecha de llegada" />
+
+                            <TextView
+                                android:id="@+id/fechaLlegada"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:hint="01/01/2019"/>
+                        </LinearLayout>
+                    </LinearLayout>
+
+                    <LinearLayout
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:padding="10dp" />
+                        android:layout_gravity="right"
+                        android:orientation="vertical">
 
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/button_horasalida"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="Hora de salida" />
+
+                            <TextView
+                                android:id="@+id/horaSalida"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:hint="10:23"
+                                />
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <Button
+                                android:id="@+id/button_horallegada"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:text="Hora de llegada" />
+
+                            <TextView
+                                android:id="@+id/horaLlegada"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:padding="10dp"
+                                android:hint="10:23"
+                                />
+                        </LinearLayout>
+                    </LinearLayout>
                 </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/button_horallegada"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp"
-                        android:text="Hora de llegada" />
-
-                    <TextView
-                        android:id="@+id/horaLlegada"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:padding="10dp" />
-
-                </LinearLayout>
-
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -295,7 +358,6 @@
                         android:layout_height="wrap_content"
                         android:text="Periodicidad del viaje: "
                         android:textSize="16sp"
-
                         android:textStyle="bold" />
 
                     <EditText
@@ -310,7 +372,6 @@
 
             </LinearLayout>
         </ScrollView>
-
     </LinearLayout>
 
     <LinearLayout
@@ -332,6 +393,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="Leer nuevo viaje" />
-
     </LinearLayout>
+
 </LinearLayout>

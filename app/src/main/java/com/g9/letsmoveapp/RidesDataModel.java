@@ -5,11 +5,13 @@ public class RidesDataModel {
     private String origen = "";//Ciudad de origen
     private double lat_orig = 0;//Latitud origen se saca de maps geocoder
     private double lng_orig = 0;//Longitud origen se saca de maps geocoder
-    private String fecha_salida = "";//Fecha de salida "dd/MM/aa-hh:mm"
+    private String fecha_salida = "";//Fecha de salida "dd/MM/aa"
+    private String hora_salida = "";//Hora de salida "hh:mm"
     private String destino = "";//Ciudad destino
     private double lat_dest = 0;//latidud de destino se saca de maps geocoder
     private double lng_dest = 0;//longitud de destino se saca de maps geocoder
-    private String fecha_llegada = "";//Fecha de llegada "dd/MM/aa-hh:mm"
+    private String fecha_llegada = "";//Fecha de llegada "dd/MM/aa"
+    private String hora_llegada="";//Hora de llegada "hh:mm"
     private String hora_limite = "";//Hora límite a la que sale el viaje
     private int precio = 0;//Precio estimado del viaje
     private int num_viajerxs=0;//número de viajeros contando a quien conduce
@@ -18,17 +20,19 @@ public class RidesDataModel {
 
 
     public RidesDataModel(String r_name, String origen, double lat_orig,
-                          double lng_orig, String fecha_salida, String destino, double lat_dest, double lng_dest,
-                          String fecha_llegada, String hora_limite, int precio, String period, String tipo, int num_viajerxs) {
+                          double lng_orig, String fecha_salida,String hora_salida, String destino, double lat_dest, double lng_dest,
+                          String fecha_llegada,String hora_llegada, String hora_limite, int precio, String period, String tipo, int num_viajerxs) {
         this.r_name = r_name;
         this.origen = origen;
         this.lat_orig = lat_orig;
         this.lng_orig = lng_orig;
         this.fecha_salida = fecha_salida;
+        this.hora_salida = hora_salida;
         this.destino = destino;
         this.lat_dest = lat_dest;
         this.lng_dest = lng_dest;
         this.fecha_llegada = fecha_llegada;
+        this.hora_llegada = hora_llegada;
         this.hora_limite = hora_limite;
         this.precio = precio;
         this.period = period;
@@ -42,10 +46,12 @@ public class RidesDataModel {
         this.lat_orig = 12;
         this.lng_orig = 23;
         this.fecha_salida = "01/12/19";
+        this.hora_salida = "10:14";
         this.destino = "Paris";
         this.lat_dest = 24;
         this.lng_dest = 54;
         this.fecha_llegada = "01/12/19";
+        this.hora_llegada = "12:24";
         this.hora_limite = "12min";
         this.precio = 12;
         this.period = "S";
@@ -163,6 +169,21 @@ public class RidesDataModel {
 
     public void setNum_viajerxs(int num_viajerxs) {
         this.num_viajerxs = num_viajerxs;
+    }
+    public String getHora_salida() {
+        return hora_salida;
+    }
+
+    public void setHora_salida(String hora_salida) {
+        this.hora_salida = hora_salida;
+    }
+
+    public String getHora_llegada() {
+        return hora_llegada;
+    }
+
+    public void setHora_llegada(String hora_llegada) {
+        this.hora_llegada = hora_llegada;
     }
 }
 
