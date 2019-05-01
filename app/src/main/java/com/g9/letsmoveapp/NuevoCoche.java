@@ -176,7 +176,6 @@ public class NuevoCoche extends AppCompatActivity {
             }
         }
     }
-
     //Al método add_car lo está llamando el onClick del xml, no hace falta poner escuchador
     public void add_car(View view) {
         ConexionDatabase conn = new ConexionDatabase(this, "db_cars", null, 1);

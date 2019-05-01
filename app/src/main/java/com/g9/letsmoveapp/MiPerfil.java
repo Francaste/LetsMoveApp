@@ -15,7 +15,6 @@ import org.w3c.dom.Text;
 
 public class MiPerfil extends AppCompatActivity {
     EditText campoUsuario, campoExperiencia, campoTelefono;
-    TextView txtUsuario, txtExperiencia, txtTelefono;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +63,6 @@ public void onClick(View view){
 }
 */
 
-
 private void cargarPreferencias(){
 SharedPreferences preferences = getSharedPreferences("credenciales", Context.MODE_PRIVATE);
 String usuario = preferences.getString("usuario", "Pepe");
@@ -76,7 +74,6 @@ campoExperiencia.setText(experiencia);
 campoTelefono.setText(telefono);
 
 }
-
 
 private void guardarPreferencias(){
 
