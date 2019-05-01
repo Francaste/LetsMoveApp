@@ -51,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     private String msg_extra;
 
+
     private EditText editText_buscar;
     private ImageButton button_buscar;
     private Button button_hecho;
@@ -67,11 +68,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
 
         // Capturamos el intent que lanzó esta actividad y el mensaje
-
         Intent intent = getIntent();
+        msg_extra = intent.getStringExtra(NewRidesFragment.EXTRA_MAPS);
 
-        msg_extra = intent.getStringExtra(NewRidesFragment.EXTRA_MESSAGE_MAP);
 
+        //Provider de localizacion
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         // Checkeamos permisos
@@ -94,6 +95,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
             //Solicitar localizacion
             if (provider != null) {
+                //Peticion para actualizar la localizavion cada 5 minutos
                 locationManager.requestLocationUpdates(provider, 1000 * 60 * 5, 25, this);
                 location = locationManager.getLastKnownLocation(provider);
                 if (location != null) {
@@ -109,6 +111,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
+    /**
+     * Al pausar la actividad Maps se desactivan las actualizaciones de localizacion
+     */
     @Override
     protected void onPause() {
         super.onPause();
@@ -152,7 +157,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onMapLongClick(LatLng latLng) {
                 marcadorClick(mMap, latLng);
                 Address address = getAddress(latLng);
-                editText_buscar.setText(address.getAddressLine(0));
+                if (address != null) {
+                    editText_buscar.setText(address.getAddressLine(0));
+                }
             }
         });
 
@@ -162,7 +169,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             public void onClick(View v) {
                 String text_buscar = editText_buscar.getText().toString();
                 LatLng buscador_location = searchExtraLocation(text_buscar);
-                marcadorClick(mMap, buscador_location); }
+                if (buscador_location != null) marcadorClick(mMap, buscador_location);
+            }
         });
 
         //Click listener del boton HECHO
@@ -170,14 +178,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             @Override
             public void onClick(View v) {
                 float lat, lng;
-
                 // Si el clickMarker existe
-                if(clickMarker != null){
+                if (clickMarker != null) {
                     Address address = getAddress(clickMarker.getPosition());
-                    replyLocation(address.getAddressLine(0));
+                    if (address != null)
+                        replyLocation(address);
                 }
-
-
             }
         });
 
@@ -317,14 +323,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             try {
                 addresses = gc.getFromLocationName(site, 2);
                 Address address = addresses.get(0);
-                LatLng latLng = new LatLng(address.getLatitude(), address.getLongitude());
-                return latLng;
-
+                // Devuelve un LatLng
+                return new LatLng(address.getLatitude(), address.getLongitude());
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
-        //En caso de no conseguir las coordenadas devvuelve null
+        //En caso de no conseguir las coordenadas devuelve null
         return null;
     }
 
@@ -343,6 +348,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 String addressLine = address.getAddressLine(0);
                 Log.d(TAG, "GEOCODING: Address:" + addressLine);
                 Toast.makeText(MapsActivity.this, addressLine, Toast.LENGTH_SHORT).show();
+                // Devuelve address
                 return address;
 
             } catch (IOException e) {
@@ -351,6 +357,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
 
         }
+        // si no se consigue obtener la direccion devuelve null
         return null;
     }
 
@@ -374,13 +381,31 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
     }
 
-    public void replyLocation(String addressLine) {
+    /**
+     * Al pulsar el boton HECHO se ejecuta este metodo
+     * Devuevuelve A NewRides la direccion completa y las coordenadas
+     * Crea un intent de respuesta para NewRides y finaliza la actividad de mapas
+     */
+    public void replyLocation(Address address) {
         // TODO: devolver el nombre del municipio en el intent y las coordenadas, y la direccion completa
-        // Anadiendo mas extras
+
+        Bundle bundle = new Bundle();
+        if (address != null ) {
+            //Bundle de respuesta
+            bundle.putString("municipio", address.getLocality());
+            bundle.putString("direccion", address.getAddressLine(0));
+            bundle.putDouble("latitud", address.getLatitude());
+            bundle.putDouble("longitud", address.getLongitude());
+            bundle.putString("provincia", address.getSubAdminArea());//Provincia
+            bundle.putString("pais", address.getCountryName());//Pais
+            bundle.putString("calle", address.getThoroughfare());//Calle
+            bundle.putString("numero", address.getSubThoroughfare());//Numero
+
+
+        }
         Intent replyIntent = new Intent();
-        replyIntent.putExtra(EXTRA_MAP_REPLY, addressLine);
+        replyIntent.putExtra(MapsActivity.EXTRA_MAP_REPLY, bundle);
         setResult(RESULT_OK, replyIntent);
         finish();
     }
-
 }
