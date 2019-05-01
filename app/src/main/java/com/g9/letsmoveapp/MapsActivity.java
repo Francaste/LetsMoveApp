@@ -12,6 +12,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
@@ -35,7 +36,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
-
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback, LocationListener {
 
     public static final String EXTRA_MAP_REPLY = "com.g9.letsmoveapp.mapsactivity.extra.REPLY";
@@ -48,9 +48,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private String provider;
     private Location location;
     private Marker clickMarker = null;
+    private boolean permissions = false;
 
     private String msg_extra;
-
 
     private EditText editText_buscar;
     private ImageButton button_buscar;
@@ -66,17 +66,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (mapFragment != null) {
             mapFragment.getMapAsync(this);
         }
-
         // Capturamos el intent que lanzó esta actividad y el mensaje
         Intent intent = getIntent();
         msg_extra = intent.getStringExtra(NewRidesFragment.EXTRA_MAPS);
-
 
         //Provider de localizacion
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         provider = locationManager.getBestProvider(new Criteria(), false);
         // Checkeamos permisos
-        checkPermission();
+        permissions = checkPermission();
 
         editText_buscar = findViewById(R.id.editText_buscar);
         button_buscar = findViewById(R.id.button_buscar);
@@ -90,9 +88,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         // Si se han concedido los permisos obtenetmos la localización
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-
             provider = locationManager.getBestProvider(new Criteria(), false);
-
             //Solicitar localizacion
             if (provider != null) {
                 //Peticion para actualizar la localizavion cada 5 minutos
@@ -120,7 +116,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
-
             locationManager.removeUpdates(this);
         }
     }
@@ -134,10 +129,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         isReady = true;
         mMap = googleMap;
-
         // Colocar marcadores
         marcadores(googleMap);
-
         // Al pulsar sobre el mapa
         mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
@@ -177,17 +170,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         button_hecho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                float lat, lng;
-                // Si el clickMarker existe
                 if (clickMarker != null) {
+                    // Si el clickMarker existe
                     Address address = getAddress(clickMarker.getPosition());
                     if (address != null)
                         replyLocation(address);
+                } else {
+                    // Si no hay clickMarker devolvemos la localizacion y su direccion
+                    if (permissions && location != null) {
+                        Address address = getAddress(new LatLng(location.getLatitude(), location.getLongitude()));
+                        replyLocation(address);
+                    }
                 }
             }
         });
 
-        //
+        // Esto no se coloca..?
         mMap.getUiSettings().setMapToolbarEnabled(true);
     }
 
@@ -210,31 +208,49 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      */
     public void marcadores(GoogleMap googleMap) {
         mMap = googleMap;
-        // Añade un marcador y mueve la cámara
-        // Checkea permisos y pone el punto azul con la localización
+
         if (ContextCompat.checkSelfPermission(this,
                 Manifest.permission.ACCESS_FINE_LOCATION)
                 == PackageManager.PERMISSION_GRANTED) {
+            /*
+             Checkea permisos y pone el punto azul con la localización
+              */
             mMap.setMyLocationEnabled(true);
             mMap.getUiSettings().setMyLocationButtonEnabled(true);
             location = locationManager.getLastKnownLocation(provider);
+            //AL hacer click sobre nuestra localizacion (puntito azul)
+            mMap.setOnMyLocationClickListener(new GoogleMap.OnMyLocationClickListener() {
+                @Override
+                public void onMyLocationClick(@NonNull Location location) {
+                    editText_buscar.setText("Mi localización");
+                    marcadorClick(mMap, new LatLng(location.getLatitude(), location.getLongitude()));
+                }
+            });
+            //Al pulsar el boton de localizacion
+            mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+                @Override
+                public boolean onMyLocationButtonClick() {
+                    Toast.makeText(MapsActivity.this, "MY LOCATION", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+            });
         }
-
         if (!msg_extra.equals("")) {
+            //Se se ha introducido algo en el editText de origen o destino en NewRides
+            //Se coloca el marcador en la posicion encontrada por el geocoder
             LatLng extraMarker = searchExtraLocation(msg_extra);
-            mMap.addMarker(new MarkerOptions().position(extraMarker).title(msg_extra));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(extraMarker, 17));
+            marcadorClick(mMap, extraMarker);
         } else if (location != null) {
+            //Si no se ha introducido nada en el editext de origern o destino se muestra nuestra localizacion
             LatLng latLng_location = new LatLng(location.getLatitude(), location.getLongitude());
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng_location, 17));
         } else {
-            // Si no se consigue la localizacion aolicitada no la localizacion del dispositivo
+            // Si no se consigue la localizacion y el edit text esta vacio
             // UC3M Campus de Leganés LAT 40.332008867438645 LONG -3.765928643655343
             final LatLng leganes = new LatLng(40.332008, -3.765928);
             mMap.addMarker(new MarkerOptions().position(leganes).title("UC3M Campus Leganés"));
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(leganes, 17));
         }
-
     }
 
     /**
@@ -267,7 +283,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-
     /**
      * Este método se ejecuta al responder a la solicitud de permisos de localización
      */
@@ -278,7 +293,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 System.out.println("Permisos de localización obtenidos, obteniendo localización...");
                 //Acciones necesarias si aplica
 
-
                 // permission was granted, yay! Do the
                 // location-related task you need to do.
                 if (ContextCompat.checkSelfPermission(this,
@@ -286,7 +300,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         == PackageManager.PERMISSION_GRANTED) {
 
                     provider = locationManager.getBestProvider(new Criteria(), false);
-
                     //Solicitar localizacion
                     if (provider != null) {
                         locationManager.requestLocationUpdates(provider, 1000 * 60 * 5, 25, this);
@@ -299,12 +312,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if (isReady) {
                             onMapReady(mMap);
                         }
-
                     } else {
                         Log.e(TAG, "Error obteniendo localizaión...");
                     }
                 }
-
 
             } else {
                 Log.e(TAG, "No hay permisos para obtener localización");
@@ -350,12 +361,10 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                 Toast.makeText(MapsActivity.this, addressLine, Toast.LENGTH_SHORT).show();
                 // Devuelve address
                 return address;
-
             } catch (IOException e) {
                 e.printStackTrace();
                 Log.d(TAG, "Error de geocoding");
             }
-
         }
         // si no se consigue obtener la direccion devuelve null
         return null;
@@ -387,10 +396,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
      * Crea un intent de respuesta para NewRides y finaliza la actividad de mapas
      */
     public void replyLocation(Address address) {
-        // TODO: devolver el nombre del municipio en el intent y las coordenadas, y la direccion completa
-
         Bundle bundle = new Bundle();
-        if (address != null ) {
+        if (address != null) {
             //Bundle de respuesta
             bundle.putString("municipio", address.getLocality());
             bundle.putString("direccion", address.getAddressLine(0));
@@ -400,8 +407,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             bundle.putString("pais", address.getCountryName());//Pais
             bundle.putString("calle", address.getThoroughfare());//Calle
             bundle.putString("numero", address.getSubThoroughfare());//Numero
-
-
         }
         Intent replyIntent = new Intent();
         replyIntent.putExtra(MapsActivity.EXTRA_MAP_REPLY, bundle);

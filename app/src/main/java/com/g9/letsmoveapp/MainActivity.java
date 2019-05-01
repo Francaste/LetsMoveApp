@@ -150,6 +150,11 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
+    public void misPerfil(View view) {
+        Intent intent = new Intent(this, MiPerfil.class);
+        startActivity(intent);
+    }
+
     public void misCoches(View view) {
         Intent intent = new Intent(this, MisCoches.class);
         startActivity(intent);

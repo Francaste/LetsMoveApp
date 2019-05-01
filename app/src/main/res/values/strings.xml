@@ -20,5 +20,6 @@
         <item>Viaje actual</item>
     </string-array>
     <string name="title_activity_maps">Map</string>
+    <string name="MiPerfil">Mi perfil</string>
 
 </resources>
