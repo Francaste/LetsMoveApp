@@ -330,11 +330,11 @@
                     android:orientation="vertical">
 
                     <TextView
+                        android:id="@+id/textView_spinner"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Elige el coche: "
                         android:textSize="16sp"
-
                         android:textStyle="bold" />
 
                     <Spinner

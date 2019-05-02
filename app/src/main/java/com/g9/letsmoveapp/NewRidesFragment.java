@@ -32,6 +32,8 @@ import com.g9.letsmoveapp.ConexionDatabase;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 import java.util.Locale;
 
 public class NewRidesFragment extends AppCompatActivity {
@@ -68,6 +70,8 @@ public class NewRidesFragment extends AppCompatActivity {
     String ride_lng_origen = "";
     String ride_lng_destino = "";
 
+    String ride_coche = "";
+
     //Intents Extra de Maps
     public static final String EXTRA_MAPS =
             "com.g9.letsmoveapp.MapsActivity.extra.MAPS";
@@ -102,21 +106,47 @@ public class NewRidesFragment extends AppCompatActivity {
         button_maps_origen = (ImageButton) findViewById(R.id.button_maps_origen);
         button_maps_destino = (ImageButton) findViewById(R.id.button_maps_destino);
 
+
         /*
-        //Código para el spinner de los coches
+         * Código para el spinner de los coches
+         * */
         Spinner spinner = findViewById(R.id.spinnerCoches);
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                R.array.opcionCoche, android.R.layout.simple_spinner_item);
+        //ArrayAdapter<CharSequence> adapter;
+        final ArrayAdapter<String> adapter;
+
+        List<String> spinnerArray = new ArrayList<>();
+        // Implementar metodo  getCars() que devuelva ArrayList con los nombres de los coches de la BBDD
+        // De momento solo inserta elementos a pelo sin sacarlos de la base de datos
+        spinnerArray = getCars();
+        //
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener((AdapterView.OnItemSelectedListener) this);
-        //Esto último era this en un primer momento
-        */
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            /*
+             * Al seleccionar un elemento del spinner ->
+             * */
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
+                if (item != null) {
+                    ride_coche = item.toString();
+                    //TODO: aqui guardar el nombre del coche seleccionado
+                    Toast.makeText(NewRidesFragment.this, item.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
 
 
         // Click listener para mostrar DatePicker de fecha salida
         button_fechasalida.setOnClickListener(new View.OnClickListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
+
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().commit();
@@ -129,6 +159,7 @@ public class NewRidesFragment extends AppCompatActivity {
         // Click listener para mostrar DatePicker de fecha llegada
         button_fechallegada.setOnClickListener(new View.OnClickListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
+
             @Override
             public void onClick(View v) {
                 fragmentManager.beginTransaction().commit();
@@ -141,6 +172,7 @@ public class NewRidesFragment extends AppCompatActivity {
         // Click Listener para mostrar el TimePicker
         button_horasalida.setOnClickListener(new View.OnClickListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
+
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction().commit();
@@ -153,6 +185,7 @@ public class NewRidesFragment extends AppCompatActivity {
         // CLick Listener para mostrar el TimePicker
         button_horallegada.setOnClickListener(new View.OnClickListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
+
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction().commit();
@@ -382,6 +415,18 @@ public class NewRidesFragment extends AppCompatActivity {
         finish();//cerramos la activity
         return ridesModelArrayList;
 
+    }
+
+    /**
+     * Extraer nombres de coches de la BBDD de coches
+     */
+    public ArrayList<String> getCars() {
+        ArrayList<String> spinnerArray = new ArrayList<>();
+        //TODO: aqui hay que añadir los nombres de los coches extraidos de la BBDD de coches al ArrayList
+        spinnerArray.add("coche 1");
+        spinnerArray.add("coche 2");
+        spinnerArray.add("coche 3");
+        return spinnerArray;
     }
 
     /**
