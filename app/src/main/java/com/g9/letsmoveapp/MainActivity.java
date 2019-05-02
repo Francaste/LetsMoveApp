@@ -25,12 +25,6 @@ import com.g9.letsmoveapp.NuevoCoche;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    //Codelabs
-    private final ArrayList<VisualViajes> listaViajes = new ArrayList<>();
-    private RecyclerView recyclerViajes;
-    private adaptadorDatos miAdapter;
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +65,7 @@ public class MainActivity extends AppCompatActivity
         }
 */
         //Creamos la conexiÃ³n de acuerdo a la Ãºltima versiÃ³n que vamos a llevar a cabo
-        ConexionDatabase conn =new ConexionDatabase(this,"bd_usuarios",null,1);
+        //ConexionDatabase conn =new ConexionDatabase(this,"bd_usuarios",null,1);
 
     }
 
