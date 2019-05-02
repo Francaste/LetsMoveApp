@@ -5,13 +5,9 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
-import android.location.Address;
-import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,13 +18,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import com.g9.letsmoveapp.TimePickerFragment;
+
+
 //Imports referenciados a las bases de datos
 import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.TimePicker;
 import android.widget.Toast;
 
 import com.g9.letsmoveapp.DatabaseAdapter;
@@ -56,6 +52,14 @@ public class NewRidesFragment extends AppCompatActivity {
     EditText ride_period;
     EditText ride_num_viaj;
     Button button_read_car;
+
+    Button button_horasalida;
+    Button button_horallegada;
+    Button button_fechasalida;
+    Button button_fechallegada;
+
+    ImageButton button_maps_origen;
+    ImageButton button_maps_destino;
 
     ArrayList ridesTable;
 
@@ -90,10 +94,13 @@ public class NewRidesFragment extends AppCompatActivity {
         ride_num_viaj = (EditText) findViewById(R.id.num_viaj);
         button_read_car = (Button) findViewById(R.id.button_read_rides);
 
-        // CLick Listener para mostrar el TIiePicker
-        Button button_horasalida = findViewById(R.id.button_horasalida);
-        button_horasalida.setOnClickListener(new View.OnClickListener() {
-            FragmentManager fragmentManager = getSupportFragmentManager();
+        button_horallegada = (Button) findViewById(R.id.button_horallegada);
+        button_horasalida = findViewById(R.id.button_horasalida);
+        button_fechasalida = findViewById(R.id.button_fechasalida);
+        button_fechallegada = findViewById(R.id.button_fechallegada);
+
+        button_maps_origen = (ImageButton) findViewById(R.id.button_maps_origen);
+        button_maps_destino = (ImageButton) findViewById(R.id.button_maps_destino);
 
         /*
         //Código para el spinner de los coches
@@ -106,31 +113,51 @@ public class NewRidesFragment extends AppCompatActivity {
         //Esto último era this en un primer momento
         */
 
+
+        // Click listener para mostrar DatePicker de fecha salida
+        button_fechasalida.setOnClickListener(new View.OnClickListener() {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().commit();
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.datePickerType = 1;//ponemos este campo distinto de 0 para lanzar el código de fecha salida
+                datePickerFragment.show(fragmentManager, "date picker");
+            }
+        });
+
+        // Click listener para mostrar DatePicker de fecha llegada
+        button_fechallegada.setOnClickListener(new View.OnClickListener() {
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            @Override
+            public void onClick(View v) {
+                fragmentManager.beginTransaction().commit();
+                DatePickerFragment datePickerFragment = new DatePickerFragment();
+                datePickerFragment.datePickerType = 0;//ponemos este campo a 0 para lanzar el código de fecha llegada
+                datePickerFragment.show(fragmentManager, "date picker");
+            }
+        });
+
+        // Click Listener para mostrar el TimePicker
+        button_horasalida.setOnClickListener(new View.OnClickListener() {
+            FragmentManager fragmentManager = getSupportFragmentManager();
             @Override
             public void onClick(View view) {
                 fragmentManager.beginTransaction().commit();
                 TimePickerFragment timePicker = new TimePickerFragment();
-                 timePicker.timePickerType=1;//ponemos este campo distinto de 0 para lanzar el código de hora salida
-                int hour = 0;
-                int minute = 0;
+                timePicker.timePickerType = 1;//ponemos este campo distinto de 0 para lanzar el código de hora salida
                 timePicker.show(fragmentManager, "time picker");
             }
         });
 
-        // CLick Listener para mostrar el TIiePicker
-        Button button_horallegada = (Button) findViewById(R.id.button_horallegada);
+        // CLick Listener para mostrar el TimePicker
         button_horallegada.setOnClickListener(new View.OnClickListener() {
             FragmentManager fragmentManager = getSupportFragmentManager();
-
             @Override
             public void onClick(View view) {
-                fragmentManager.beginTransaction();
+                fragmentManager.beginTransaction().commit();
                 TimePickerFragment timePicker = new TimePickerFragment();
-                timePicker.timePickerType=0;//ponemos este campo a 0 para lanzar el código de hora llegada
-                int hour = 0;
-                int minute = 0;
-                Log.d(LOG_TAG, "Time: " + hour+":"+minute);
-
+                timePicker.timePickerType = 0;//ponemos este campo a 0 para lanzar el código de hora llegada
                 timePicker.show(fragmentManager, "time picker");
             }
         });
@@ -138,7 +165,6 @@ public class NewRidesFragment extends AppCompatActivity {
         /**
          Click Listener para lanzar actividad MapsActivity y selseccionar ORIGEN
          */
-        ImageButton button_maps_origen = (ImageButton) findViewById(R.id.button_maps_origen);
         button_maps_origen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -152,7 +178,6 @@ public class NewRidesFragment extends AppCompatActivity {
         /**
          Click Listener para lanzar actividad MapsActivity y seleccionar DESTINO
          */
-        ImageButton button_maps_destino = (ImageButton) findViewById(R.id.button_maps_destino);
         button_maps_destino.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -207,7 +232,7 @@ public class NewRidesFragment extends AppCompatActivity {
     public void add_ride(View view) {
         ConexionDatabase conn = new ConexionDatabase(this, DatabaseAdapter.DB_RIDES, null, 1);
         SQLiteDatabase db_rides = conn.getWritableDatabase();
-        Log.d(LOG_TAG,"TABLE "+db_rides.toString());
+        Log.d(LOG_TAG, "TABLE " + db_rides.toString());
 
         //insert into usuario (id,nombre,telefono) values (123,'Cristian','85665223')
 
@@ -248,7 +273,7 @@ public class NewRidesFragment extends AppCompatActivity {
                 ride_num_viaj.getText().toString() + "')";
         //Hay algunos con comillas simples porque son textos y en sql se usan comilla simple, necesito ponerlas si no parseo números
         // modelo-texto, plazas-int, color-texto
-        Log.d(LOG_TAG,"InsertSQL "+insert);
+        Log.d(LOG_TAG, "InsertSQL " + insert);
 
         db_rides.execSQL(insert);
         String message = "Viaje: " + ride_name.getText().toString() + " creado correctamente";
@@ -359,6 +384,9 @@ public class NewRidesFragment extends AppCompatActivity {
 
     }
 
+    /**
+     * Controla los resultados que devuelven los intents de maps
+     */
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -378,7 +406,7 @@ public class NewRidesFragment extends AppCompatActivity {
             provincia = (String) bundleReply.get("provincia");
             pais = (String) bundleReply.get("pais");
 
-            Log.d(TAG, "Bundle reply ORIGEN: " +"; "+ municipio +"; "+ calle + "; "+ numero +"; " + provincia + "; " + pais);
+            Log.d(TAG, "Bundle reply ORIGEN: " + "; " + municipio + "; " + calle + "; " + numero + "; " + provincia + "; " + pais);
             Log.d(TAG, "Bundle reply ORIGEN: Direccion completa" + direccion);
 
             lat = (Double) bundleReply.get("latitud");
@@ -387,7 +415,7 @@ public class NewRidesFragment extends AppCompatActivity {
             switch (requestCode) {
                 // Guardar resultados para ORIGEN
                 case REQUEST_ORIGEN:
-                    if (municipio != null && numero != null && calle != null ) {
+                    if (municipio != null && numero != null && calle != null) {
                         String stringText = municipio + ", " + calle + " " + numero;
                         ride_origen.setText(stringText);
                     }
@@ -399,7 +427,7 @@ public class NewRidesFragment extends AppCompatActivity {
 
                 // Guarar resultados para DESTINO
                 case REQUEST_DESTINO:
-                    if (municipio != null && numero != null && calle != null ) {
+                    if (municipio != null && numero != null && calle != null) {
                         String stringText = municipio + ", " + calle + " " + numero;
                         ride_destino.setText(stringText);
                     }

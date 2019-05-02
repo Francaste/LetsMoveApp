@@ -7,20 +7,14 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
 import android.text.format.DateFormat;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
 
 public class TimePickerFragment extends DialogFragment implements TimePickerDialog.OnTimeSetListener {
-    private int horaLlegada;
-    private int minuLlegada;
-    private int horaSalida;
-    private int minuSalida;
-    public int timePickerType=0;
+
+    public int timePickerType = 0;
 
     @NonNull
     @Override
@@ -35,13 +29,11 @@ public class TimePickerFragment extends DialogFragment implements TimePickerDial
     @Override
     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
         if (timePickerType == 0) {
-            horaLlegada = hourOfDay;
-            minuLlegada = minute;
+            // hora llegada
             TextView text_llegada = (TextView) getActivity().findViewById(R.id.horaLlegada);
             text_llegada.setText(hourOfDay + ":" + minute);
         } else {
-            horaSalida = hourOfDay;
-            minuSalida = minute;
+            //hora salida
             TextView text_salida = (TextView) getActivity().findViewById(R.id.horaSalida);
             text_salida.setText(hourOfDay + ":" + minute);
         }
