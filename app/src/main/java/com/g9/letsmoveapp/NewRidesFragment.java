@@ -133,7 +133,7 @@ public class NewRidesFragment extends AppCompatActivity {
                 if (item != null) {
                     ride_coche = item.toString();
                     //TODO: aqui guardar el nombre del coche seleccionado
-                    Toast.makeText(NewRidesFragment.this, item.toString(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(NewRidesFragment.this, item.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
 
