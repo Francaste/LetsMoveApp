@@ -10,7 +10,7 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/idFoto"
+            android:id="@+id/idFotoCar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="15dp"
@@ -26,24 +26,22 @@
             >
 
             <TextView
-                android:id="@+id/idViajes"
+                android:id="@+id/idModelo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="10dp"
-                android:text="Nombre"
+                android:text="Modelo"
                 android:textSize="24sp"
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/idDescripcion"
+                android:id="@+id/idDescripcionCar"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
                 android:layout_marginBottom="15dp"
-                android:text="Origen/Destino | Fecha del viaje | Hora salida/llegada | Tiempo límite"
+                android:text="Plazas: 4| Color: red | Tamaño: grande"
                  />
-
-
         </LinearLayout>
 
     </LinearLayout>
@@ -53,7 +51,7 @@
         android:layout_height="1dp"
         android:background="@color/colorPrimary"
         android:layout_marginTop="11dp"
-        android:layout_below="@id/idDescripcion"
+        android:layout_below="@id/idDescripcionCar"
         />
 
 

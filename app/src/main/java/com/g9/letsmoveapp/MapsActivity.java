@@ -239,7 +239,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             //Se se ha introducido algo en el editText de origen o destino en NewRides
             //Se coloca el marcador en la posicion encontrada por el geocoder
             LatLng extraMarker = searchExtraLocation(msg_extra);
-            marcadorClick(mMap, extraMarker);
+            if (extraMarker != null) {
+                marcadorClick(mMap, extraMarker);
+            }
         } else if (location != null) {
             //Si no se ha introducido nada en el editext de origern o destino se muestra nuestra localizacion
             LatLng latLng_location = new LatLng(location.getLatitude(), location.getLongitude());
@@ -332,8 +334,15 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         if (Geocoder.isPresent()) {
             Geocoder gc = new Geocoder(this);
             try {
-                addresses = gc.getFromLocationName(site, 2);
-                Address address = addresses.get(0);
+                addresses = gc.getFromLocationName(site, 3);
+                Address address;
+                if (addresses.size() > 0) {
+                    address = addresses.get(0);
+                    String msg = address.getAddressLine(0);
+                    Log.d(TAG, msg);
+                } else {
+                    return null;
+                }
                 // Devuelve un LatLng
                 return new LatLng(address.getLatitude(), address.getLongitude());
             } catch (IOException e) {

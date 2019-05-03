@@ -87,7 +87,7 @@ public class NuevoCoche extends AppCompatActivity {
             }
         });
 
-        //BOTON DE PRUEBA PARA VER SI SE LEEN LOS REGISTROS
+        /*//BOTON DE PRUEBA PARA VER SI SE LEEN LOS REGISTROS
         button_readCars.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -100,29 +100,29 @@ public class NuevoCoche extends AppCompatActivity {
                     } else {
                         //permission OK
                         carsTable = get_cars();
-                        Log.d(LOG_TAG, "SIZE ARRAY: "+carsTable.size());
+                        Log.d(LOG_TAG, "SIZE ARRAY: " + carsTable.size());
                         CarsDataModel carsDataModel;
                         int i = 0;
-                        while(carsTable.size() > i) {
-                            carsDataModel= (CarsDataModel) carsTable.get(i);
+                        while (carsTable.size() > i) {
+                            carsDataModel = (CarsDataModel) carsTable.get(i);
                             Log.d(LOG_TAG, "Car1: " + "Model: " + carsDataModel.getModel() + "Model: " + carsDataModel.getModel() + " -  Color: " + carsDataModel.getColor() + " -  Uri: " + carsDataModel.getUri() + " - ");
                             i++;
                         }
                     }
                 } else {
-                    carsTable= get_cars();
-                    Log.d(LOG_TAG, "SIZE ARRAY: "+carsTable.size());
+                    carsTable = get_cars();
+                    Log.d(LOG_TAG, "SIZE ARRAY: " + carsTable.size());
                     CarsDataModel carsDataModel;
                     int i = 0;
-                    while(carsTable.size() > i) {
-                        carsDataModel= (CarsDataModel) carsTable.get(i);
+                    while (carsTable.size() > i) {
+                        carsDataModel = (CarsDataModel) carsTable.get(i);
                         Log.d(LOG_TAG, "Car1: " + "Model: " + carsDataModel.getModel() + "Model: " + carsDataModel.getModel() + " -  Color: " + carsDataModel.getColor() + " -  Uri: " + carsDataModel.getUri() + " - ");
                         i++;
                     }
                 }
 
             }
-        });
+        });*/
 
         //Parte corresondiente a añadir coches
 
@@ -176,6 +176,7 @@ public class NuevoCoche extends AppCompatActivity {
             }
         }
     }
+
     //Al método add_car lo está llamando el onClick del xml, no hace falta poner escuchador
     public void add_car(View view) {
         ConexionDatabase conn = new ConexionDatabase(this, "db_cars", null, 1);
@@ -213,52 +214,4 @@ public class NuevoCoche extends AppCompatActivity {
         db_cars.close();
         finish();
     }
-    public ArrayList get_cars() {
-        ConexionDatabase conn = new ConexionDatabase(this, DatabaseAdapter.DB_CARS, null, 1);
-        //abres conecxion bbdd
-        SQLiteDatabase db_cars = conn.getReadableDatabase();//para leer
-
-//TODO: podemos utilizar distintos métodos para la lectura de nuestra base de datos. ¿Cómo?
-//TODO Muy fácil, pasamos como parámetro la sentencia sql de lectura que queremos aplicar.
-        String selectQuery = "SELECT * FROM " + DatabaseAdapter.DB_CARS;
-        //haces la sentencia de lectura de todos los registros
-
-        Cursor cursor = db_cars.rawQuery(selectQuery,null,null);
-        //utilizamos directamente la query
-        ArrayList carsModelArrayList = new ArrayList();//lista de resultados
-
-        if(cursor.moveToFirst()){//se va al principio de la tabla
-            CarsDataModel carsDataModel;//creamos datamodel
-            while (cursor.moveToNext()) {//si hay registros aún
-                carsDataModel= new CarsDataModel();//leemos todos los registros de base de datos
-                //damos los valores del registro de base de datos a nuestro modelo de datos de coche temporal
-                carsDataModel.setModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_MODELO)));
-                Log.d(LOG_TAG,"Model: "+carsDataModel.getModel());
-                carsDataModel.setColor(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_COLOR)));
-                Log.d(LOG_TAG,"Color: "+carsDataModel.getColor());
-                carsDataModel.setPlazas(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_PLAZAS)));
-                Log.d(LOG_TAG,"Plazas: "+carsDataModel.getPlazas());
-                carsDataModel.setSize(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_SIZE)));
-                Log.d(LOG_TAG,"Size: "+carsDataModel.getSize());
-                carsDataModel.setAntig(cursor.getInt(cursor.getColumnIndex(DatabaseAdapter.KEY_ANTIG)));
-                Log.d(LOG_TAG,"Antig: "+carsDataModel.getAntig());
-                carsDataModel.setUri(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_URI)));
-                Log.d(LOG_TAG,"Uri: "+carsDataModel.getUri());
-                carsDataModel.setConsumo(cursor.getDouble(cursor.getColumnIndex(DatabaseAdapter.KEY_CONSUMO)));
-                Log.d(LOG_TAG,"Consumo: "+carsDataModel.getConsumo());
-
-                //añadimos el modelo de datos a la lista
-                carsModelArrayList.add(carsDataModel);
-            }
-        }
-        cursor.close();//cerramos el cursor, dejamos de leer la tabla
-
-        String message = "Coches leídos correctamente";
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
-        db_cars.close();//cerramos conexion
-        finish();//cerramos la activity
-        return carsModelArrayList;
-
-    }
-
 }
