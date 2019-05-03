@@ -70,7 +70,16 @@ public class NewRidesFragment extends AppCompatActivity {
     String ride_lng_origen = "";
     String ride_lng_destino = "";
 
+
+
+    //--------------------Spinner coches variables-----------------
+
+    ArrayList<CarsDataModel> carsDataModelArrayList;
     String ride_coche = "";
+
+
+
+    //-------------------------------------------------------------
 
     //Intents Extra de Maps
     public static final String EXTRA_MAPS =
@@ -107,18 +116,45 @@ public class NewRidesFragment extends AppCompatActivity {
         button_maps_destino = (ImageButton) findViewById(R.id.button_maps_destino);
 
 
-        /*
-         * Código para el spinner de los coches
-         * */
+        //----------------------Código para el spinner de los coches----------------------
+/* Mío
+        //ArrayList<String> spinnerArray = new ArrayList<>();
+        ArrayList auxArrayList = getCars();
+        ArrayList spinnerArray = new ArrayList();
+
+        //En el tutorial crea un ArrayList listaPersonas y un ArrayList Usuarios, su usuarios es nuestro
+        //coche y su listaPersonas es nuestro carsArrayList
+
+*/
+//--------------------Spinner
+
+        //ArrayList<CarsDataModel> carsModelArrayList = getCars();
+
+        int i = 0;
+        String carModel;
+
         Spinner spinner = findViewById(R.id.spinnerCoches);
         //ArrayAdapter<CharSequence> adapter;
         final ArrayAdapter<String> adapter;
 
-        List<String> spinnerArray = new ArrayList<>();
+        carsDataModelArrayList = getCars();
+
         // Implementar metodo  getCars() que devuelva ArrayList con los nombres de los coches de la BBDD
         // De momento solo inserta elementos a pelo sin sacarlos de la base de datos
-        spinnerArray = getCars();
-        //
+
+        List<String> spinnerArray = new ArrayList<>();
+
+        while (carsDataModelArrayList.size() > i){
+            carModel = (String) carsDataModelArrayList.get(i).getModel();
+            //String modelo=carsModel.getModel();
+            spinnerArray.add(carModel);
+
+            Log.d(LOG_TAG, "coche añadido: " + carModel);
+            i++;
+        }
+        //*****
+
+
         adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, spinnerArray);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -133,6 +169,58 @@ public class NewRidesFragment extends AppCompatActivity {
                 if (item != null) {
                     ride_coche = item.toString();
                     //TODO: aqui guardar el nombre del coche seleccionado
+                    //Toast.makeText(NewRidesFragment.this, item.toString(), Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
+        });
+//-----------------------------------------------------------------------------------------------------------
+
+        /*
+        int i = 0;
+        CarsDataModel carsModel;
+
+        while (auxArrayList.size() > i){
+            carsModel = (CarsDataModel) auxArrayList.get(i);
+            String modelo=carsModel.getModel();
+            auxArrayList.add(modelo);
+
+            Log.d(LOG_TAG, "coche añadido: " + modelo);
+            i++;
+        }*/
+       // precio.setText(aux);
+
+        //---------------------------------------------------------------------------------
+
+/*
+
+        //ArrayAdapter<CharSequence> adapter;
+        final ArrayAdapter<String> adapter;
+
+       // List<String> spinnerArray = new ArrayList<>();
+        // Implementar metodo  getCars() que devuelva ArrayList con los nombres de los coches de la BBDD
+        // De momento solo inserta elementos a pelo sin sacarlos de la base de datos
+        spinnerArray = getCars();
+        //
+        adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, auxArrayList);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            */
+/*
+             * Al seleccionar un elemento del spinner ->
+             * *//*
+
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                Object item = parent.getItemAtPosition(position);
+                if (item != null) {
+                    ride_coche = item.toString();
+                    //TODO: aqui guardar el nombre del coche seleccionado
                     Toast.makeText(NewRidesFragment.this, item.toString(), Toast.LENGTH_SHORT).show();
                 }
             }
@@ -141,6 +229,7 @@ public class NewRidesFragment extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
             }
         });
+*/
 
 
         // Click listener para mostrar DatePicker de fecha salida
@@ -313,21 +402,7 @@ public class NewRidesFragment extends AppCompatActivity {
         Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT).show();
         finish();
         db_rides.close();
-/*  Esta parte la quito mientras lo de notificaciones no funciona, así no llama a las clases y no hacen ná
-        //--------------Notificaciones----------------
-        Calendar calendar = Calendar.getInstance();
 
-        calendar.set(Calendar.HOUR_OF_DAY,12);
-        calendar.set(Calendar.MINUTE,8);
-
-        Intent intent_calendar = new Intent(getApplicationContext(),NotificationReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(getApplicationContext(),100, intent_calendar,PendingIntent.FLAG_UPDATE_CURRENT);
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),AlarmManager.INTERVAL_DAY,pendingIntent);
-
-        //--------------------------------------------------
-
-*/
 
     }
 
@@ -420,14 +495,66 @@ public class NewRidesFragment extends AppCompatActivity {
     /**
      * Extraer nombres de coches de la BBDD de coches
      */
-    public ArrayList<String> getCars() {
-        ArrayList<String> spinnerArray = new ArrayList<>();
+    public ArrayList<CarsDataModel> getCars() {
+
+
         //TODO: aqui hay que añadir los nombres de los coches extraidos de la BBDD de coches al ArrayList
+
+        ConexionDatabase conn = new ConexionDatabase(this, DatabaseAdapter.DB_CARS, null, 1);
+        //abres conexion bbdd
+        SQLiteDatabase db_cars = conn.getReadableDatabase();//para leer
+
+        String selectQuery = "SELECT * FROM " + DatabaseAdapter.DB_CARS;
+        //haces la sentencia de lectura de todos los registros
+
+        Cursor cursor = db_cars.rawQuery(selectQuery, null, null);
+        //utilizamos directamente la query
+        ArrayList carsModelArrayList = new ArrayList();//lista de resultados
+
+        if (cursor.moveToFirst()) {//se va al principio de la tabla
+            CarsDataModel carsDataModel;//creamos datamodel
+            while (cursor.moveToNext()) {//si hay registros aún
+                carsDataModel = new CarsDataModel();//leemos todos los registros de base de datos
+                //damos los valores del registro de base de datos a nuestro modelo de datos de coche temporal
+                //Solamente nos interesa setear el modelo porque lo demás es prescindible para el spinner
+                //No dará error porque en carsDataModel hay un objeto creado completo por defecto
+                carsDataModel.setModel(cursor.getString(cursor.getColumnIndex(DatabaseAdapter.KEY_MODELO)));
+                Log.d(LOG_TAG, "Model: " + carsDataModel.getModel());
+                //añadimos el modelo de datos a la lista
+                carsModelArrayList.add(carsDataModel);
+
+            }
+        }
+
+
+        cursor.close();//cerramos el cursor, dejamos de leer la tabla
+        db_cars.close();//cerramos conexion
+//----
+        return carsModelArrayList;
+
+
+
+
+
+        //finish();//cerramos la activity
+
+        //return spinnerArray;
+
+        //---------------------------SPINNER--------------------------------
+
+        //ArrayList<String> spinnerArray = new ArrayList<>();
+/*
         spinnerArray.add("coche 1");
         spinnerArray.add("coche 2");
         spinnerArray.add("coche 3");
-        return spinnerArray;
+*/
+
+
+
+
     }
+    //--------------------------Para spinner--------------------------------------
+
 
     /**
      * Controla los resultados que devuelven los intents de maps

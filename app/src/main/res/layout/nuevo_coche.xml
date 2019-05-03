@@ -5,9 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".NuevoCoche"
-    android:focusable="true"
-    android:focusableInTouchMode="true">
+    tools:context=".NuevoCoche">
+   <!-- android:focusable="true"
+    android:focusableInTouchMode="true"> !-->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -52,7 +52,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:drawableLeft="@drawable/ic_camera_alt_black_24dp"
-                    android:text="New" />
+                    android:text="Nueva" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
