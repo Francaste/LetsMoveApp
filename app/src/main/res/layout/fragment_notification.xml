@@ -10,10 +10,12 @@
         android:id="@+id/notificaciones"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Notificaciones"
+        android:text="Notificaciones - No implementado"
         android:textSize="30sp"
         android:textAlignment="center"
        />
+
+
         <!--  android:onClick="actuales" !-->
 
 

@@ -62,7 +62,6 @@ public class NuevoCoche extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.nuevo_coche);
 
-        button_readCars = findViewById(R.id.button_read_car);
 
 
         button_camera = findViewById(R.id.cam_car);

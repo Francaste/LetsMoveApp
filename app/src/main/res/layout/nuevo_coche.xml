@@ -195,14 +195,7 @@
             android:gravity="bottom"
             android:onClick="add_car"
             android:text="Añadir nuevo coche" />
-        <Button
-            android:id="@+id/button_read_car"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:gravity="bottom"
-            android:onClick="add_car"
-            android:text="Leer tabla coche" />
+
 
     </LinearLayout>
 </LinearLayout>

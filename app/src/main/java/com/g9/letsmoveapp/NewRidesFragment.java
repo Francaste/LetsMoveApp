@@ -101,7 +101,6 @@ public class NewRidesFragment extends AppCompatActivity {
         ride_precio = (EditText) findViewById(R.id.precio);
         ride_period = (EditText) findViewById(R.id.period);
         ride_num_viaj = (EditText) findViewById(R.id.num_viaj);
-        button_read_car = (Button) findViewById(R.id.button_read_rides);
 
         button_horallegada = (Button) findViewById(R.id.button_horallegada);
         button_horasalida = findViewById(R.id.button_horasalida);

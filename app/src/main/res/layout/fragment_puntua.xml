@@ -10,7 +10,7 @@
         android:id="@+id/puntuacion"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Puntúa la app"
+        android:text="Puntúa la app - No implementado"
         android:textSize="30sp"
         android:textAlignment="center"
        />

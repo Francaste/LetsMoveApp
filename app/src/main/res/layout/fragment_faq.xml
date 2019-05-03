@@ -10,7 +10,7 @@
         android:id="@+id/faq"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Preguntas frecuentes"
+        android:text="Preguntas frecuentes - No implementado"
         android:textSize="30sp"
         android:textAlignment="center"
        />

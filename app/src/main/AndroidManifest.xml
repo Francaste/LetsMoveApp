@@ -72,7 +72,7 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ViajesAnteriores"
-            android:label="Viajes Anteriores"
+            android:label="Viajes Anteriores - No implementado -"
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".GastosViajes"

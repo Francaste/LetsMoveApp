@@ -36,6 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:onClick="nuevoCoche"
-        android:text="Nuevo Vehículo" />
+        android:text="Nuevo Vehículo"
+        android:textSize="30sp"/>
 
 </LinearLayout>
