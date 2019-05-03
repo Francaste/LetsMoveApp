@@ -9,22 +9,26 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.net.URI;
 import java.util.ArrayList;
 
 public class adaptadorDatosCars extends RecyclerView.Adapter<adaptadorDatosCars.ViewHolderCars> {
 
     ArrayList listaCars;
     Uri photouri;
-
-    public adaptadorDatosCars(MisCoches misCoches, ArrayList listaCars) {
+//He añadido como parámetro el Uri photouri
+    public adaptadorDatosCars(MisCoches misCoches, ArrayList listaCars, Uri photouri) {
         this.listaCars = listaCars;
+        this.photouri = photouri; //Añadido
+
     }
 
     @NonNull
     @Override
     public ViewHolderCars onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         //RecyclerView recyclerViajes = findViewById(R.id.recyclerAct);
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_listcar, null, true);
+        //He puesto false y estaba true aquí
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_list_car, null, false);
         return new ViewHolderCars(view);
     }
 
@@ -41,6 +45,8 @@ public class adaptadorDatosCars extends RecyclerView.Adapter<adaptadorDatosCars.
                 + " | Color: " + carsDataModel.getColor()
                 + " | Tamaño: " + carsDataModel.getSize());
         viewHolderDatos.etiquetaFoto.setImageURI(photouri);
+        viewHolderDatos.etiquetaFoto.setImageResource(R.mipmap.ic_bat);
+
     }
 
     @Override

@@ -40,9 +40,18 @@
                 android:layout_height="wrap_content"
                 android:textSize="17sp"
                 android:layout_marginBottom="15dp"
-                android:text="Plazas: 4| Color: red | Tamaño: grande"
+                android:text="Plazas | Color | Tamaño "
                  />
         </LinearLayout>
 
     </LinearLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorPrimary"
+        android:layout_marginTop="11dp"
+        android:layout_below="@id/idDescripcion"
+        />
+
 </LinearLayout>

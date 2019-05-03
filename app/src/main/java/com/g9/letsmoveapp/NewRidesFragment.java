@@ -75,8 +75,6 @@ public class NewRidesFragment extends AppCompatActivity {
     ArrayList<CarsDataModel> carsDataModelArrayList;
     String ride_coche = "";
 
-
-
     //-------------------------------------------------------------
 
     //Intents Extra de Maps
